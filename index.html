@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SMS - Sistem Manajemen Santri</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+
+    <!-- ═══ PWA Meta Tags ═══ -->
+    <meta name="theme-color" content="#04432A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SMS">
+    <meta name="application-name" content="SMS">
+    <meta name="description" content="SMS - Sistem Manajemen Santri">
+
+    <!-- ═══ Icons ═══ -->
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link id="apple-touch-icon" rel="apple-touch-icon" href="icon-180.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icon-167.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+
+    <!-- ═══ PWA Manifest ═══ -->
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-container" id="main-app-container">
+    <header id="app-header" class="hidden">
+        <div class="header-top">
+            <div class="header-identity">
+                <img src="" id="header-logo" class="header-logo" alt="Logo">
+                <div class="header-title">
+                    <p id="greeting-text">Selamat Datang,</p>
+                    <h1 id="yayasan-name-pondok">Learning Monitoring Santri</h1>
+                    <div id="yayasan-name-legal" class="yayasan-text">Sistem Manajemen Instansi</div>
+                </div>
+            </div>
+            
+            <div style="position: relative;">
+                <div class="user-profile-btn" onclick="toggleProfileDropdown(event)">
+                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="header-user-photo" alt="Foto Profile">
+                    <span id="header-user-name">Pengguna</span>
+                    <i class="fa-solid fa-caret-down"></i>
+                </div>
+
+                <div id="profile-dropdown-menu" class="profile-dropdown-menu hidden">
+                    <div class="dropdown-header-info">
+                        Role Akses: <strong id="dropdown-user-role">SUPERADMIN</strong>
+                    </div>
+                    <div class="dropdown-item" onclick="bukaModalEditSelfProfile()">
+                        <i class="fa-solid fa-user-gear" style="color:var(--primary);"></i>
+                        <span>Edit Profil & Sandi</span>
+                    </div>
+                    <div class="dropdown-item" onclick="triggerSyncCloudQuick()">
+                        <i class="fa-solid fa-cloud-arrow-up" style="color:var(--info);"></i>
+                        <span>Kirim Data Cloud</span>
+                    </div>
+                    <div class="dropdown-item" onclick="triggerPullCloudQuick()">
+                        <i class="fa-solid fa-cloud-arrow-down" style="color:var(--warning);"></i>
+                        <span>Tarik Data Cloud</span>
+                    </div>
+                     <div class="dropdown-item" onclick="bersihkanCacheApp()">
+                        <i class="fa-solid fa-arrows-rotate" style="color:var(--primary);"></i>
+                        <span>Perbarui Sistem (Hapus Cache)</span>
+                    </div>
+                    <div class="dropdown-item" onclick="prosesLogout()" style="color:var(--danger);">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Keluar Akun</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-content">
+        <div id="view-login" class="page-view login-wrapper" style="background-image: url('https://images.unsplash.com/photo-1519817650390-28a59b20892c?q=80&w=1000&auto=format&fit=crop');">
+            <div class="login-overlay"></div>
+            <div class="card glass-card-login">
+                <div style="text-align: center; margin-bottom: 14px;">
+                    <img src="icon-512.png" id="login-logo" style="width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--accent); padding: 5px; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);" alt="Logo">
+                    <h2 style="font-weight: 800; margin-top:8px;" id="login-pondok-name">Sistem Monitoring</h2>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.72rem; margin-top: 2px;">Silakan masuk untuk melanjutkan</p>
+                </div>
+                
+                <div id="login-error" class="hidden" style="color: white; background: rgba(255,59,48,0.8); backdrop-filter: blur(10px); padding: 6px; border-radius: 10px; text-align: center; font-size: 0.75rem; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.2);">
+                    Kredensial atau PIN Salah!
+                </div>
+
+                <div style="display:flex; gap:8px; margin-bottom: 12px; justify-content:center;">
+                    <button type="button" id="tab-btn-pin" class="btn-primary" style="margin:0; padding:8px 12px; font-size:0.75rem; border-radius:15px; width:auto;" onclick="switchModeLogin('pin')">
+                        <i class="fa-solid fa-key"></i> Mode PIN
+                    </button>
+                    <button type="button" id="tab-btn-user" class="btn-outline" style="margin:0; padding:8px 12px; font-size:0.75rem; justify-content:center; border-radius:15px; border-color:rgba(255,255,255,0.4); color:white; width:auto;" onclick="switchModeLogin('user')">
+                        <i class="fa-solid fa-user"></i> Username
+                    </button>
+                </div>
+
+                <div id="login-area-pin">
+                    <input type="password" inputmode="numeric" pattern="[0-9]*" id="login-pin-input" maxlength="6" placeholder="Masukkan PIN 4-6 Angka..." style="text-align: center; font-weight: bold; letter-spacing: 4px; font-size: 1.1rem;">
+                    <button class="btn-primary" onclick="prosesLoginPIN()" style="font-size: 0.88rem; padding: 12px; border-radius: 12px; margin-top: 5px;">MASUK DENGAN PIN</button>
+                </div>
+
+                <div id="login-area-user" class="hidden">
+                    <input type="text" id="login-username" placeholder="Masukkan Username...">
+                    <input type="password" id="login-password" placeholder="Masukkan Password...">
+                    <button class="btn-primary" onclick="prosesLogin()" style="font-size: 0.88rem; padding: 12px; border-radius: 12px; margin-top: 5px;">MASUK SISTEM</button>
+                </div>
+                
+                <div style="display:flex; justify-content:center; margin-top: 5px;">
+                    <button class="btn-outline" style="background: transparent; color: rgba(255,255,255,0.7); border: none; margin-top: 0px; justify-content: center; font-size:0.7rem; padding: 4px; width:auto; text-decoration: underline;" onclick="bukaScannerLoginTarikData()">
+                        <i class="fa-solid fa-qrcode"></i> QR Tarik Data Cloud
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard-wrapper" class="hidden">
+            <div id="view-dashboard" class="hidden page-view">
+                <div class="card" id="card-setup-pin" style="border-left: 5px solid var(--accent); padding: 16px;">
+                    <h3 style="font-size: 0.95rem; color: var(--primary); margin-bottom: 5px;">
+                        <i class="fa-solid fa-key"></i> Pengaturan PIN Login Cepat
+                    </h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;">
+                        Set PIN angka Anda (0–9) untuk login cepat tanpa mengetik username & password di halaman utama.
+                    </p>
+                    <div style="display:flex; gap:8px;">
+                        <input type="password" inputmode="numeric" pattern="[0-9]*" id="input-new-pin" maxlength="6" placeholder="4–6 Angka PIN..." style="margin:0; text-align:center; font-weight:bold; letter-spacing:3px;">
+                        <button class="btn-primary" style="margin:0; width:auto; padding:0 18px; font-size:0.82rem;" onclick="simpanPINUser()">SIMPAN</button>
+                    </div>
+                </div>
+
+                <div class="card card-premium">
+                    <h3 style="font-size: 1.08rem; color: var(--primary);">Dashboard Utama</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Pilih menu sesuai hak akses yang diberikan.</p>
+                </div>
+                <div class="card" id="dynamic-menu-container">
+                    <h3 style="margin-bottom: 14px; font-size: 0.95rem; color: var(--primary); border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 10px;">
+                        <i class="fa-solid fa-layer-group"></i> Menu Akses Anda
+                    </h3>
+                    <div id="render-menu-buttons"></div>
+                </div>
+            </div>
+
+            <!-- VIEW SANTRI (DILENGKAPI TAB SANTRI AKTIF vs RUANG ALUMNI & SCROLL / TOGGLE) -->
+            <div id="view-santri" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                
+                <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                    <button type="button" id="btn-tab-santri-aktif" class="btn-primary" style="flex: 1; margin: 0; padding: 12px; font-size: 0.8rem;" onclick="switchTabSantri('aktif')">
+                        <i class="fa-solid fa-user-graduate"></i> Santri Aktif (<span id="count-santri-aktif">0</span>)
+                    </button>
+                    <button type="button" id="btn-tab-santri-alumni" class="btn-outline" style="flex: 1; margin: 0; padding: 12px; font-size: 0.8rem; justify-content: center;" onclick="switchTabSantri('alumni')">
+                        <i class="fa-solid fa-award"></i> Ruang Alumni (<span id="count-santri-alumni">0</span>)
+                    </button>
+                </div>
+
+                <div class="card card-premium" id="card-registrasi-santri">
+                    <h3 id="form-santri-title" style="margin-bottom: 14px; color: var(--primary);">Registrasi Santri Baru</h3>
+                    <input type="hidden" id="edit-id-santri" value="">
+                    
+                    <label id="label-foto-santri">Foto Santri</label>
+                    <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                        <button type="button" class="btn-outline" style="flex: 1; justify-content: center; margin: 0; padding: 10px;" onclick="document.getElementById('input-foto-kamera').click()">
+                            <i class="fa-solid fa-camera"></i> Kamera
+                        </button>
+                        <button type="button" class="btn-outline" style="flex: 1; justify-content: center; margin: 0; padding: 10px;" onclick="document.getElementById('input-foto-galeri').click()">
+                            <i class="fa-solid fa-image"></i> Galeri
+                        </button>
+                    </div>
+
+                    <input type="file" id="input-foto-kamera" accept="image/*" capture="environment" class="hidden" onchange="previewFotoSantri(event)">
+                    <input type="file" id="input-foto-galeri" accept="image/*" class="hidden" onchange="previewFotoSantri(event)">
+
+                    <img id="preview-foto-santri-ui" src="" style="max-width: 90px; display: none; border-radius: 10px; border: 2px solid var(--accent); margin-bottom: 10px;">
+                    
+                    <label>NIK (Nomor Induk Kependudukan)</label><input type="number" id="input-nik-santri" placeholder="16 Digit NIK...">
+                    <label>Nama Lengkap</label><input type="text" id="input-nama-santri" placeholder="Nama lengkap sesuai KK...">
+                    <label>Alamat Asal</label><textarea id="input-alamat-santri" rows="2"></textarea>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <div style="flex: 1;">
+                            <label id="label-asrama-input">Asrama</label>
+                            <select id="input-asrama-santri"><option value="Putra">Asrama Putra</option><option value="Putri">Asrama Putri</option></select>
+                        </div>
+                        <div style="flex: 1;">
+                            <label id="label-kamar-input">Kamar</label><input type="text" id="input-kamar-santri" placeholder="Cth: A-01 / RPL">
+                        </div>
+                    </div>
+
+                    <label style="color: var(--info);"><i class="fa-solid fa-layer-group"></i> Pilih Kelas / Forum (Opsional)</label>
+                    <select id="input-kelas-santri" style="margin-bottom: 14px;">
+                        <option value="">-- Tanpa Kelas / Pilih Nanti --</option>
+                    </select>
+
+                    <button class="btn-primary" id="btn-simpan-santri" onclick="simpanSantri()">SIMPAN DATA & GENERATE NIS</button>
+                    <button class="btn-outline hidden" id="btn-batal-edit-santri" onclick="batalEditSantri()" style="border-color: var(--danger); color: var(--danger);">BATAL EDIT</button>
+                </div>
+                
+                <div class="card">
+                    <div style="display: flex; flex-direction: column; margin-bottom: 14px; gap:10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3 id="title-db-santri" style="color: var(--primary); margin: 0;">Database Santri Aktif</h3>
+                            <button type="button" id="btn-toggle-tabel-santri" class="btn-outline" onclick="toggleTampilanTabelSantri()" style="width:auto; padding:6px 12px; margin:0; font-size:0.75rem; border-color:var(--primary);">
+                                <i class="fa-solid fa-eye-slash" id="icon-toggle-tabel"></i> Sembunyikan
+                            </button>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <div style="display: flex; gap: 4px; flex: 1;">
+    <button class="btn-primary" onclick="cetakKolektifF4Gabung('landscape')" style="margin: 0; padding: 12px 6px; font-size: 0.75rem; background: var(--info); flex: 1;">
+        <i class="fa-solid fa-print"></i> Cetak Landscape
+    </button>
+    <button class="btn-primary" onclick="cetakKolektifF4Gabung('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.75rem; background: #8E44AD; flex: 1;">
+        <i class="fa-solid fa-id-badge"></i> Cetak Portrait
+    </button>
+</div>
+                            <button class="btn-outline" onclick="cetakRekapSantriPDF()" style="justify-content: center; font-size: 0.75rem; background: #fff3cd; border-color: var(--warning); flex: 1; margin: 0;">
+                                <i class="fa-solid fa-file-pdf"></i> Rekap PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- WADAH SCROLL TERBATAS (TAMPIL 10-15 BARIS) -->
+                    <div id="wadah-scroll-santri" class="wadah-scroll-santri">
+                        <table>
+                            <thead><tr><th id="th-kamar-nis">NIS / Kamar</th><th>Nama Lengkap</th><th>Aksi</th></tr></thead>
+                            <tbody id="tabel-santri-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MENU EVALUASI & KELULUSAN -->
+            <div id="view-evaluasi" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-star"></i> Input Evaluasi Nilai</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:14px;">Masukkan nilai ujian dan keaktifan (akhlak, semangat) sebagai syarat generate sertifikat.</p>
+                    
+                    <label>Pilih Kelas / Kelompok</label>
+                    <select id="pilih-kelas-evaluasi" onchange="renderFormEvaluasi()"></select>
+                    
+                    <div id="wadah-form-evaluasi" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+
+            <!-- VIEW IZIN -->
+            <div id="view-izin" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 8px; color: var(--primary);"><i class="fa-solid fa-file-signature"></i> Surat Izin & Validasi Balik</h3>
+                    <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:14px;">Scan QR Santri untuk membuat Surat Izin Keluar atau Validasi Kembali.</p>
+                    <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                        <button class="btn-primary" onclick="startScannerIzin('keluar')" style="flex:1; font-size:0.78rem;"><i class="fa-solid fa-share-from-square"></i> Buat Surat Izin</button>
+                        <button class="btn-primary" onclick="startScannerIzin('balik')" style="flex:1; background:var(--success); font-size:0.78rem;"><i class="fa-solid fa-right-to-bracket"></i> Validasi Balik</button>
+                    </div>
+                    <button class="btn-outline" onclick="stopScannerIzin()" id="btn-stop-camera-izin" style="justify-content:center; display:none; margin-bottom:14px; border-color:var(--danger); color:var(--danger);"><i class="fa-solid fa-stop"></i> Tutup Kamera</button>
+                    <div id="qr-reader-izin" style="width:100%; display:none; margin-bottom:14px;"></div>
+                    <div id="area-cetak-surat-izin" class="hidden">
+                        <div class="surat-izin-box" id="surat-izin-konten"></div>
+                        <button class="btn-print" style="width:100%; margin-top:14px; padding:13px; font-size:0.95rem;" onclick="cetakAreaKhusus('surat-izin-konten')"><i class="fa-solid fa-print"></i> DOWNLOAD / CETAK SURAT RESMI</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-clock-rotate-left"></i> Santri Sedang Izin</h3>
+                    <div style="overflow-x:auto;"><table><thead><tr><th>Identitas</th><th>Tgl Wajib Balik</th><th>Aksi</th></tr></thead><tbody id="tabel-izin-aktif-body"></tbody></table></div>
+                </div>
+            </div>
+            
+            <div id="view-rekap" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Laporan Rekapitulasi (PDF)</h3>
+                    <label>Pilih Bulan Laporan</label><input type="month" id="filter-bulan-rekap" style="background:#fff;">
+                    <label>Pilih Spesifik Kelas</label><select id="filter-kelas-rekap"></select>
+                    <button class="btn-primary" onclick="cetakLaporanPDF()" style="margin-top:18px;"><i class="fa-solid fa-file-pdf"></i> UNDUH REKAPITULASI (PDF)</button>
+                </div>
+            </div>
+
+            <!-- VIEW PLOTTING KELAS & MAPEL -->
+            <div id="view-kelas" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                
+                <div class="card card-premium" style="border-left-color: var(--info);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                        <h3 style="color: var(--info); margin:0;"><i class="fa-solid fa-book"></i> Buat Master Mata Pelajaran</h3>
+                        <button type="button" class="btn-outline" style="width:auto; padding:6px 12px; margin:0; font-size:0.72rem; border-color:var(--info); color:var(--info);" onclick="aktifkanNotifikasiJadwal()">
+                            <i class="fa-solid fa-bell"></i> Izin Layar PWA Notif
+                        </button>
+                    </div>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Buat mata pelajaran dan tentukan ustadz/guru penanggung jawabnya (bisa lebih dari satu), lalu centang kelas mana saja yang mempelajarinya.</p>
+                    
+                    <label>Nama Mata Pelajaran</label>
+                    <input type="text" id="input-nama-mapel" placeholder="Cth: Fiqih / Al-Qur'an / Nahwu">
+                    
+                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px; color:var(--primary); margin-top:14px;">
+                        <input type="checkbox" id="input-opsi-jadwal" onchange="toggleFormJadwalMapel()" style="width:18px; height:18px; margin:0;">
+                        <span>Atur Jadwal Hari & Jam (Opsional)</span>
+                    </label>
+                    <div id="wadah-input-jadwal" class="hidden" style="margin-top:10px; background:rgba(4,67,42,0.05); padding:12px; border-radius:12px; border:1px solid rgba(0,0,0,0.08);">
+                        <label style="margin-top:0;">Hari Pelaksanaan</label>
+                        <select id="input-hari-mapel">
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                            <option value="Minggu">Minggu</option>
+                        </select>
+                        <div style="display:flex; gap:8px;">
+                            <div style="flex:1;"><label>Jam Mulai</label><input type="time" id="input-jam-mulai"></div>
+                            <div style="flex:1;"><label>Jam Selesai</label><input type="time" id="input-jam-selesai"></div>
+                        </div>
+                    </div>
+
+                    <label style="color:var(--primary); margin-top:14px;"><i class="fa-solid fa-users"></i> Pilih Ustadz / Guru Pengajar (Bisa Lebih dari 1):</label>
+                    <div id="input-ustadz-mapel-container" style="max-height: 320px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 12px; background: #fff; margin-bottom: 14px;"></div>
+
+                    <label style="color:var(--primary); margin-top:14px;"><i class="fa-solid fa-layer-group"></i> Pilih Kelas Yang Mempelajari Mapel Ini:</label>
+                    <div id="input-kelas-mapel-container" style="max-height: 320px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 12px; background: #fff; margin-bottom: 14px;"></div>
+
+                    <button class="btn-primary" style="background: var(--info); border: none; box-shadow: none;" onclick="simpanMapel()">SIMPAN MATA PELAJARAN</button>
+                    
+                    <div style="margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 10px;">
+                        <h4 style="font-size:0.8rem; color:var(--primary); margin-bottom:8px;">Daftar Mata Pelajaran & Kelas Peserta:</h4>
+                        <div style="overflow-x:auto;"><table><thead><tr><th>Mata Pelajaran</th><th>Ustadz PJ</th><th>Kelas & Jadwal</th><th>Aksi</th></tr></thead><tbody id="tabel-mapel-body"></tbody></table></div>
+                    </div>
+                </div>
+
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-layer-group"></i> Buat Kelas / Forum Baru</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Buat kelas baru terlebih dahulu, lalu Anda dapat mengaturnya di pembuatan mata pelajaran di atas atau klik Edit Plotting di tabel bawah.</p>
+                    <label>Nama Kelas / Forum</label><input type="text" id="input-nama-kelas" placeholder="Cth: Kelas 1-A / Takhassus">
+                    <button class="btn-primary" onclick="simpanKelasBaru()">BUAT & SIMPAN KELAS</button>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Daftar Kelas Aktif & Plotting Santri</h3>
+                    <div style="overflow-x:auto;"><table><thead><tr><th>Nama Kelas</th><th>Jml Mapel</th><th>Jml Santri</th><th>Aksi</th></tr></thead><tbody id="tabel-kelas-body"></tbody></table></div>
+                </div>
+            </div>
+
+            <div id="view-absen" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-camera"></i> Modul Absensi (100% Manual Lokal)</h3>
+                    <div id="gps-status-box" style="padding: 12px; border-radius: 10px; font-weight: bold; margin-bottom: 14px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek GPS & Jarak Radius...</div>
+                    <div id="absen-form-container" class="hidden">
+                        <label>Pilih Mata Pelajaran (Lintas Kelas)</label>
+                        <select id="pilih-mapel-absen" onchange="renderAbsenSantriByMapel()"></select>
+                        
+                        <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                            <button class="btn-primary" onclick="startScanner()" style="flex:1;"><i class="fa-solid fa-qrcode"></i> Buka Scanner</button>
+                            <button class="btn-outline" onclick="stopScanner()" style="flex:1;"><i class="fa-solid fa-stop"></i> Tutup</button>
+                        </div>
+                        <div id="qr-reader" style="width:100%; display:none;"></div>
+                        <div id="scan-result" style="text-align: center; font-weight: bold; margin-bottom: 10px; min-height:20px;"></div>
+                        <div id="student-list" style="margin-top: 10px;"></div>
+                        <button class="btn-primary" onclick="kirimDataAbsen()" style="margin-top: 18px;"><i class="fa-solid fa-save"></i> SIMPAN ABSENSI LOKAL (MANUAL SYNC)</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-keuangan" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                <div class="card card-premium" style="border-left-color: var(--warning);">
+                    <h3 style="margin-bottom: 14px; color: var(--warning);"><i class="fa-solid fa-scale-balanced"></i> Pengaturan Sanksi & Denda</h3>
+                    <label>Nominal Denda per Alpa (Rp)</label><input type="number" id="setting-nominal-alpa">
+                    <label>Batas Maksimal Alpa</label><input type="number" id="setting-limit-alpa">
+                    <label>Denda Keterlambatan Balik Izin (Rp/Hari)</label>
+                    <input type="number" id="setting-denda-terlambat" placeholder="Cth: 20000">
+                    <label>Sanksi Tambahan</label><input type="text" id="setting-sanksi-ekstra">
+                    <button class="btn-warning" onclick="simpanSettingKeuangan()">SIMPAN ATURAN DENDA</button>
+                </div>
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Laporan Denda Belum Lunas</h3>
+                    <table><thead><tr><th>Identitas Tagihan</th><th>Keterangan</th><th>Nominal</th><th>Aksi</th></tr></thead><tbody id="tabel-keuangan-body"></tbody></table>
+                    <div style="text-align: right; font-weight: 800; color: var(--danger); font-size: 1.05rem; border-top: 1px solid #eee; padding-top: 10px;">Total Piutang Denda: Rp <span id="total-denda">0</span></div>
+                </div>
+            </div>
+
+            <div id="view-yayasan" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                
+                <!-- PENGATURAN PWA NOTIFIKASI MUTLAK SUPER ADMIN -->
+                <div class="card card-premium" style="border-left-color: var(--danger);">
+                    <h3 style="margin-bottom: 10px; color: var(--danger);"><i class="fa-solid fa-bell"></i> Status PWA Notif & Suara Pengingat (Super Admin)</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Aktifkan saklar mutlak agar pengingat jadwal berbunyi otomatis di akun semua Ustadz/Guru sesuai hari & jam mengajar tanpa bisa dimatikan oleh guru.</p>
+                    <label>Status PWA Notification (Mutlak)</label>
+                    <select id="setting-pwa-notif-aktif">
+                        <option value="1">Aktif Mutlak (Semua Guru & Ustadz)</option>
+                        <option value="0">Matikan Notifikasi PWA</option>
+                    </select>
+                    <label>Kalimat Suara Pengingat Jadwal (Gunakan variabel {mapel} dan {kelas})</label>
+                    <input type="text" id="setting-pwa-notif-teks" placeholder="Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}.">
+                </div>
+
+                <div class="card card-premium" style="border-left-color: var(--success);">
+                    <h3 style="margin-bottom: 14px; color: var(--success);">Konfigurasi Mode Aplikasi</h3>
+                    <label>Jenis Instansi</label>
+                    <select id="setting-app-mode">
+                        <option value="pondok">Mode Pondok Pesantren</option>
+                        <option value="sekolah">Mode Sekolah Umum</option>
+                        <option value="tpq">Mode TPQ / TQA / LPQ</option>
+                        <option value="mdt">Mode MDT (Madrasah Diniyah)</option>
+                        <option value="pelatihan">Mode Lembaga Pelatihan</option>
+                    </select>
+                </div>
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Identitas Instansi & Pimpinan</h3>
+                    <label id="label-nama-pondok">Nama Instansi</label><input type="text" id="input-nama-pondok-edit">
+                    <label>Nama Yayasan/Naungan</label><input type="text" id="input-yayasan-edit">
+                    <label id="label-mudir-edit">Pimpinan / Mudir / Kepala Sekolah</label><input type="text" id="input-mudir-edit">
+                    <label>Alamat Lengkap</label><textarea id="input-alamat-edit" rows="2"></textarea>
+                    
+                    <label>Tanda Tangan Pimpinan</label>
+                    <input type="file" id="input-ttd-mudir" accept="image/*" onchange="previewGambarApp(event, 'ttd-preview-yayasan', 'ttd_mudir')">
+                    <img id="ttd-preview-yayasan" src="" style="max-height:55px; display:none; margin-top:5px; border:1px solid #ddd; padding:4px; border-radius:8px;">
+
+                    <label>Logo Aplikasi / Sertifikat</label><input type="file" id="input-logo-pondok" accept="image/*" onchange="previewGambarApp(event, 'logo-preview-yayasan', 'logo')">
+                    <img id="logo-preview-yayasan" src="" style="max-width:75px; display:none; margin-top:5px; border-radius:12px; border:2px solid var(--accent); padding: 3px;">
+                    
+                    <label>Wallpaper Login</label><input type="file" id="input-bg-pondok" accept="image/*" onchange="previewGambarApp(event, 'bg-preview-yayasan', 'bg_login')">
+                    <img id="bg-preview-yayasan" src="" style="max-width:140px; display:none; margin-top:5px; border-radius:8px; border:2px solid var(--accent);">
+                    
+                    <label style="color: var(--info);">Tingkat Blur Wallpaper Login (px)</label>
+                    <input type="number" id="setting-blur-login" placeholder="Cth: 4 (Semakin kecil makin jelas)">
+                    
+                    <label>Wallpaper ID Card & Sertifikat</label><input type="file" id="input-bg-idcard" accept="image/*" onchange="previewGambarApp(event, 'bg-card-preview-yayasan', 'bg_idcard')">
+                    <img id="bg-card-preview-yayasan" src="" style="max-width:140px; display:none; margin-top:5px; border-radius:8px; border:2px solid var(--info);">
+                </div>
+                <div class="card card-premium" style="border-left-color: #8E44AD;">
+                    <h3 style="margin-bottom: 10px; color: #8E44AD;"><i class="fa-solid fa-list-check"></i> Tata Tertib Kartu Belakang</h3>
+                    <textarea id="setting-tata-tertib" rows="4"></textarea>
+                </div>
+                <div class="card card-premium" style="border-left-color: var(--info);">
+                    <h3 style="margin-bottom: 10px; color: var(--info);"><i class="fa-solid fa-volume-high"></i> Pengaturan Suara Sapaan</h3>
+                    <label>Status Suara Sapaan</label>
+                    <select id="setting-voice-aktif">
+                        <option value="1">Aktif</option>
+                        <option value="0">Non-Aktif</option>
+                    </select>
+                    <label>Teks Suara Sapaan</label>
+                    <input type="text" id="setting-voice-teks">
+                    <button class="btn-outline" type="button" onclick="testSuaraSapaan()" style="border-color:var(--info); color:var(--info); justify-content:center; padding:8px; font-size:0.8rem;"><i class="fa-solid fa-play"></i> Tes Suara Sekarang</button>
+                </div>
+                <div class="card card-premium" style="border-left-color: #E67E22;">
+                    <h3 style="margin-bottom: 10px; color: #E67E22;"><i class="fa-solid fa-envelope-open-text"></i> Template Surat Izin & Kembali</h3>
+                    <label>Judul Surat Izin Keluar</label><input type="text" id="setting-izin-judul">
+                    <label>Catatan / Validasi Sekretariat</label><textarea id="setting-izin-catatan" rows="2"></textarea>
+                </div>
+                <div class="card card-premium" style="border-left-color: var(--info);">
+                    <h3 style="margin-bottom: 14px; color: var(--info);">Kustomisasi Layout ID Card & Sertifikat</h3>
+<label>Teks Footer Kartu Depan</label><input type="text" id="setting-footer-text" placeholder="Cth: KARTU IDENTITAS AKTIF">
+
+<!-- TAMBAHAN KONTROL DINAMIS -->
+<label style="color: var(--primary);"><i class="fa-solid fa-text-height"></i> Ukuran Font Nama (px)</label>
+<input type="number" id="setting-font-nama" placeholder="Rekomendasi: 12 - 14">
+
+<label style="color: var(--primary);"><i class="fa-solid fa-text-height"></i> Ukuran Font Alamat (px)</label>
+<input type="number" id="setting-font-alamat" placeholder="Rekomendasi: 8 - 10">
+
+<label style="color: var(--primary);"><i class="fa-solid fa-qrcode"></i> Ukuran Barcode / QR (px)</label>
+<input type="number" id="setting-ukuran-qr" placeholder="Rekomendasi: 55 - 65">
+
+<label>Teks Keputusan Kelulusan Sertifikat</label><input type="text" id="setting-teks-lulus" placeholder="Telah mengikuti proses belajar dan dinyatakan:">
+<!-- TAMBAHAN PILIHAN KERTAS -->
+<label style="color: var(--danger);"><i class="fa-solid fa-scroll"></i> Ukuran Kertas Cetak Sertifikat</label>
+<select id="setting-kertas-sertifikat">
+    <option value="A4">A4 (Standar Internasional)</option>
+    <option value="F4">F4 (Folio / Kertas Panjang)</option>
+    <option value="Letter">Letter (Kuarto)</option>
+</select>
+
+                    <button class="btn-primary" onclick="simpanYayasan()">SIMPAN IDENTITAS & MODE</button>
+                </div>
+            </div>
+
+            <!-- VIEW LOKASI GEOFENCING -->
+            <div id="view-lokasi" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Konfigurasi Area GPS & Radius</h3>
+                    
+                    <label style="color:var(--info);">Status Fitur GPS / Geofencing</label>
+                    <select id="setting-gps-aktif" onchange="toggleTampilanFormGPS()">
+                        <option value="1">Aktif (Wajib Berada di Dalam Radius Lokasi)</option>
+                        <option value="0">Non-Aktif (Bebas Absen Tanpa Cek Lokasi)</option>
+                    </select>
+                    
+                    <div id="wadah-form-multi-gps" style="margin-top: 14px;">
+                        <label>Daftar Titik Koordinat (Bisa Multi-Titik / Lebih dari 1):</label>
+                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:10px;">Absensi sah apabila ustadz/guru berada di dalam radius minimal salah satu titik di bawah ini.</p>
+                        <div id="list-titik-gps"></div>
+                        <button type="button" class="btn-outline" onclick="tambahBarisTitikGPS()" style="margin-top: 10px; justify-content: center; border-color: var(--info); color: var(--info);">
+                            <i class="fa-solid fa-plus"></i> Tambah Titik Lokasi
+                        </button>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="simpanGPS()" style="margin-top:18px;">SIMPAN PENGATURAN LOKASI</button>
+                </div>
+            </div>
+
+            <!-- VIEW HAK AKSES -->
+            <div id="view-hak-akses" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 10px; color: var(--primary);"><i class="fa-solid fa-shield-halved"></i> Pengaturan Hak Akses</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Pilih role lalu centang modul fitur apa saja yang boleh diakses.</p>
+                    <label>Pilih Tipe Pengguna</label>
+                    <select id="select-role-akses" onchange="renderCheckboxHakAkses()">
+                        <option value="superadmin">Super Admin</option>
+                        <option value="admin">Admin Tata Usaha</option>
+                        <option value="ustadz">Ustadz / Guru Pengajar</option>
+                        <option value="accounting">Bagian Keuangan</option>
+                    </select>
+                    <label style="margin-top:14px;">Beri Izin Fitur Modul:</label>
+                    <div id="container-checkbox-akses" style="background:#f9f9f9; padding:12px; border-radius:14px; border:1px solid rgba(0,0,0,0.06); margin-bottom:14px;"></div>
+                    <button class="btn-primary" onclick="simpanHakAkses()"><i class="fa-solid fa-check"></i> SIMPAN HAK AKSES</button>
+                </div>
+            </div>
+            
+            <div id="view-pengguna" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
+                <div class="card card-premium">
+                    <h3 id="form-pengguna-title" style="margin-bottom: 14px; color: var(--primary);">Buat Akun Pegawai</h3>
+                    <input type="hidden" id="edit-id-pengguna" value="">
+                    <label>Foto</label><input type="file" id="reg-foto" accept="image/*">
+                    <label>Nama</label><input type="text" id="reg-nama" placeholder="Nama lengkap pegawai...">
+                    <label>Username</label><input type="text" id="reg-username" placeholder="Username untuk login...">
+                    <label>Password</label><input type="password" id="reg-password" placeholder="Password akun...">
+                    <label>Role</label>
+                                        <select id="reg-role">
+                        <option value="admin">Admin Tata Usaha</option>
+                        <option value="ustadz">Ustadz / Pengajar</option>
+                        <option value="accounting">Bagian Keuangan</option>
+                        <option value="paguyuban">Paguyuban / Pedagang</option>
+                        <option value="superadmin">Super Admin</option>
+                    </select>
+                    <button class="btn-primary" id="btn-simpan-pengguna" onclick="simpanPengguna()">SIMPAN AKUN</button>
+                    <button class="btn-outline hidden" id="btn-batal-edit-pengguna" onclick="batalEditPengguna()" style="border-color: var(--danger); color: var(--danger);">BATAL EDIT</button>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Daftar Akun Pegawai</h3>
+                    <div style="overflow-x:auto;"><table><thead><tr><th>Akun</th><th>Aksi</th></tr></thead><tbody id="tabel-pengguna-body"></tbody></table></div>
+                </div>
+            </div>
+
+            <div id="view-database" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
+                
+                <div class="card card-premium" id="pengaturan-supabase-card" style="border-left-color: var(--info); display: none;">
+                    <h3 style="margin-bottom: 5px; color: var(--info);"><i class="fa-solid fa-server"></i> Konfigurasi Server Supabase</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 14px;">Atur API Key untuk sinkronisasi cloud masing-masing Instansi.</p>
+                    <label>Supabase URL</label><input type="text" id="setting-supabase-url" placeholder="https://xxxx.supabase.co">
+                    <label>Supabase Anon Key</label><input type="password" id="setting-supabase-key" placeholder="eyJhbGciOi...">
+                    <button class="btn-primary" style="background: var(--info); border: none; box-shadow: none;" onclick="simpanKonfigurasiSupabase()">SIMPAN KONFIGURASI SERVER</button>
+                </div>
+
+                <div class="card card-premium">
+                    <h3 style="margin-bottom: 14px; color: var(--danger);"><i class="fa-solid fa-shield-heart"></i> Backup & Sync Manual</h3>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Semua data absensi dan santri tersimpan lokal secara manual. Tekan tombol Kirim Cloud di bawah apabila ingin memperbarui server.</p>
+                    <label style="color: var(--primary-light);">1. Ekspor Data Lokal</label>
+                    <button class="btn-outline" onclick="exportDataLokal()"><i class="fa-solid fa-download"></i> Unduh File JSON Database</button>
+                    <label style="margin-top:18px; color: var(--primary-light);">2. Restore Data</label>
+                    <input type="file" id="input-restore-db" accept=".json" onchange="importDataLokal(event)">
+                    <label style="margin-top:18px; color: var(--info);">3. Generate QR Tarik Data HP Baru</label>
+                    <button class="btn-outline" onclick="tampilkanQRTarikData()" style="border-color: var(--info); color: var(--info);"><i class="fa-solid fa-qrcode"></i> Tampilkan Barcode Tarik Data</button>
+
+                    <div style="margin-top: 22px; border-top: 1px dashed rgba(0,0,0,0.15); padding-top: 18px;">
+                        <button class="btn-primary" onclick="sinkronisasiKeCloud()" id="btn-sync-cloud"><i class="fa-solid fa-cloud-arrow-up"></i> KIRIM DATA KE CLOUD (SYNC MANUAL)</button>
+                        <button class="btn-outline" onclick="tarikDataDariSupabase()" id="btn-pull-cloud" style="margin-top: 14px; background: #ffebee; border-color: var(--danger); color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> TARIK DATA DARI CLOUD (TIMPA DATA LOKAL)</button>
+                    </div>
+                    
+                    <div id="zona-berbahaya-reset" style="margin-top: 30px; border-top: 3px solid #ffcccc; padding-top: 18px; background: #fff0f0; padding: 14px; border-radius: 12px; display: none;">
+                        <label style="color: var(--danger);"><i class="fa-solid fa-skull"></i> ZONA BERBAHAYA (RESET MODULAR)</label>
+                        <p style="font-size:0.75rem; color:#555; margin-bottom:10px;">Pilih opsi pembersihan data sesuai kebutuhan tanpa harus kehilangan konfigurasi server Supabase.</p>
+                        <button class="btn-warning" style="width: 100%; padding: 10px; font-size: 0.85rem; margin-bottom:8px;" onclick="bukaModalResetOpsi()">BUKA MENU RESET BERPILIHAN</button>
+                    </div>
+                </div>
+            </div>
+<!-- VIEW TABUNGAN SANTRI -->
+<div id="view-tabungan" class="hidden page-view">
+    <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+    <div class="card card-premium" style="border-left-color: var(--success);">
+        <h3 style="margin-bottom: 14px; color: var(--success);"><i class="fa-solid fa-piggy-bank"></i> Tabungan Santri</h3>
+        
+        <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+            <button class="btn-primary" onclick="startScannerTabungan()" style="flex:1;"><i class="fa-solid fa-qrcode"></i> Scan ID Santri</button>
+            <button class="btn-outline" onclick="stopScannerTabungan()" id="btn-stop-scanner-tabungan" style="flex:1; display:none;"><i class="fa-solid fa-stop"></i> Tutup</button>
+        </div>
+        <div id="qr-reader-tabungan" style="width:100%; display:none; margin-bottom:14px;"></div>
+        
+        <div id="area-input-tabungan" class="hidden">
+            <div style="background:rgba(4, 67, 42, 0.08); padding:12px; border-radius:12px; margin-bottom:12px;">
+                <strong>Santri:</strong> <span id="tabungan-nama-santri" style="color:var(--primary);"></span><br>
+                <strong>NIS:</strong> <span id="tabungan-nis-santri"></span>
+                <input type="hidden" id="tabungan-nis-hidden">
+            </div>
+
+            <label>Pilih Nominal Tabungan (Bisa Checklist Ganda)</label>
+            <div class="akses-grid-container" style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));">
+                <label class="akses-card-item"><input type="checkbox" class="cb-nominal" value="1000" onchange="kalkulasiTabungan()"> <span>Rp 1.000</span></label>
+                <label class="akses-card-item"><input type="checkbox" class="cb-nominal" value="2000" onchange="kalkulasiTabungan()"> <span>Rp 2.000</span></label>
+                <label class="akses-card-item"><input type="checkbox" class="cb-nominal" value="3000" onchange="kalkulasiTabungan()"> <span>Rp 3.000</span></label>
+                <label class="akses-card-item"><input type="checkbox" class="cb-nominal" value="4000" onchange="kalkulasiTabungan()"> <span>Rp 4.000</span></label>
+                <label class="akses-card-item"><input type="checkbox" class="cb-nominal" value="5000" onchange="kalkulasiTabungan()"> <span>Rp 5.000</span></label>
+                <label class="akses-card-item"><input type="checkbox" class="cb-nominal" value="10000" onchange="kalkulasiTabungan()"> <span>Rp 10.000</span></label>
+                <label class="akses-card-item"><input type="checkbox" class="cb-nominal" value="20000" onchange="kalkulasiTabungan()"> <span>Rp 20.000</span></label>
+            </div>
+            
+            <div style="font-size:1.2rem; font-weight:bold; color:var(--primary); text-align:right; margin: 15px 0;">
+                Total: Rp <span id="total-tabungan-ui">0</span>
+            </div>
+
+            <button class="btn-success" onclick="simpanTabungan()" style="width: 100%; padding: 12px;"><i class="fa-solid fa-save"></i> SIMPAN TABUNGAN</button>
+        </div>
+    </div>
+</div>
+            <div id="view-paguyuban" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                <div class="card card-premium" style="border-left-color: #E67E22;">
+                    <h3 style="margin-bottom: 14px; color: #E67E22;"><i class="fa-solid fa-store"></i> Kasir Paguyuban</h3>
+                    
+                    <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                        <button class="btn-primary" onclick="startScannerPaguyuban()" style="flex:1;"><i class="fa-solid fa-qrcode"></i> Scan Kartu Santri</button>
+                        <button class="btn-outline" onclick="stopScannerPaguyuban()" id="btn-stop-scanner-paguyuban" style="flex:1; display:none;"><i class="fa-solid fa-stop"></i> Tutup Kamera</button>
+                    </div>
+                    <div id="qr-reader-paguyuban" style="width:100%; display:none; margin-bottom:14px;"></div>
+                    
+                    <div id="area-input-paguyuban" class="hidden">
+                        <div style="background:rgba(230, 126, 34, 0.1); padding:12px; border-radius:12px; margin-bottom:12px;">
+                            <strong>Santri:</strong> <span id="paguyuban-nama-santri" style="color:var(--primary);"></span><br>
+                            <strong>Saldo Tabungan:</strong> Rp <span id="paguyuban-saldo-santri" style="font-weight:bold; color:var(--success);">0</span>
+                            <input type="hidden" id="paguyuban-nis-hidden">
+                            <input type="hidden" id="paguyuban-saldo-hidden">
+                        </div>
+
+                        <label>Masukkan Nominal Belanja (Rp)</label>
+                        <input type="number" id="input-nominal-belanja" placeholder="Contoh: 5000">
+
+                        <button class="btn-warning" onclick="prosesBelanjaPaguyuban()" style="width: 100%; padding: 12px; margin-top: 14px;"><i class="fa-solid fa-cash-register"></i> PROSES PEMBAYARAN</button>
+                    </div>
+                </div>
+            </div>
+
+        </div> 
+    </main>
+    
+    <nav class="bottom-nav hidden" id="app-nav"></nav>
+</div>
+
+<!-- MODAL EDIT PROFIL SAYA -->
+<div id="modal-edit-profil-self" class="hidden">
+    <div class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); text-align:left; width: 92%; max-width: 420px;">
+        <h3 style="color:var(--primary); margin-bottom:8px; border-bottom:2px solid var(--accent); padding-bottom:8px; font-size: 1rem;">
+            <i class="fa-solid fa-user-gear"></i> Edit Profil Saya
+        </h3>
+        
+        <label>Foto Profil</label>
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+            <img id="self-preview-foto" src="" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+            <input type="file" id="self-input-foto" accept="image/*" style="margin: 0;" onchange="previewSelfFoto(event)">
+        </div>
+
+        <label>Nama Lengkap</label>
+        <input type="text" id="self-nama" placeholder="Nama Anda...">
+
+        <label>Username Login</label>
+        <input type="text" id="self-username" placeholder="Username...">
+
+        <label>Password Baru</label>
+        <input type="password" id="self-password" placeholder="Kosongkan jika tidak diubah...">
+
+        <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="button" class="btn-outline" style="flex:1; justify-content:center; margin:0;" onclick="tutupModalEditSelfProfile()">Batal</button>
+            <button type="button" class="btn-primary" style="flex:1; margin:0;" onclick="simpanSelfProfile()"><i class="fa-solid fa-check"></i> Simpan Profil</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL OPSI RESET MODULAR -->
+<div id="modal-reset-opsi" class="hidden">
+    <div class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); text-align:left; width: 92%; max-width: 420px;">
+        <h3 style="color:var(--danger); margin-bottom:8px; border-bottom:2px solid var(--accent); padding-bottom:8px; font-size: 1rem;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Opsi Reset Data Berpilihan
+        </h3>
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:14px;">Pilih bagian data mana yang ingin dikosongkan:</p>
+        
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+            <button type="button" class="btn-outline" style="justify-content:flex-start; margin:0; border-color:var(--warning); color:var(--warning); font-size:0.8rem; padding:10px;" onclick="eksekusiResetOpsi(1)">
+                <i class="fa-solid fa-user-slash"></i> 1. Reset Data Santri & Kelas Saja
+            </button>
+            <button type="button" class="btn-outline" style="justify-content:flex-start; margin:0; border-color:var(--info); color:var(--info); font-size:0.8rem; padding:10px;" onclick="eksekusiResetOpsi(2)">
+                <i class="fa-solid fa-calendar-xmark"></i> 2. Reset Absensi & Denda Saja
+            </button>
+            <button type="button" class="btn-warning" style="justify-content:flex-start; margin:0; font-size:0.8rem; padding:10px; text-align:left;" onclick="eksekusiResetOpsi(3)">
+                <i class="fa-solid fa-house-chimney"></i> 3. Reset Total (Kosongkan Semua, Supabase Tetap Aman)
+            </button>
+            <button type="button" class="btn-danger" style="justify-content:flex-start; margin:0; font-size:0.8rem; padding:10px; text-align:left;" onclick="eksekusiResetOpsi(4)">
+                <i class="fa-solid fa-skull"></i> 4. Format Reset Full (Hapus Semua Termasuk Supabase)
+            </button>
+        </div>
+
+        <button type="button" class="btn-primary" style="width:100%; margin:0; background:#666;" onclick="document.getElementById('modal-reset-opsi').classList.add('hidden')">Batal</button>
+    </div>
+</div>
+
+<!-- MODAL PLOTTING KELAS MODULAR -->
+<div id="modal-plotting-kelas" class="hidden">
+    <div class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); text-align:left; width: 92%; max-width: 480px; max-height: 85vh; display: flex; flex-direction: column;">
+        <h3 id="judul-modal-plotting" style="color:var(--primary); margin-bottom:6px; border-bottom:2px solid var(--accent); padding-bottom:8px; font-size: 1rem;">
+            <i class="fa-solid fa-sliders"></i> Edit Plotting Kelas
+        </h3>
+        <input type="hidden" id="edit-plotting-id-kelas" value="">
+        
+        <div style="overflow-y: auto; flex: 1; padding-right: 4px;">
+            <label style="color: var(--info);"><i class="fa-solid fa-book"></i> 1. Pilih Mata Pelajaran di Kelas Ini:</label>
+            <div id="list-checkbox-mapel-plotting" style="max-height: 140px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 12px; background: #fff; margin-bottom: 14px;"></div>
+
+            <label style="color: var(--primary);"><i class="fa-solid fa-users"></i> 2. Pilih Santri Peserta Kelas Ini:</label>
+            <div id="list-checkbox-santri-plotting" style="max-height: 160px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 12px; background: #fff;"></div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="button" class="btn-outline" style="flex:1; justify-content:center; margin:0;" onclick="document.getElementById('modal-plotting-kelas').classList.add('hidden')">Batal</button>
+            <button type="button" class="btn-primary" style="flex:1; margin:0;" onclick="simpanPerubahanPlottingKelas()"><i class="fa-solid fa-check"></i> Simpan Plotting</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL SERTIFIKAT KELULUSAN (DENGAN RUANG PREVIEW) -->
+<div id="modal-sertifikat" class="hidden">
+    <div class="glass-panel" style="padding: 20px; border-radius: var(--radius-md); text-align:center; width: 95%; max-width: 850px; max-height: 90vh; overflow-y: auto;">
+        <h3 style="color:var(--primary); margin-bottom:14px; font-weight:800; font-size:1.1rem;">
+            <i class="fa-solid fa-certificate"></i> Preview & Terbitkan Sertifikat
+        </h3>
+        
+        <input type="hidden" id="cert-nis">
+        
+        <!-- Tombol Pengaturan Orientasi & Tanggal yang akan langsung merubah Preview -->
+        <div style="margin-bottom: 15px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap; background:rgba(4,67,42,0.05); padding:10px; border-radius:12px;">
+            <select id="cert-orientasi" style="width:auto; margin:0; font-weight:bold;" onchange="renderPreviewSertifikat()">
+                <option value="landscape">Landscape (Mendatar)</option>
+                <option value="portrait">Portrait (Berdiri)</option>
+            </select>
+            <input type="date" id="cert-tgl" style="width:auto; margin:0;" onchange="renderPreviewSertifikat()">
+        </div>
+
+        <!-- LAYAR PREVIEW SERTIFIKAT (Diperkecil ukurannya agar muat di layar HP) -->
+        <div style="background:#e0e0e0; padding:15px; border-radius:10px; overflow:hidden; margin-bottom:15px; display:flex; justify-content:center; border:2px dashed #999;">
+            <!-- Menggunakan skala 45% agar kertas aslinya muat di dalam kotak modal -->
+            <div id="area-preview-sertifikat" style="transform: scale(0.45); transform-origin: top center; margin-bottom: -55%;">
+                <!-- Tampilan sertifikat akan digambar di sini oleh JavaScript -->
+            </div>
+        </div>
+        
+        <div style="display:flex; gap:10px;">
+            <button type="button" class="btn-outline" style="flex:1; justify-content:center; margin:0;" onclick="document.getElementById('modal-sertifikat').classList.add('hidden')">Batal</button>
+            <button type="button" class="btn-primary" style="flex:1; margin:0;" onclick="prosesCetakSertifikatFinal()"><i class="fa-solid fa-print"></i> Luluskan & Cetak PDF</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-input-izin" class="hidden">
+    <div class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); text-align:left; width: 92%; max-width: 400px;">
+        <h3 style="color:var(--primary); margin-bottom:6px; border-bottom:2px solid var(--accent); padding-bottom:8px; font-size: 1rem;"><i class="fa-solid fa-file-signature"></i> Keterangan & Batas Balik</h3>
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Isi perihal izin dan tentukan tanggal wajib kembali santri.</p>
+        <input type="hidden" id="pop-izin-nis" value="">
+        <div style="background:rgba(4, 67, 42, 0.08); padding:12px; border-radius:12px; margin-bottom:12px; font-size:0.82rem;">
+            <strong>Nama Santri:</strong> <span id="pop-izin-nama-txt" style="color:var(--primary);"></span><br>
+            <strong>NIS:</strong> <span id="pop-izin-nis-txt"></span><br>
+            <strong>Statistik Izin:</strong> <span id="pop-izin-stat-txt" style="color:#D35400; font-weight:700;">0 Kali (0 Hari)</span>
+        </div>
+        <label style="margin-top:5px;">Perihal / Keperluan Izin</label>
+        <input type="text" id="pop-izin-keperluan" placeholder="Cth: Pulang Kampung / Berobat...">
+        <label>Tanggal Wajib Balik</label>
+        <input type="date" id="pop-izin-tgl-balik">
+        <div style="display:flex; gap:10px; margin-top:18px;">
+            <button type="button" class="btn-outline" style="flex:1; justify-content:center; margin:0;" onclick="tutupModalIzin()">Batal</button>
+            <button type="button" class="btn-primary" style="flex:1; margin:0;" onclick="terbitkanSuratIzinDariModal()"><i class="fa-solid fa-check"></i> Terbitkan</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-scanner-login" class="hidden">
+    <div class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); text-align:center; width: 92%; max-width: 400px;">
+        <h3 style="color:var(--primary); margin-bottom:10px; font-size:1rem;">Arahkan ke QR Super Admin</h3>
+        <div id="qr-reader-login" style="margin-bottom:14px; display:none;"></div>
+        <button class="btn-danger" onclick="tutupScannerLoginTarikData()" style="width: 100%;">Batal</button>
+    </div>
+</div>
+
+<div id="modal-show-qr" class="hidden">
+    <div class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); text-align:center; width: 92%; max-width: 350px;">
+        <div id="area-cetak-qr-sync">
+            <h3 style="color:var(--primary); margin-bottom:10px; font-size:1rem;"><i class="fa-solid fa-qrcode"></i> QR Tarik Data</h3>
+            <p style="font-size:0.78rem; color:#555; margin-bottom:18px;">Berikan Barcode ini kepada rekan untuk menyingkronkan database ke HP barunya.</p>
+            <div id="wadah-qr-sync" style="display:flex; justify-content:center; margin-bottom:18px;"></div>
+        </div>
+        <button class="btn-print" style="width: 100%; margin-bottom: 10px; padding: 12px; font-size:0.95rem;" onclick="cetakAreaKhusus('area-cetak-qr-sync')">Cetak / Print QR</button>
+        <button class="btn-outline" style="width: 100%; justify-content: center;" onclick="document.getElementById('modal-show-qr').classList.add('hidden')">Tutup</button>
+    </div>
+</div>
+
+<div id="id-card-modal" class="hidden">
+    <div class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); margin-bottom: 20px; text-align:center; width: 92%; max-width: 420px; overflow-x: auto;">
+        <h3 style="color:var(--primary); margin-bottom:14px; font-weight:800; font-size:1rem;">Preview Kartu Identitas</h3>
+        
+        <div style="margin-bottom: 12px; display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="btn-primary" id="btn-kartu-depan" style="padding:6px 12px; font-size:0.72rem; margin:0; width:auto;" onclick="gantiSisiKartu('depan')"><i class="fa-solid fa-id-card"></i> Kartu Depan</button>
+            <button type="button" class="btn-outline" id="btn-kartu-belakang" style="padding:6px 12px; font-size:0.72rem; margin:0; width:auto;" onclick="gantiSisiKartu('belakang')"><i class="fa-solid fa-list-check"></i> Kartu Belakang (+ QR)</button>
+        </div>
+        <div style="margin-bottom: 14px; display:flex; justify-content:center; gap:8px;">
+            <button type="button" class="btn-outline" style="padding:4px 10px; font-size:0.7rem; margin:0; width:auto;" onclick="setOrientasiKartu('landscape')">Landscape</button>
+            <button type="button" class="btn-outline" style="padding:4px 10px; font-size:0.7rem; margin:0; width:auto;" onclick="setOrientasiKartu('portrait')">Portrait</button>
+        </div>
+
+        <div class="id-card-wrapper" id="area-cetak-kartu">
+                        <div id="sisi-depan-kartu">
+                <div class="id-header">
+                    <img src="" id="card-logo">
+                    <div><h4 id="card-pondok">Nama Instansi</h4><p id="card-yayasan">Nama Yayasan</p></div>
+                </div>
+                <div class="id-body" id="card-body-container">
+                    <img src="" id="card-foto" class="id-photo">
+                    <div class="id-details">
+                        <strong id="card-nama" style="text-transform: uppercase;">NAMA LENGKAP</strong>
+                        <div style="margin-top: 5px;">
+                            <span style="display:inline-block; width: 38px;">NIS</span>: <span id="card-nis" style="font-weight: bold; color: var(--primary);"></span><br>
+                            <span id="card-alamat" style="display:-webkit-inline-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; vertical-align:top; max-width: 180px; line-height:1.2; margin-top: 4px;"></span>
+                            
+                            <!-- Elemen disembunyikan agar JS Render Data Tidak Error -->
+                            <div style="display: none;">
+                                <span id="label-nomor"></span>
+                                <span id="label-asrama"></span> <span id="card-asrama"></span>
+                                <span id="label-kamar"></span> <span id="card-kamar"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Barcode/QR Dipindah Ke Depan -->
+                    <div class="id-qr-depan" id="card-qr"></div>
+                </div>
+                <div class="id-footer-custom hidden" id="card-footer-custom"></div>
+            </div>
+
+
+                                             <div id="sisi-belakang-kartu" class="hidden" style="height:100%; display:flex; flex-direction:column;">
+                <div class="id-header" style="padding:6px;">
+                    <h4 id="back-app-title" style="font-size:0.75rem; margin:0; text-transform: uppercase; letter-spacing: 0.5px;">SISTEM MONITORING SANTRI</h4>
+                </div>
+                <div class="id-back-content">
+                    <div class="id-back-left">
+                        <div>
+                            <div class="id-back-title" id="back-instansi-name">INSTANSI PENDIDIKAN</div>
+                            <div class="id-back-rules" id="back-tata-tertib-text">1. Wajib menjaga tata tertib...</div>
+                        </div>
+                        <div class="id-back-ttd">
+                            <div>Mengetahui, Pimpinan</div>
+                            <img src="" id="back-ttd-img" style="display:none;">
+                            <div id="back-mudir-nama">Mudir Instansi</div>
+                        </div>
+                    </div>
+                    
+                    <!-- KANAN BAWAH: KOLOM DIPERLEBAR (130px), IKON MAPS & ALAMAT RATA KIRI -->
+                    <div class="id-back-right" style="width: 130px; padding-left: 10px; justify-content: center; align-items: flex-start;">
+                        <div style="display: flex; align-items: flex-start; gap: 5px; width: 100%;">
+                            <i class="fa-solid fa-location-dot" style="color: var(--primary); font-size: 0.72rem; margin-top: 1px; flex-shrink: 0;"></i>
+                            <span id="back-alamat-text" style="font-size:0.52rem; font-weight:600; color:#222; text-align:left; line-height:1.3; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word;">ALAMAT INSTANSI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="margin-top: 22px; display:flex; gap:10px;">
+            <button class="btn-outline" onclick="document.getElementById('id-card-modal').classList.add('hidden')" style="flex:1; justify-content:center;">Batal</button>
+            <button class="btn-print" onclick="cetakAreaKhusus('area-cetak-kartu')" style="flex:1; justify-content:center;">Cetak Kartu Terpilih</button>
+        </div>
+    </div>
+</div>
+
+<script src="app.js" defer></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html>
+</html>
