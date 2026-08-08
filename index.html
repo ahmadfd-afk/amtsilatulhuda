@@ -935,6 +935,8 @@
                     <input type="text" id="setting-voice-teks">
                     <button class="btn-outline" type="button" onclick="testSuaraSapaan()" style="border-color:var(--info); color:var(--info); justify-content:center; padding:8px; font-size:0.8rem;"><i class="fa-solid fa-play"></i> Tes Suara Sekarang</button>
                 </div>
+                <label style="color: var(--info);"><i class="fa-solid fa-bullhorn"></i> Teks Berita / Running Text (Tampil di Wali)</label>
+<input type="text" id="setting-teks-berita" placeholder="Cth: Info Libur Semester Ganjil mulai tanggal...">
                 <div class="card card-premium" style="border-left-color: #E67E22;">
                     <h3 style="margin-bottom: 10px; color: #E67E22;"><i class="fa-solid fa-envelope-open-text"></i> Template Surat Izin & Kembali</h3>
                     <label>Judul Surat Izin Keluar</label><input type="text" id="setting-izin-judul">
@@ -2586,6 +2588,7 @@ document.getElementById('setting-ukuran-qr').value = data.ukuran_qr || "60";
                 document.getElementById('setting-blur-login').value = tingkatBlur;
                 document.getElementById('setting-pwa-notif-aktif').value = data.pwa_notif_aktif || "1";
                 document.getElementById('setting-pwa-notif-teks').value = data.pwa_notif_teks || "Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}.";
+                document.getElementById('setting-teks-berita').value = data.teks_berita || "";
 
                 if(data.ttd_mudir) { base64TempImages.ttd_mudir = data.ttd_mudir; document.getElementById('ttd-preview-yayasan').src = data.ttd_mudir; document.getElementById('ttd-preview-yayasan').style.display = 'block'; }
             }
@@ -3974,6 +3977,7 @@ function kirimDataAbsen() {
             tata_tertib: document.getElementById('setting-tata-tertib').value,
             izin_judul: document.getElementById('setting-izin-judul').value,
             izin_catatan: document.getElementById('setting-izin-catatan').value,
+            teks_berita: document.getElementById('setting-teks-berita').value,
             pwa_notif_aktif: document.getElementById('setting-pwa-notif-aktif').value,
             pwa_notif_teks: document.getElementById('setting-pwa-notif-teks').value
         };
