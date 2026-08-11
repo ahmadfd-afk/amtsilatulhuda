@@ -238,10 +238,10 @@
 }
 
 
-        .id-qr-depan { 
-            width: 60px; height: 60px; min-width: 60px; border: 2px solid white; padding: 3px; 
+                .id-qr-depan { 
+            width: auto; height: auto; min-width: 60px; min-height: 40px; padding: 3px; 
             background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; 
-            margin-left: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-left: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden;
         }
 
         /* 3. PERILAKU KHUSUS UNTUK MODE PORTRAIT */
@@ -253,7 +253,7 @@
 /* Foto mode portrait sedikit dikecilkan untuk menghemat ruang vertikal */
 .id-card-wrapper.portrait .id-photo { width: 60px; height: 75px; margin-top: 0; }
 .id-card-wrapper.portrait .id-details { text-align: center; width: 100%; }
-.id-card-wrapper.portrait .id-qr-depan { margin: 2px auto 0 auto; width: 64px; height: 64px; }
+.id-card-wrapper.portrait .id-qr-depan { margin: 6px auto 0 auto; width: auto; max-width: 90%; }
 
 
 
@@ -619,16 +619,16 @@
                                 <i class="fa-solid fa-eye-slash" id="icon-toggle-tabel"></i> Sembunyikan
                             </button>
                         </div>
-                        <div style="display:flex; gap:8px;">
-                            <div style="display: flex; gap: 4px; flex: 1;">
-    <button class="btn-primary" onclick="cetakKolektifF4Gabung('landscape')" style="margin: 0; padding: 12px 6px; font-size: 0.75rem; background: var(--info); flex: 1;">
-        <i class="fa-solid fa-print"></i> Cetak Landscape
+                                                <div style="display:flex; gap:8px;">
+                            <div style="display: flex; gap: 4px; flex: 1; flex-wrap: wrap;">
+    <button class="btn-primary" onclick="cetakKolektifF4Gabung('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.72rem; background: var(--info); flex: 1; min-width:100px;">
+        <i class="fa-solid fa-id-badge"></i> Cetak Depan
     </button>
-    <button class="btn-primary" onclick="cetakKolektifF4Gabung('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.75rem; background: #8E44AD; flex: 1;">
-        <i class="fa-solid fa-id-badge"></i> Cetak Portrait
+    <button class="btn-primary" onclick="cetakKolektifF4Belakang('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.72rem; background: #8E44AD; flex: 1; min-width:100px;">
+        <i class="fa-solid fa-qrcode"></i> Cetak Belakang
     </button>
 </div>
-                            <button class="btn-outline" onclick="cetakRekapSantriPDF()" style="justify-content: center; font-size: 0.75rem; background: #fff3cd; border-color: var(--warning); flex: 1; margin: 0;">
+                            <button class="btn-outline" onclick="cetakRekapSantriPDF()" style="justify-content: center; font-size: 0.72rem; background: #fff3cd; border-color: var(--warning); flex: 1; margin: 0; min-width:90px;">
                                 <i class="fa-solid fa-file-pdf"></i> Rekap PDF
                             </button>
                         </div>
@@ -727,17 +727,16 @@
 
 <!-- PERBAIKAN: Tombol Hari & Input Teks Jam Fleksibel -->
 <div id="wadah-input-jadwal" class="hidden" style="margin-top:10px; background:rgba(4,67,42,0.05); padding:12px; border-radius:12px; border:1px solid rgba(0,0,0,0.08);">
-    <label style="margin-top:0; margin-bottom:8px;">Hari Pelaksanaan</label>
-    <div class="hari-grid">
-        <div class="hari-btn active" id="btn-hari-Senin" onclick="pilihHari('Senin')">Senin</div>
-        <div class="hari-btn" id="btn-hari-Selasa" onclick="pilihHari('Selasa')">Selasa</div>
-        <div class="hari-btn" id="btn-hari-Rabu" onclick="pilihHari('Rabu')">Rabu</div>
-        <div class="hari-btn" id="btn-hari-Kamis" onclick="pilihHari('Kamis')">Kamis</div>
-        <div class="hari-btn" id="btn-hari-Jumat" onclick="pilihHari('Jumat')">Jumat</div>
-        <div class="hari-btn" id="btn-hari-Sabtu" onclick="pilihHari('Sabtu')">Sabtu</div>
-        <div class="hari-btn" id="btn-hari-Minggu" onclick="pilihHari('Minggu')">Minggu</div>
+    <label style="margin-top:0; margin-bottom:8px;">Hari Pelaksanaan (Bisa Centang Ganda)</label>
+    <div class="hari-grid" id="container-hari-checkbox" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; background:#fff; padding:10px; border-radius:8px; border:1px solid #ccc;">
+        <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Senin" class="cb-hari-mapel"> Senin</label>
+        <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Selasa" class="cb-hari-mapel"> Selasa</label>
+        <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Rabu" class="cb-hari-mapel"> Rabu</label>
+        <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Kamis" class="cb-hari-mapel"> Kamis</label>
+        <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Jumat" class="cb-hari-mapel"> Jumat</label>
+        <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Sabtu" class="cb-hari-mapel"> Sabtu</label>
+        <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Minggu" class="cb-hari-mapel"> Minggu</label>
     </div>
-    <input type="hidden" id="input-hari-mapel" value="Senin"> <!-- Nilai default Senin -->
 
         <!-- PERBAIKAN: Dropdown Pilihan Cepat dari Logika Jam Singkatan -->
     <div style="margin-top:12px;">
@@ -821,11 +820,18 @@
                 </div>
             </div>
 
-            <div id="view-absen" class="hidden page-view">
+                        <div id="view-absen" class="hidden page-view">
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
+                
+                <!-- TOMBOL REKAP PRIBADI USTADZ -->
+                <button class="btn-outline" onclick="cetakRekapPribadiUstadz()" style="width:100%; border-color:var(--info); color:var(--info); justify-content:center; padding:15px; border-radius:14px; margin-bottom:15px; font-size:0.95rem;">
+                    <i class="fa-solid fa-file-pdf"></i> Download Formulir / Rekap Mengajar Saya
+                </button>
+
                 <div class="card card-premium">
                     <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-camera"></i> Modul Absensi (100% Manual Lokal)</h3>
                     <div id="gps-status-box" style="padding: 12px; border-radius: 10px; font-weight: bold; margin-bottom: 14px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek GPS & Jarak Radius...</div>
+
                     <div id="absen-form-container" class="hidden">
                         <label>Pilih Mata Pelajaran (Lintas Kelas)</label>
                         <select id="pilih-mapel-absen" onchange="renderAbsenSantriByMapel()"></select>
@@ -834,13 +840,46 @@
                             <i class="fa-solid fa-qrcode"></i> BUKA KAMERA SCANNER
                         </button>
 
-                        <div id="student-list" style="margin-top: 10px;"></div>
+                                                <div id="student-list" style="margin-top: 10px;"></div>
                         <button class="btn-primary" onclick="kirimDataAbsen()" style="margin-top: 18px;"><i class="fa-solid fa-save"></i> SIMPAN ABSENSI LOKAL (MANUAL SYNC)</button>
                     </div>
                 </div>
             </div>
+            
+                        <!-- VIEW SCANNER WIRELESS BARU -->
+            <div id="view-scanner-wireless" class="hidden page-view">
+                <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+                <div class="card card-premium" style="border-left-color: #007AFF;">
+                    <h3 style="margin-bottom: 14px; color: #007AFF;"><i class="fa-brands fa-bluetooth"></i> Binding Scanner Bluetooth</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:14px;">Fitur ini menggunakan <strong>Web Bluetooth API</strong> untuk mencari dan mengikat (binding) mesin Scanner ke dalam sistem.</p>
+                    
+                    <div style="background: rgba(0, 122, 255, 0.08); padding: 25px 20px; border-radius: 12px; text-align: center; border: 2px dashed #007AFF; margin-bottom: 15px;">
+                        <i id="ikon-bluetooth" class="fa-brands fa-bluetooth-b fa-4x" style="color:#007AFF; margin-bottom:15px; transition: 0.3s;"></i>
+                        <h4 style="margin-bottom: 8px; color:var(--primary);" id="status-koneksi-wireless">Belum Terhubung</h4>
+                        
+                        <button class="btn-primary" onclick="hubungkanScannerWireless()" style="background: #007AFF; box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3); border-radius: 20px; margin-top: 10px; width: 100%;">
+                            <i class="fa-solid fa-magnifying-glass"></i> Cari & Hubungkan Scanner
+                        </button>
+                    </div>
+
+                    <div style="background: #fff3cd; padding: 12px; border-radius: 8px; border-left: 4px solid var(--warning); font-size: 0.72rem; margin-bottom: 15px; color: #856404; line-height: 1.4;">
+                        <strong>Penting (Wajib Dibaca):</strong><br>
+                        Jika mesin scanner Anda bertipe <strong>HID (Keyboard Virtual)</strong>, browser web mungkin akan memblokirnya di daftar pencarian di atas karena aturan keamanan. <br><br>
+                        <strong>Solusi Alternatif:</strong> Hubungkan scanner secara manual melalui <strong>Pengaturan Bluetooth HP/Laptop Anda</strong>. Setelah tersambung, pastikan Anda menekan (klik) kotak putih di bawah ini agar kursor berkedip, lalu Anda siap menembak barcode.
+                    </div>
+                    
+                    <input type="text" id="input-dummy-wireless" placeholder="Sentuh kursor di sini jika scanner tipe HID..." style="width:100%; text-align:center; font-weight:bold; border:1px solid #ccc; border-radius:8px; padding:10px; background:#fff; margin-bottom: 10px;">
+                    
+                    <div id="hasil-scan-wireless" style="text-align:center; font-size:1.1rem; font-weight:bold; min-height:50px; padding:10px; background:#f4f6f9; border-radius:8px; border:1px solid #ccc;">
+                        <span style="color:#888; font-size:0.85rem;">Hasil scan akan muncul di sini.</span>
+                    </div>
+                    
+                    <button class="btn-outline" onclick="switchTab('view-absen')" style="margin-top:15px; width: 100%; justify-content: center;"><i class="fa-solid fa-arrow-right"></i> Buka Daftar Absen Lengkap</button>
+                </div>
+            </div>
 
             <div id="view-keuangan" class="hidden page-view">
+
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
                 <div class="card card-premium" style="border-left-color: var(--warning);">
                     <h3 style="margin-bottom: 14px; color: var(--warning);"><i class="fa-solid fa-scale-balanced"></i> Pengaturan Sanksi & Denda</h3>
@@ -953,8 +992,11 @@
 <label style="color: var(--primary);"><i class="fa-solid fa-text-height"></i> Ukuran Font Alamat (px)</label>
 <input type="number" id="setting-font-alamat" placeholder="Rekomendasi: 8 - 10">
 
-<label style="color: var(--primary);"><i class="fa-solid fa-qrcode"></i> Ukuran Barcode / QR (px)</label>
+<label style="color: var(--primary);"><i class="fa-solid fa-qrcode"></i> Ukuran QR Code 2D Belakang (px)</label>
 <input type="number" id="setting-ukuran-qr" placeholder="Rekomendasi: 55 - 65">
+
+<label style="color: var(--primary);"><i class="fa-solid fa-barcode"></i> Tinggi Barcode 1D Depan (px)</label>
+<input type="number" id="setting-ukuran-barcode1d" placeholder="Rekomendasi: 25 - 40">
 
 <label>Teks Keputusan Kelulusan Sertifikat</label><input type="text" id="setting-teks-lulus" placeholder="Telah mengikuti proses belajar dan dinyatakan:">
 <!-- TAMBAHAN PILIHAN KERTAS -->
@@ -1356,8 +1398,10 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Barcode/QR Dipindah Ke Depan -->
-                    <div class="id-qr-depan" id="card-qr"></div>
+                                        <!-- Barcode 1D NIS di Depan -->
+                    <div class="id-qr-depan" style="border:none; padding:0; background:transparent; box-shadow:none; width:auto; height:auto; overflow:hidden;">
+                        <svg id="card-barcode" style="width: 100%; max-width: 80px;"></svg>
+                    </div>
                 </div>
                 <div class="id-footer-custom hidden" id="card-footer-custom"></div>
             </div>
@@ -1380,12 +1424,14 @@
                         </div>
                     </div>
                     
-                    <!-- KANAN BAWAH: KOLOM DIPERLEBAR (130px), IKON MAPS & ALAMAT RATA KIRI -->
-                    <div class="id-back-right" style="width: 130px; padding-left: 10px; justify-content: center; align-items: flex-start;">
-                        <div style="display: flex; align-items: flex-start; gap: 5px; width: 100%;">
+                                        <!-- KANAN BAWAH: KOLOM DIPERLEBAR (130px), IKON MAPS & ALAMAT RATA KIRI -->
+                    <div class="id-back-right" style="width: 130px; padding-left: 10px; justify-content: center; align-items: center;">
+                        <div style="display: flex; align-items: flex-start; gap: 5px; width: 100%; margin-bottom: 6px;">
                             <i class="fa-solid fa-location-dot" style="color: var(--primary); font-size: 0.72rem; margin-top: 1px; flex-shrink: 0;"></i>
                             <span id="back-alamat-text" style="font-size:0.52rem; font-weight:600; color:#222; text-align:left; line-height:1.3; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word;">ALAMAT INSTANSI</span>
                         </div>
+                        <!-- Barcode QR 2D di Belakang -->
+                        <div class="id-qr-back" id="card-qr" style="width:55px; height:55px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center;"></div>
                     </div>
                 </div>
             </div>
@@ -1490,9 +1536,11 @@
 
     let supabaseConfig = getDB('pondok_supabase_config', { url: '', key: '' });
 
-    function muatScriptEksternal() {
+        function muatScriptEksternal() {
         if (typeof QRCode === 'undefined') { const qs = document.createElement('script'); qs.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"; document.body.appendChild(qs); }
         if (typeof Html5Qrcode === 'undefined') { const hs = document.createElement('script'); hs.src = "https://unpkg.com/html5-qrcode"; document.body.appendChild(hs); }
+        if (typeof JsBarcode === 'undefined') { const jsb = document.createElement('script'); jsb.src = "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"; document.body.appendChild(jsb); }
+
     }
 
     let currentUser = null, html5QrcodeScanner = null, scannerLoginData = null, scannerIzin = null;
@@ -1500,10 +1548,10 @@
     let base64TempImages = { logo: '', bg_login: '', bg_idcard: '', ttd_mudir: '' }, tempFotoSantriBase64 = ''; 
     let tempFotoPegawaiBase64 = '', tempSelfFotoBase64 = '';
     
-        const defaultAkses = { 
-        superadmin: ['view-santri', 'view-evaluasi', 'view-izin', 'view-rekap', 'view-kelas', 'view-absen', 'view-keuangan', 'view-tabungan', 'view-paguyuban', 'view-yayasan', 'view-lokasi', 'view-hak-akses', 'view-pengguna', 'view-database'], 
-        admin: ['view-santri', 'view-evaluasi', 'view-izin', 'view-rekap', 'view-kelas', 'view-database', 'view-tabungan'], 
-        ustadz: ['view-absen', 'view-evaluasi', 'view-database'], 
+                const defaultAkses = { 
+        superadmin: ['view-santri', 'view-evaluasi', 'view-izin', 'view-rekap', 'view-kelas', 'view-absen', 'view-scanner-wireless', 'view-keuangan', 'view-tabungan', 'view-paguyuban', 'view-yayasan', 'view-lokasi', 'view-hak-akses', 'view-pengguna', 'view-database'], 
+        admin: ['view-santri', 'view-evaluasi', 'view-izin', 'view-rekap', 'view-kelas', 'view-scanner-wireless', 'view-database', 'view-tabungan'], 
+        ustadz: ['view-absen', 'view-evaluasi', 'view-scanner-wireless', 'view-database'], 
         accounting: ['view-keuangan', 'view-tabungan', 'view-database'],
         paguyuban: ['view-paguyuban']
     };
@@ -1515,15 +1563,17 @@
     { id: 'view-izin', nama: 'Surat Izin Santri & Validasi Balik', icon: 'fa-file-signature' }, 
     { id: 'view-rekap', nama: 'Laporan Rekap Absen', icon: 'fa-file-pdf' }, 
     { id: 'view-kelas', nama: 'Plotting Kelas & Mapel', icon: 'fa-calendar-alt' }, 
-    { id: 'view-absen', nama: 'Absensi Kamera Scanner', icon: 'fa-camera' }, 
+    { id: 'view-absen', nama: 'Absensi Kamera Scanner', icon: 'fa-camera' },
+    { id: 'view-scanner-wireless', nama: 'Mode Scanner Wireless / USB', icon: 'fa-barcode' },
     { id: 'view-keuangan', nama: 'Laporan Denda Keuangan', icon: 'fa-wallet' }, 
-    { id: 'view-tabungan', nama: 'Tabungan Santri', icon: 'fa-piggy-bank' }, // <--- TAMBAHAN MENU BARU
+    { id: 'view-tabungan', nama: 'Tabungan Santri', icon: 'fa-piggy-bank' }, 
     { id: 'view-yayasan', nama: 'Identitas, Suara & Tata Tertib', icon: 'fa-building' }, 
     { id: 'view-lokasi', nama: 'Area Geofencing', icon: 'fa-map-location-dot' }, 
     { id: 'view-hak-akses', nama: 'Hak Akses Role', icon: 'fa-shield-halved' }, 
     { id: 'view-pengguna', nama: 'Akun Pegawai', icon: 'fa-users-gear' }, 
     { id: 'view-database', nama: 'Database & Sync', icon: 'fa-cloud-arrow-up' } 
 ];
+
 
 
     function generateStandardKopSuratHTML() {
@@ -1751,11 +1801,29 @@
         .id-card-wrapper.portrait .id-details { text-align: center; width: 100%; }
         .id-details strong { color: var(--primary) !important; font-size: 0.85rem; display: block; margin-bottom: 2px; border-bottom: none; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .id-footer-custom { background: rgba(4, 67, 42, 0.85) !important; backdrop-filter: blur(5px); color: white !important; text-align: center; font-size: 0.6rem; padding: 4px; font-weight: bold; width: 100%; z-index: 10; position: absolute; bottom: 0; left: 0; border-top: 1px solid rgba(255,255,255,0.3); }
+                .id-footer-custom { background: rgba(4, 67, 42, 0.85) !important; backdrop-filter: blur(5px); color: white !important; text-align: center; font-size: 0.6rem; padding: 4px; font-weight: bold; width: 100%; z-index: 10; position: absolute; bottom: 0; left: 0; border-top: 1px solid rgba(255,255,255,0.3); }
         
-        .id-qr-depan { width: 60px !important; height: 60px !important; min-width: 60px; border: 2px solid white; padding: 3px; background: white !important; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-left: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .id-card-wrapper.portrait .id-qr-depan { margin: 2px auto 0 auto; width: 64px !important; height: 64px !important; }
-       
+        /* Barcode 1D Print Dibuat Auto */
+        .id-qr-depan { width: auto !important; height: auto !important; min-width: 60px; padding: 3px; background: white !important; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-left: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .id-card-wrapper.portrait .id-qr-depan { margin: 6px auto 0 auto; width: auto !important; max-width: 90% !important; }
+        
+        /* KODE PERBAIKAN: Memaksa teks belakang di atas ornamen gambar */
+        #sisi-belakang-kartu {
+            position: relative !important;
+            z-index: 10 !important;
+        }
+        .id-back-content {
+            position: relative !important;
+            z-index: 10 !important;
+            background-color: #ffffff !important;
+        }
+        
+        /* KODE PERBAIKAN: Meluruskan Posisi Kartu Belakang Print Mode Portrait */
+        .id-card-wrapper.portrait .id-back-content { flex-direction: column !important; text-align: center !important; }
+        .id-card-wrapper.portrait .id-back-left { text-align: left !important; align-items: stretch !important; width: 100% !important; }
+        .id-card-wrapper.portrait .id-back-title, .id-card-wrapper.portrait .id-back-ttd { text-align: center !important; }
+        .id-card-wrapper.portrait .id-back-right { border-left: none !important; border-top: 1px dashed #999 !important; padding-left: 0 !important; padding-top: 8px !important; width: 100% !important; margin-top: auto !important; flex-direction: row !important; justify-content: space-between !important; }
+
         
            .kolektif-grid-gabung {
             display: flex;
@@ -1894,15 +1962,19 @@
                 </div>
                 <div class="id-body">
                     <img src="${santri.foto}" class="id-photo">
-                    <div class="id-details">
+                                        <div class="id-details">
                         <strong style="text-transform: uppercase;">${santri.nama}</strong>
                         <div style="margin-top: 5px;">
                             <span style="display:inline-block; width: 38px;">NIS</span>: <b style="color:var(--primary);">${santri.nis}</b><br>
                             <b class="alamat-cetak" style="display:-webkit-inline-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; vertical-align:top; max-width: 180px; line-height:1.2; margin-top: 4px;">${(santri.alamat || '-')}</b>
                         </div>
                     </div>
-                    <div class="id-qr-depan" id="qr-gabung-${santri.nis}" data-payload='${qrPayload}'></div>
+                    <!-- KODE PERBAIKAN: Wadah diganti menjadi SVG untuk Barcode 1D -->
+                    <div class="id-qr-depan" style="border:none; padding:0; background:transparent; box-shadow:none; width:auto; height:auto; overflow:hidden;">
+                        <svg id="barcode-gabung-${santri.nis}" style="width: 100%; max-width: 80px;"></svg>
+                    </div>
                 </div>
+
                 ${footerHTML}
             </div>
         `;
@@ -1916,7 +1988,7 @@
     document.body.appendChild(containerTemp); 
     containerTemp.innerHTML = htmlKartuKolektif;
     
-    const sizeQRPrint = parseInt(dataYayasan.ukuran_qr) || 60;
+        const size1DPrint = parseInt(dataYayasan.ukuran_barcode1d) || 30; // Ambil settingan tinggi barcode 1D
     const sizeFontPrint = parseInt(dataYayasan.font_nama) || 13;
     const sizeFontAlamatPrint = parseInt(dataYayasan.font_alamat) || 9;
 
@@ -1924,21 +1996,23 @@
         alamatEl.style.fontSize = sizeFontAlamatPrint + 'px';
     });
 
+        // KODE PERBAIKAN: Looping menggunakan JsBarcode, bukan QRCode
     databaseSantri.forEach(santri => {
-        const wadahQR = containerTemp.querySelector(`#qr-gabung-${santri.nis}`);
-        if (wadahQR && typeof QRCode !== 'undefined') {
-            wadahQR.style.width = sizeQRPrint + 'px';
-            wadahQR.style.height = sizeQRPrint + 'px';
-            wadahQR.style.minWidth = sizeQRPrint + 'px';
-
-            new QRCode(wadahQR, { 
-                text: wadahQR.getAttribute('data-payload'), 
-                width: sizeQRPrint, 
-                height: sizeQRPrint, 
-                correctLevel: QRCode.CorrectLevel.L 
-            });
+        const wadahBarcode = containerTemp.querySelector(`#barcode-gabung-${santri.nis}`);
+        if (wadahBarcode && typeof JsBarcode !== 'undefined') {
+            try {
+                JsBarcode(wadahBarcode, santri.nis, {
+                    format: "CODE128",
+                    width: 2.2, /* Lebar Garis Diperlebar agar tidak kaku */
+                    height: size1DPrint,
+                    displayValue: false,
+                    margin: 10, /* Margin ditambah (white space) mempercepat scan */
+                    background: "transparent"
+                });
+            } catch(err) { console.log("Barcode error:", err); }
         }
     });
+
 
     setTimeout(() => { 
         const canvases = containerTemp.querySelectorAll('canvas');
@@ -1952,6 +2026,67 @@
         containerTemp.remove();
     }, 600);
 }
+    function cetakKolektifF4Belakang(orientasi = 'portrait') {
+        let databaseSantri = getDB('pondok_santri', []).filter(s => !s.is_alumni); 
+        if (databaseSantri.length === 0) return alert("Belum ada data santri aktif.");
+        const yayasan = getDB('pondok_yayasan', {});
+        const teksTertib = yayasan.tata_tertib || "1. Wajib menjaga tata tertib...";
+        const daftarPoin = teksTertib.split('\n').filter(baris => baris.trim() !== '');
+        const formatTertib = daftarPoin.map(baris => `<div class="poin-tertib">${baris}</div>`).join('');
+        
+        let htmlKartuKolektif = `<div class="kolektif-grid-gabung">`;
+        databaseSantri.forEach((santri) => {
+            let qrPayload = JSON.stringify({ n: santri.nis, u: supabaseConfig.url || "", k: supabaseConfig.key || "" });
+            htmlKartuKolektif += `
+                <div class="id-card-wrapper portrait">
+                    <div id="sisi-belakang-kartu" style="height:100%; display:flex; flex-direction:column;">
+                        <div class="id-header" style="padding:6px; background:linear-gradient(135deg, var(--primary), var(--primary-light));">
+                            <h4 style="font-size:0.75rem; margin:0; text-transform: uppercase; color:white; text-align:center;">SISTEM MONITORING SANTRI</h4>
+                        </div>
+                        <div class="id-back-content" style="display:flex; flex-direction:column; padding:10px; flex:1; background:rgba(255, 255, 255, 0.9); text-align:center;">
+                            <div class="id-back-left" style="width:100%; flex:1;">
+                                <div class="id-back-title" style="font-size:0.75rem; font-weight:bold; color:var(--primary); border-bottom:1px solid #ccc; margin-bottom:4px;">${yayasan.pondok || 'INSTANSI'}</div>
+                                <div class="id-back-rules" style="font-size: 0.55rem; text-align:left;">${formatTertib}</div>
+                            </div>
+                            <div class="id-back-right" style="width:100%; border-top:1px dashed #999; padding-top:8px; display:flex; flex-direction:row; justify-content:space-between; align-items:center; gap:5px;">
+                                <div class="id-back-ttd" style="text-align:left; font-size:0.5rem; color:var(--primary); font-weight:bold; width:50%;">
+                                    <div>Mengetahui,</div>
+                                    ${yayasan.ttd_mudir ? `<img src="${yayasan.ttd_mudir}" style="height:25px; margin:2px 0; display:block;">` : '<div style="height:25px;"></div>'}
+                                    <div>${yayasan.mudir || 'Pimpinan'}</div>
+                                </div>
+                                <div class="id-qr-back" id="qr-back-${santri.nis}" data-payload='${qrPayload}' style="width:55px; height:55px; min-width:55px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        });
+        htmlKartuKolektif += `</div>`;
+        
+        const containerTemp = document.createElement('div'); 
+        containerTemp.style.position = 'fixed'; containerTemp.style.right = '200vw'; 
+        document.body.appendChild(containerTemp); 
+        containerTemp.innerHTML = htmlKartuKolektif;
+        
+        const sizeQRPrint = parseInt(yayasan.ukuran_qr) || 60;
+        databaseSantri.forEach(santri => {
+            const wadahQR = containerTemp.querySelector(`#qr-back-${santri.nis}`);
+            if (wadahQR && typeof QRCode !== 'undefined') {
+                new QRCode(wadahQR, { text: wadahQR.getAttribute('data-payload'), width: sizeQRPrint, height: sizeQRPrint, correctLevel: QRCode.CorrectLevel.L });
+            }
+        });
+
+        setTimeout(() => { 
+            const canvases = containerTemp.querySelectorAll('canvas');
+            canvases.forEach(canvas => {
+                const img = document.createElement('img'); img.src = canvas.toDataURL('image/png'); 
+                img.style.width = sizeQRPrint + 'px'; img.style.height = sizeQRPrint + 'px';
+                const siblingImg = canvas.nextElementSibling; if(siblingImg && siblingImg.tagName === 'IMG') siblingImg.remove();
+                canvas.parentNode.replaceChild(img, canvas);
+            });
+            cetakElemenHTML(containerTemp.innerHTML, 'portrait'); 
+            containerTemp.remove();
+        }, 600);
+    }
 
     function cetakRekapSantriPDF() {
         let databaseSantri = getDB('pondok_santri', []).filter(s => modeTampilanSantri === 'alumni' ? s.is_alumni : !s.is_alumni); 
@@ -2463,8 +2598,9 @@ function cetakLaporanPDF() {
         const listMapel = getDB('pondok_master_mapel', []);
         const dbKelas = getDB('pondok_kelas', []);
 
-        listMapel.forEach(m => {
-            if (m.jadwal_aktif && m.hari === namaHariIni && m.jam_mulai === jamSekarangID) {
+                listMapel.forEach(m => {
+            // Mengakomodasi hari yang kini string dipisah koma (Misal: "Senin, Selasa")
+            if (m.jadwal_aktif && m.hari && m.hari.includes(namaHariIni) && m.jam_mulai === jamSekarangID) {
                 // Periksa apakah user adalah Ustadz pengampu ATAU Super Admin (untuk keperluan testing)
                 const isPengampu = (m.ustadz_ids || []).includes(currentUser.username) || (m.ustadz_id === currentUser.username);
                 if (isPengampu || currentUser.role === 'superadmin') {
@@ -2530,12 +2666,14 @@ function cetakLaporanPDF() {
         else { document.getElementById(lastTab).classList.remove('hidden'); bukaFungsiTabSesuaiTujuan(lastTab); }
     }
 
-    function bukaFungsiTabSesuaiTujuan(lastTab) {
+        function bukaFungsiTabSesuaiTujuan(lastTab) {
         if(lastTab === 'view-santri') { switchTabSantri('aktif'); renderDropdownKelasSantri(); }
         if(lastTab === 'view-evaluasi') renderDropdownKelasEvaluasi();
         if(lastTab === 'view-izin') renderTabelIzinAktif();
         if(lastTab === 'view-kelas') { renderMasterMapel(); renderTabelDaftarKelas(); renderJamKustom(); }    
                if (lastTab === 'view-absen') startAnalisisGPSUstadz(); 
+        if (lastTab === 'view-scanner-wireless') { document.getElementById('input-dummy-wireless').focus(); document.getElementById('input-dummy-wireless').value = ''; }
+
         if (lastTab === 'view-keuangan') renderDataKeuanganPanel();
         if (lastTab === 'view-paguyuban') { document.getElementById('area-input-paguyuban').classList.add('hidden'); } 
         if(lastTab === 'view-hak-akses') renderCheckboxHakAkses(); 
@@ -2579,7 +2717,8 @@ document.getElementById('setting-kertas-sertifikat').value = data.kertas_sertifi
                document.getElementById('setting-font-nama').value = data.font_nama || "13";
                document.getElementById('setting-font-alamat').value = data.font_alamat || "9";
 
-document.getElementById('setting-ukuran-qr').value = data.ukuran_qr || "60";
+                document.getElementById('setting-ukuran-qr').value = data.ukuran_qr || "60";
+                document.getElementById('setting-ukuran-barcode1d').value = data.ukuran_barcode1d || "30";
                  document.getElementById('setting-voice-aktif').value = data.voice_aktif || "1"; 
                 document.getElementById('setting-voice-teks').value = data.voice_teks || ""; 
                 document.getElementById('setting-tata-tertib').value = data.tata_tertib || ""; 
@@ -3103,20 +3242,37 @@ function bukaModalSertifikat(nis) {
             footerEl.classList.add('hidden'); 
         } 
         
-        // Ambil ukuran dari pengaturan (default 60 jika kosong)
+               // Ambil ukuran dari pengaturan (default 60 jika kosong)
         const yayasan = getDB('pondok_yayasan', {});
         const sizeQR = parseInt(yayasan.ukuran_qr) || 60;
         const sizeFont = parseInt(yayasan.font_nama) || 13;
+        const size1D = parseInt(yayasan.ukuran_barcode1d) || 30;
 
         // Terapkan ukuran dinamis ke tampilan
         wadahQR.style.width = sizeQR + 'px';
         wadahQR.style.height = sizeQR + 'px';
         wadahQR.style.minWidth = sizeQR + 'px';
         document.getElementById('card-nama').style.fontSize = sizeFont + 'px';
-const sizeFontAlamat = parseInt(yayasan.font_alamat) || 9;
-document.getElementById('card-alamat').style.fontSize = sizeFontAlamat + 'px';
+        const sizeFontAlamat = parseInt(yayasan.font_alamat) || 9;
+        document.getElementById('card-alamat').style.fontSize = sizeFontAlamat + 'px';
 
-        // Render QR dengan ukuran presisi
+                // Render Barcode 1D (Depan)
+        if (typeof JsBarcode !== 'undefined') {
+            try {
+                let nisRaw = qrText;
+                try { let parsed = JSON.parse(qrText); if(parsed.n) nisRaw = parsed.n; } catch(e){}
+                JsBarcode("#card-barcode", nisRaw, {
+                    format: "CODE128",
+                    width: 2.2, /* Lebar Garis Diperlebar */
+                    height: size1D,
+                    displayValue: false,
+                    margin: 10, /* White space ditambah */
+                    background: "transparent"
+                });
+            } catch(err) { console.log("Barcode error:", err); }
+        }
+
+        // Render QR dengan ukuran presisi (Belakang)
         if (typeof QRCode !== 'undefined') { 
             new QRCode(wadahQR, { 
                 text: qrText, 
@@ -3442,9 +3598,15 @@ document.getElementById('card-alamat').style.fontSize = sizeFontAlamat + 'px';
         let selectedKelasIds = [];
         document.querySelectorAll('.cb-kelas-mapel:checked').forEach(cb => selectedKelasIds.push(parseInt(cb.value)));
 
-        const jadwalAktif = document.getElementById('input-opsi-jadwal').checked;
-        const hariMapel = jadwalAktif ? document.getElementById('input-hari-mapel').value : null;
+                const jadwalAktif = document.getElementById('input-opsi-jadwal').checked;
+        let arrHariTerpilih = [];
+        document.querySelectorAll('.cb-hari-mapel:checked').forEach(cb => arrHariTerpilih.push(cb.value));
+        const hariMapel = jadwalAktif ? arrHariTerpilih.join(', ') : null;
+        
+        if (jadwalAktif && arrHariTerpilih.length === 0) return alert("Pilih minimal 1 Hari untuk Jadwal Aktif!");
+        
         const jamMulai = jadwalAktif ? document.getElementById('input-jam-mulai').value : '';
+
         const jamSelesai = jadwalAktif ? document.getElementById('input-jam-selesai').value : '';
 
         let listMapel = getDB('pondok_master_mapel', []);
@@ -3749,12 +3911,13 @@ document.getElementById('card-alamat').style.fontSize = sizeFontAlamat + 'px';
         masterMapel.forEach(m => {
             let tampilkan = false;
 
-            // 1. Filter HANYA berdasarkan Hari dan Jam
+                        // 1. Filter HANYA berdasarkan Hari dan Jam
             if (m.jadwal_aktif) {
-                if (m.hari === namaHariIni && jamSekarang >= (m.jam_mulai || "00:00") && jamSekarang <= (m.jam_selesai || "23:59")) {
+                if (m.hari && m.hari.includes(namaHariIni) && jamSekarang >= (m.jam_mulai || "00:00") && jamSekarang <= (m.jam_selesai || "23:59")) {
                     tampilkan = true;
                 }
             } else {
+
                 // Jadwal fleksibel
                 tampilkan = true;
             }
@@ -3970,8 +4133,9 @@ function kirimDataAbsen() {
             teks_lulus: document.getElementById('setting-teks-lulus').value,
             kertas_sertifikat: document.getElementById('setting-kertas-sertifikat').value,
             font_nama: document.getElementById('setting-font-nama').value,
-            font_alamat: document.getElementById('setting-font-alamat').value,
+                        font_alamat: document.getElementById('setting-font-alamat').value,
             ukuran_qr: document.getElementById('setting-ukuran-qr').value,
+            ukuran_barcode1d: document.getElementById('setting-ukuran-barcode1d').value,
             voice_aktif:             document.getElementById('setting-voice-aktif').value,
             voice_teks: document.getElementById('setting-voice-teks').value,
             tata_tertib: document.getElementById('setting-tata-tertib').value,
@@ -4800,12 +4964,37 @@ function startScannerPaguyuban() {
                 kalkulasiTabungan();
             } else { alert("Data santri tidak ditemukan via USB"); }
         }
-        /* ========================================================================== */
+/* ========================================================================== */
 /* === AWAL PERBAIKAN BLOK 2: SCANNER USB / WIRELESS LINTAS KELAS =========== */
 /* ========================================================================== */
-        else if (activeTab === 'view-absen') {
+        else if (activeTab === 'view-absen' || activeTab === 'view-scanner-wireless') {
             let nisScan = hasilScan; 
             try { let p = JSON.parse(hasilScan); if (p.n) nisScan = p.n; } catch(e) {}
+            
+            // Bersihkan input box dummy agar siap scan berikutnya
+            const inputDummy = document.getElementById('input-dummy-wireless');
+            if (inputDummy) inputDummy.value = '';
+
+            const dbSantri = getDB('pondok_santri', []);
+            const santriObj = dbSantri.find(s => s.nis === nisScan && !s.is_alumni);
+            
+            // Output notifikasi ke layar Wireless
+            const hasilBox = document.getElementById('hasil-scan-wireless');
+            if (hasilBox) {
+                if (santriObj) {
+                    hasilBox.innerHTML = `<span style="color:var(--success);"><i class="fa-solid fa-circle-check"></i> Hadir: ${santriObj.nama} (${nisScan})</span>`;
+                    // Bunyikan suara
+                    if ('speechSynthesis' in window) {
+                        window.speechSynthesis.cancel();
+                        let tx = "Hadir";
+                        if ((santriObj.asrama || '').toLowerCase().includes('putri') || (santriObj.asrama || '').toLowerCase().includes('perempuan')) tx = "Hadiroh";
+                        let u = new SpeechSynthesisUtterance(tx); u.lang = 'id-ID'; window.speechSynthesis.speak(u);
+                    }
+                } else {
+                    hasilBox.innerHTML = `<span style="color:var(--danger);"><i class="fa-solid fa-circle-xmark"></i> Tidak Ditemukan: ${nisScan}</span>`;
+                }
+            }
+
             const baris = document.getElementById(`baris_santri_${nisScan}`);
             if (baris) {
                 const radioHadir = baris.querySelector('input[value="Hadir"]');
@@ -5277,6 +5466,125 @@ function kembaliKeStandbyATM() {
         document.getElementById('kiosk-dashboard').style.display = 'none';
         document.getElementById('kiosk-standby').style.display = 'flex';
     }, 300);
+}
+function cetakRekapPribadiUstadz() {
+    if (!currentUser) return alert("Silakan login kembali.");
+    const absensiDB = getDB('pondok_absensi', []);
+    
+    // Filter absensi: Ambil yang Ustadz bersangkutan mengajar sebagai ustadz aktual atau ustadz PJ
+    const riwayatUstadz = absensiDB.filter(sesi => 
+        (sesi.ustadz_aktual === currentUser.nama) || (sesi.ustadz_pj.includes(currentUser.nama))
+    );
+
+    if (riwayatUstadz.length === 0) return alert("Anda belum memiliki riwayat/rekam mengajar di sistem.");
+
+    // Bangun HTML Cetak
+    let htmlPrint = generateStandardKopSuratHTML();
+    htmlPrint += `
+        <div style="text-align:center; margin-bottom: 20px;">
+            <h3 style="margin:0; text-transform:uppercase;">FORMULIR BUKTI MENGAJAR & REKAP KELAS</h3>
+            <p style="margin:2px 0; font-size:12px;">Ustadz / Pengajar: <strong>${currentUser.nama}</strong></p>
+        </div>
+        <table style="width:100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th style="padding:8px; border:1px solid #000; text-align:center;">Waktu / Tgl Sesi</th>
+                    <th style="padding:8px; border:1px solid #000; text-align:center;">Mata Pelajaran</th>
+                    <th style="padding:8px; border:1px solid #000; text-align:center;">Kelas Tujuan</th>
+                    <th style="padding:8px; border:1px solid #000; text-align:center;">Total Hadir</th>
+                    <th style="padding:8px; border:1px solid #000; text-align:center;">Tidak Hadir (Ket)</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    riwayatUstadz.forEach(sesi => {
+        let countHadir = 0;
+        let ketTidakHadir = [];
+        
+        sesi.detail.forEach(absen => {
+            if (absen.status === 'Hadir') countHadir++;
+            else if (absen.status !== 'Belum') ketTidakHadir.push(`${absen.nama} (${absen.status})`);
+        });
+
+        htmlPrint += `
+            <tr>
+                <td style="padding:8px; border:1px solid #000; text-align:center;">${sesi.tanggal} ${sesi.waktu}</td>
+                <td style="padding:8px; border:1px solid #000;"><strong>${sesi.mapel}</strong></td>
+                <td style="padding:8px; border:1px solid #000; text-align:center;">${sesi.nama_kelas}</td>
+                <td style="padding:8px; border:1px solid #000; text-align:center;">${countHadir} Orang</td>
+                <td style="padding:8px; border:1px solid #000; font-size:10px;">${ketTidakHadir.length > 0 ? ketTidakHadir.join('<br>') : 'Hadir Semua'}</td>
+            </tr>
+        `;
+    });
+
+    htmlPrint += `
+            </tbody>
+        </table>
+        
+                <div style="display:flex; justify-content:flex-end; width:100%; margin-top:30px;">
+            <div style="text-align:center; width:200px;">
+                <p style="margin-bottom: 50px; font-size:12px;">Ustadz / Pengajar Terkait,</p>
+                <p style="font-weight:bold; font-size:12px; border-bottom:1px solid #000;">${currentUser.nama}</p>
+                <p style="font-size:11px;">(Sistem ID: ${currentUser.username})</p>
+            </div>
+        </div>
+        <p style="font-size:10px; text-align:center; margin-top:20px; font-style:italic;">Formulir ini dapat digunakan sebagai lampiran/pegangan pribadi apabila ada diskrepansi data rekap kolektif dengan Admin.</p>
+    `;
+    
+    // Panggil fungsi print
+    cetakElemenHTML(htmlPrint, 'portrait');
+}
+
+// ==========================================
+// FUNGSI KONEKSI BLUETOOTH (WEB BLUETOOTH API)
+// ==========================================
+async function hubungkanScannerWireless() {
+    // Mengecek apakah browser mendukung fitur Bluetooth
+    if (!navigator.bluetooth) {
+        alert("Browser Anda tidak mendukung fitur Web Bluetooth. Gunakan Google Chrome versi terbaru atau hubungkan scanner secara manual lewat Pengaturan Bluetooth HP.");
+        return;
+    }
+
+    try {
+        document.getElementById('status-koneksi-wireless').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sedang Mencari Perangkat...';
+        document.getElementById('ikon-bluetooth').className = "fa-brands fa-bluetooth-b fa-4x fa-beat";
+
+        // Meminta akses ke perangkat Bluetooth Low Energy (BLE)
+        // Akan memunculkan pop-up asli dari Google Chrome / OS Anda
+        const device = await navigator.bluetooth.requestDevice({
+            acceptAllDevices: true,
+            optionalServices: ['battery_service', 'device_information'] 
+        });
+
+        // Menghubungkan ke GATT Server Scanner
+        const server = await device.gatt.connect();
+
+        // Update UI menjadi Terhubung (Binding Sukses)
+        document.getElementById('status-koneksi-wireless').innerHTML = `<span style="color:var(--success);"><i class="fa-solid fa-link"></i> Terhubung: ${device.name || 'Scanner Wireless'}</span>`;
+        document.getElementById('ikon-bluetooth').className = "fa-brands fa-bluetooth fa-4x";
+        document.getElementById('ikon-bluetooth').style.color = 'var(--success)';
+        
+        // Listener jika perangkat terputus dari jarak jauh/mati
+        device.addEventListener('gattserverdisconnected', onScannerDisconnected);
+        window.connectedBluetoothDevice = device;
+
+        alert(`Binding Sukses!\nAplikasi terhubung dengan: ${device.name || 'Scanner Wireless'}`);
+        
+    } catch (error) {
+        console.error(error);
+        document.getElementById('status-koneksi-wireless').innerHTML = '<span style="color:var(--danger);">Koneksi Batal / Gagal Ditemukan</span>';
+        document.getElementById('ikon-bluetooth').className = "fa-brands fa-bluetooth-b fa-4x";
+        document.getElementById('ikon-bluetooth').style.color = 'var(--text-muted)';
+    }
+}
+
+function onScannerDisconnected(event) {
+    const device = event.target;
+    document.getElementById('status-koneksi-wireless').innerHTML = `<span style="color:var(--danger);"><i class="fa-solid fa-link-slash"></i> Terputus dari ${device.name || 'Scanner'}</span>`;
+    document.getElementById('ikon-bluetooth').className = "fa-brands fa-bluetooth-b fa-4x";
+    document.getElementById('ikon-bluetooth').style.color = 'var(--danger)';
+    alert(`Peringatan: Koneksi Bluetooth dengan ${device.name || 'Scanner'} terputus atau di luar jangkauan!`);
 }
 
     window.onload = initApp;
