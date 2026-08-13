@@ -493,6 +493,13 @@ body {
 
 .koneksi-online { background: rgba(52, 199, 89, 0.2); color: #E8F8F5; border: 1px solid rgba(52, 199, 89, 0.5); }
 .koneksi-offline { background: rgba(255, 149, 0, 0.9); color: white; border: 1px solid #fff; animation: pulse 2s infinite;}
+    <!-- ═══ PWA Manifest ═══ -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- ═══ Library Scanner & Barcode (Wajib Statis untuk PWA Offline) ═══ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
     </style>
 </head>
@@ -1626,11 +1633,8 @@ body {
 
     let supabaseConfig = getDB('pondok_supabase_config', { url: '', key: '' });
 
-        function muatScriptEksternal() {
-        if (typeof QRCode === 'undefined') { const qs = document.createElement('script'); qs.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"; document.body.appendChild(qs); }
-        if (typeof Html5Qrcode === 'undefined') { const hs = document.createElement('script'); hs.src = "https://unpkg.com/html5-qrcode"; document.body.appendChild(hs); }
-        if (typeof JsBarcode === 'undefined') { const jsb = document.createElement('script'); jsb.src = "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"; document.body.appendChild(jsb); }
-
+            function muatScriptEksternal() {
+        // Fungsi sengaja dikosongkan karena library sudah dimuat statis di tag <head>
     }
 
         let currentUser = null, html5QrcodeScanner = null, scannerLoginData = null, scannerIzin = null;
@@ -2474,8 +2478,8 @@ function cetakLaporanPDF() {
         window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(teks); utterance.lang = 'id-ID'; window.speechSynthesis.speak(utterance);
     }
 
-    function initApp() {
-        muatScriptEksternal(); registerServiceWorker();
+        function initApp() {
+        registerServiceWorker(); // Hapus muatScriptEksternal() di sini
         
         // ⬇️ TAMBAHKAN INISIALISASI INI DI SINI ⬇️
         if (!localStorage.getItem('pondok_jam_kustom')) {
