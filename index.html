@@ -43,9 +43,10 @@
             --warning: #FF9500;
             --info: #007AFF;
             
-            --glass-card: rgba(255, 255, 255, 0.68);
-            --glass-border: rgba(255, 255, 255, 0.55);
-            --glass-shadow: 0 20px 45px rgba(0, 0, 0, 0.09);
+            /* Liquid Glass Apple Style */
+            --glass-card: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
             --glass-glow: rgba(4, 67, 42, 0.15);
             --radius-lg: 28px;
             --radius-md: 20px;
@@ -55,7 +56,7 @@
         * { box-sizing: border-box !important; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); background-attachment: fixed; color: var(--text-main); display: flex; justify-content: center; overflow-x: hidden; width: 100%; min-height: 100vh; }
         .app-container { width: 100%; max-width: 500px; min-height: 100vh; background: radial-gradient(circle at 10% 15%, var(--glass-glow) 0%, transparent 45%), radial-gradient(circle at 90% 85%, rgba(212, 175, 55, 0.14) 0%, transparent 45%), #F5F5F7; position: relative; box-shadow: 0 0 65px rgba(0,0,0,0.4); display: flex; flex-direction: column; margin: 0 auto; transition: background 0.4s ease; }
-        .glass-panel { background: var(--glass-card); backdrop-filter: blur(28px) saturate(190%); -webkit-backdrop-filter: blur(28px) saturate(190%); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
+        .glass-panel { background: var(--glass-card); backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
         .login-wrapper { background-size: cover; background-position: center; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; position: relative; z-index: 10; width: 100%; }
         .login-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: -1; transition: all 0.3s ease; }
         .glass-card-login { background: rgba(255, 255, 255, 0.15) !important; backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%); border: 1px solid rgba(255, 255, 255, 0.28) !important; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important; border-radius: 28px; padding: 20px 18px !important; width: 100%; max-width: 330px; }
@@ -98,22 +99,8 @@
         .btn-success { background: var(--success); color: white; border: none; padding: 10px 14px; border-radius: 10px; width: auto; font-size: 0.82rem; margin-top: 0; }
         .btn-print { background: #1D1D1F; color: white; border: none; padding: 10px 14px; border-radius: 10px; width: auto; font-size: 0.82rem; margin-top: 0; }
         .btn-warning { background: var(--warning); color: white; border: none; padding: 10px 14px; border-radius: 10px; width: auto; font-size: 0.82rem; margin-top: 0; }
-                .back-nav { 
-            display: inline-flex; align-items: center; gap: 10px; 
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            color: var(--primary); font-weight: 800; margin-bottom: 20px; cursor: pointer; 
-            padding: 10px 20px; font-size: 0.9rem; border-radius: 30px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,1);
-            transition: 0.2s all ease;
-        }
-        .back-nav:active {
-            transform: scale(0.92) translateX(-5px);
-            background: #000000 !important;
-            color: #ffffff !important;
-            border-color: #000000 !important;
-        }
-        .back-nav i { font-size: 1.15rem; }
-
+        .back-nav { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 700; margin-bottom: 20px; cursor: pointer; padding: 10px 18px; font-size: 0.9rem; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .back-nav:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.9); }
         table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 15px; font-size: 0.8rem; }
         th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.06); }
         th { background-color: var(--primary); color: white; font-weight: 600; position: sticky; top: 0; z-index: 5; }
@@ -269,26 +256,18 @@
 .id-card-wrapper.portrait .id-photo { width: 60px; height: 75px; margin-top: 0; }
 .id-card-wrapper.portrait .id-details { text-align: center; width: 100%; }
 .id-card-wrapper.portrait .id-qr-depan { margin: 6px auto 0 auto; width: auto; max-width: 90%; }
+        /* KODE SESUDAHNYA */
+        /* Sisi belakang simetris presisi */
+        .id-back-content { display: flex; flex-direction: column; padding: 8px 10px; gap: 4px; flex: 1; background: rgba(255, 255, 255, 0.9); align-items: center; justify-content: space-between; position: relative;}
+        .id-back-title { font-size: 0.75rem; font-weight: bold; color: var(--primary); border-bottom: 1px solid #ccc; padding-bottom: 2px; margin-bottom: 2px; text-align: center; width: 100%;}
+        .id-back-rules { font-size: 0.52rem; line-height: 1.3; color: #222; width: 100%; text-align: justify; flex: 1;}
+        .poin-tertib { text-align: justify; padding-left: 1.2em; text-indent: -1.2em; margin-bottom: 3px; word-break: break-word; }
+        .id-back-ttd-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin-top: 5px; }
+        .id-back-ttd { text-align: center; font-size: 0.55rem; font-weight: bold; color: var(--primary); z-index: 2; position: relative;}
+        .id-back-ttd img { max-height: 30px; display: block; margin: 2px auto; }
+        .stempel-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.85; max-height: 50px; z-index: 1; pointer-events: none; }
+        .id-qr-back { width: 60px; height: 60px; border: 2px solid var(--primary); padding: 2px; background: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin: 0 auto; z-index: 3;}
 
-
-
-        /* Sisi belakang dibiarkan statis sebagai opsi fallback, namun kini opsional untuk dicetak */
-        .id-back-content { display: flex; flex-direction: row; padding: 10px; gap: 10px; flex: 1; background: rgba(255, 255, 255, 0.9); align-items: center; }
-        .id-back-left { flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; text-align: left; overflow: hidden; }
-        .id-back-title { font-size: 0.75rem; font-weight: bold; color: var(--primary); border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 4px; }
-                .id-back-rules { font-size: 0.55rem; line-height: 1.35; color: #222; width: 100%; }
-        .poin-tertib {
-            text-align: justify;
-            padding-left: 1.2em;
-            text-indent: -1.2em;
-            margin-bottom: 3px;
-            word-break: break-word;
-        }
-        .id-back-ttd { text-align: center; font-size: 0.6rem; font-weight: bold; color: var(--primary); margin-top: auto; }
-        .id-back-ttd img { max-height: 35px; display: block; margin: 2px auto; }
-        .id-back-right { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-left: 10px; border-left: 1px dashed #999; }
-        .id-qr-back { width: 85px; height: 85px; border: 2px solid var(--primary); padding: 3px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        
         /* OVERRIDE PORTRAIT: Tata tertib rata kiri-kanan & numbung */
         .id-card-wrapper.portrait .id-back-content { flex-direction: column; text-align: center; }
         .id-card-wrapper.portrait .id-back-left { text-align: left !important; align-items: stretch !important; width: 100%; }
@@ -306,7 +285,28 @@
         .evaluasi-izin-box { background: #F8F9FA; border: 1px solid #D4AF37; border-left: 4px solid var(--primary); padding: 10px 12px; border-radius: 8px; margin: 12px 0; font-size: 0.78rem; }
         .surat-ttd-grid { display: flex; justify-content: space-between; margin-top: 35px; text-align: center; font-size: 0.78rem; font-weight: bold; width: 100%; }
         
-       
+        /* KODE SESUDAHNYA */
+        .sertifikat-wrapper { width: 100%; max-width: 800px; background: #fff; border: 8px double var(--accent); padding: 30px; text-align: center; font-family: 'Georgia', 'Times New Roman', serif; position: relative; margin: 0 auto; color: #2c3e50; font-size: 13px;}
+        .sertifikat-header img { width: 70px; height: 70px; margin-bottom: 10px; }
+        .sertifikat-title { font-size: 22px; font-weight: 900; color: var(--primary); text-transform: uppercase; margin-bottom: 5px; letter-spacing: 3px; }
+        .sertifikat-subtitle { font-size: 13px; color: #7f8c8d; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+        .sertifikat-body { font-size: 13px; line-height: 1.8; color: #34495e;}
+        .sertifikat-name { font-size: 20px; font-weight: bold; font-style: italic; color: #111; border-bottom: 1px solid #bdc3c7; display: inline-block; padding: 0 20px; margin: 15px 0; letter-spacing: 1px;}
+        .sertifikat-predikat { font-size: 14px; font-weight: bold; color: var(--danger); margin: 10px 0; }
+
+        .sertifikat-footer { margin-top: 40px; display: flex; justify-content: flex-end; padding-right: 40px; text-align: center; }
+        .sertifikat-ttd img { max-height: 50px; margin: 5px auto; display: block;}
+/* --- TAMBAHAN CSS DROPDOWN & HARI --- */
+.custom-select-wrapper { position: relative; width: 100%; margin-bottom: 14px; }
+.custom-select-btn { display:flex; justify-content:space-between; align-items:center; width: 100%; padding: 13px 15px; border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.12); background: rgba(255,255,255,0.92); cursor: pointer; font-size: 0.95rem; font-weight: 600; color: #333; }
+.custom-select-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; max-height: 250px; overflow-y: auto; padding: 10px; margin-top: 5px; }
+.custom-select-content.show { display: block; }
+
+.hari-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.hari-btn { padding: 10px; text-align: center; border-radius: 8px; border: 1.5px solid var(--primary); color: var(--primary); cursor: pointer; font-size: 0.8rem; font-weight: 600; background: rgba(255,255,255,0.8); transition: 0.2s all; }
+.hari-btn:active { transform: scale(0.95); }
+.hari-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 10px var(--glass-glow); }
+
         /* CSS TAMBAHAN SCROLL DATA SANTRI & TOGGLE TABLE */
         .wadah-scroll-santri { max-height: 420px; overflow-y: auto; overflow-x: auto; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; background: #ffffff; margin-bottom: 10px; }
         /* ========================================================= */
@@ -429,88 +429,21 @@
     body * { visibility: hidden; }
     #area-cetak-thermal, #area-cetak-thermal * { visibility: visible; }
     #area-cetak-thermal { position: absolute; left: 0; top: 0; width: 58mm; padding: 0; margin: 0; }
-        @page { size: 58mm auto; margin: 0mm; }
+    @page { size: 58mm auto; margin: 0mm; }
 }
-
-/* --- TAMBAHAN EFEK MENU HITAM & KILAT --- */
-.nav-item:active { 
-    color: #000000 !important; 
-    transform: scale(0.9) !important; 
-    transition: 0.1s all ease !important;
-}
-.nav-item.active { 
-    color: #000000 !important; 
-    font-weight: 800; 
-    transform: translateY(-2px); 
-}
-.btn-outline:active { 
-    background: #000000 !important; 
-    color: #ffffff !important; 
-    border-color: #000000 !important; 
-    transform: scale(0.95); 
-}
-/* -------------------------------------- */
-/* --- MENCEGAH BENTROK GESTURE BAWAAN OS/BROWSER --- */
-body {
-    overscroll-behavior-x: none !important; /* Memblokir swipe-to-go-back bawaan sistem */
-}
-/* -------------------------------------------------- */
-/* ANIMASI SPLASH & STAGGERED */
-#splash-screen {
-    position: fixed; inset: 0; background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    z-index: 9999999; display: flex; align-items: center; justify-content: center;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-.pulse-logo { width: 110px; animation: pulse 1.5s infinite; border-radius: 50%; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-@keyframes pulse {
-    0% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1.05); opacity: 1; }
-    100% { transform: scale(0.95); opacity: 0.8; }
-}
-
-@keyframes staggeredFadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.stagger-1 { animation: staggeredFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; opacity: 0; animation-delay: 0.1s; }
-.stagger-2 { animation: staggeredFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; opacity: 0; animation-delay: 0.25s; }
-.stagger-3 { animation: staggeredFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; opacity: 0; animation-delay: 0.4s; }
-
-/* BADGE OFFLINE */
-/* Ganti menjadi CSS baru ini: */
-.badge-koneksi {
-    position: fixed; 
-    bottom: 85px; /* Jarak pas di atas bar menu bawah */
-    right: 18px; 
-    font-size: 0.65rem; 
-    padding: 4px 8px; 
-    border-radius: 12px; 
-    font-weight: bold; 
-    z-index: 1001; 
-    transition: 0.3s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Tambahan shadow agar lebih terlihat */
-}
-
-.koneksi-online { background: rgba(52, 199, 89, 0.2); color: #E8F8F5; border: 1px solid rgba(52, 199, 89, 0.5); }
-.koneksi-offline { background: rgba(255, 149, 0, 0.9); color: white; border: 1px solid #fff; animation: pulse 2s infinite;}
-    <!-- ═══ PWA Manifest ═══ -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- ═══ Library Scanner & Barcode (Wajib Statis untuk PWA Offline) ═══ -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-
     </style>
 </head>
+<!-- KODE SESUDAHNYA -->
 <body>
-    <div id="splash-screen" style="flex-direction: column; gap: 15px;">
-    <img src="icon-512.png" id="splash-logo" class="pulse-logo" alt="Loading">
-    <h2 id="splash-title" style="color: white; font-size: 1.2rem; font-weight: bold; text-align: center; text-shadow: 0 2px 5px rgba(0,0,0,0.3);">Memuat...</h2>
+
+<div id="splash-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); backdrop-filter:blur(20px); z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 0.6s ease, visibility 0.6s ease;">
+    <img id="splash-logo" src="icon-512.png" style="width:110px; height:110px; border-radius:24px; box-shadow:0 15px 35px rgba(0,0,0,0.2); animation: pulse 1.5s infinite alternate;">
+    <h2 id="splash-title" style="margin-top:20px; color:var(--primary); font-weight:800; text-transform:uppercase; letter-spacing:2px; font-size:1.2rem;">Memuat...</h2>
 </div>
-    <!-- Elemen app-container tetap di bawah ini -->
+<style> @keyframes pulse { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } } </style>
 
 <div class="app-container" id="main-app-container">
+
     <header id="app-header" class="hidden">
         <div class="header-top">
             <div class="header-identity">
@@ -562,7 +495,7 @@ body {
         <div id="view-login" class="page-view login-wrapper" style="background-image: url('https://images.unsplash.com/photo-1519817650390-28a59b20892c?q=80&w=1000&auto=format&fit=crop');">
             <div class="login-overlay"></div>
             <div class="card glass-card-login">
-                                   <div class="stagger-1" style="text-align: center; margin-bottom: 14px;">
+                <div style="text-align: center; margin-bottom: 14px;">
                     <img src="icon-512.png" id="login-logo" style="width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--accent); padding: 5px; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);" alt="Logo">
                     <h2 style="font-weight: 800; margin-top:8px;" id="login-pondok-name">Sistem Monitoring</h2>
                     <p style="color: rgba(255,255,255,0.8); font-size: 0.72rem; margin-top: 2px;">Silakan masuk untuk melanjutkan</p>
@@ -572,7 +505,7 @@ body {
                     Kredensial atau PIN Salah!
                 </div>
 
-                <div class="stagger-2" style="display:flex; gap:8px; margin-bottom: 12px; justify-content:center;">
+                <div style="display:flex; gap:8px; margin-bottom: 12px; justify-content:center;">
                     <button type="button" id="tab-btn-pin" class="btn-primary" style="margin:0; padding:8px 12px; font-size:0.75rem; border-radius:15px; width:auto;" onclick="switchModeLogin('pin')">
                         <i class="fa-solid fa-key"></i> Mode PIN
                     </button>
@@ -581,12 +514,12 @@ body {
                     </button>
                 </div>
 
-                <div id="login-area-pin" class="stagger-3">
+                <div id="login-area-pin">
                     <input type="password" inputmode="numeric" pattern="[0-9]*" id="login-pin-input" maxlength="6" placeholder="Masukkan PIN 4-6 Angka..." style="text-align: center; font-weight: bold; letter-spacing: 4px; font-size: 1.1rem;">
                     <button class="btn-primary" onclick="prosesLoginPIN()" style="font-size: 0.88rem; padding: 12px; border-radius: 12px; margin-top: 5px;">MASUK DENGAN PIN</button>
                 </div>
 
-                <div id="login-area-user" class="hidden stagger-3">
+                <div id="login-area-user" class="hidden">
                     <input type="text" id="login-username" placeholder="Masukkan Username...">
                     <input type="password" id="login-password" placeholder="Masukkan Password...">
                     <button class="btn-primary" onclick="prosesLogin()" style="font-size: 0.88rem; padding: 12px; border-radius: 12px; margin-top: 5px;">MASUK SISTEM</button>
@@ -683,13 +616,17 @@ body {
                 </div>
                 
                 <div class="card">
-                    <div style="display: flex; flex-direction: column; margin-bottom: 14px; gap:10px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <h3 id="title-db-santri" style="color: var(--primary); margin: 0;">Database Santri Aktif</h3>
-                            <button type="button" id="btn-toggle-tabel-santri" class="btn-outline" onclick="toggleTampilanTabelSantri()" style="width:auto; padding:6px 12px; margin:0; font-size:0.75rem; border-color:var(--primary);">
-                                <i class="fa-solid fa-eye-slash" id="icon-toggle-tabel"></i> Sembunyikan
-                            </button>
-                        </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h3 id="title-db-santri" style="color: var(--primary); margin: 0;">Database Santri Aktif</h3>
+    <button type="button" id="btn-toggle-tabel-santri" class="btn-outline" onclick="toggleTampilanTabelSantri()" style="width:auto; padding:6px 12px; margin:0; font-size:0.75rem; border-color:var(--primary);">
+        <i class="fa-solid fa-eye" id="icon-toggle-tabel"></i> Tampilkan Daftar
+    </button>
+</div>
+<!-- ... tombol cetak dsb ... -->
+<!-- WADAH SCROLL DITAMBAHKAN CLASS 'hidden' -->
+<div id="wadah-scroll-santri" class="wadah-scroll-santri hidden">
+    <table>
+
                                                 <div style="display:flex; gap:8px;">
                             <div style="display: flex; gap: 4px; flex: 1; flex-wrap: wrap;">
     <button class="btn-primary" onclick="cetakKolektifF4Gabung('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.72rem; background: var(--info); flex: 1; min-width:100px;">
@@ -777,27 +714,27 @@ body {
                     </div>
                                         <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Buat mata pelajaran dan tentukan ustadz/guru penanggung jawabnya (bisa lebih dari satu), lalu centang kelas mana saja yang mempelajarinya.</p>
                     
-                                        <!-- PERBAIKAN: <!-- PERBAIKAN: BANK MATA PELAJARAN MULTIPLE CHECKBOX DROPDOWN -->
-<label style="color:var(--primary); margin-top:10px;"><i class="fa-solid fa-layer-group"></i> 1. Pilih Dari Bank Mata Pelajaran</label>
-<div style="display:flex; gap:8px; margin-bottom:10px;">
-    <input type="text" id="input-tambah-bank-mapel" placeholder="Ketik mapel baru (cth: Fiqih)..." style="margin:0; flex:1;">
-    <button type="button" class="btn-outline" style="margin:0; width:auto; border-color:var(--info); color:var(--info); padding:10px;" onclick="tambahBankMapel()">
-        <i class="fa-solid fa-plus"></i> Tambah Baru
-    </button>
-</div>
+                                        <!-- PERBAIKAN: BANK MATA PELAJARAN MULTIPLE CHECKBOX -->
+                    <label style="color:var(--primary); margin-top:10px;"><i class="fa-solid fa-layer-group"></i> 1. Pilih Mata Pelajaran (Bank Mapel):</label>
+                    
+                    <div class="custom-select-wrapper">
+                        <div class="custom-select-btn" onclick="document.getElementById('wadah-bank-mapel').classList.toggle('show')">
+                            Klik untuk Pilih Mapel... <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div id="wadah-bank-mapel" class="custom-select-content"></div>
+                    </div>
 
-<div class="custom-select-wrapper">
-    <div class="custom-select-btn" onclick="document.getElementById('wadah-bank-mapel').classList.toggle('show')" style="border: 1px solid var(--info); color: var(--info);">
-        Klik untuk Menampilkan Mapel... <i class="fa-solid fa-chevron-down"></i>
-    </div>
-    <!-- KODE PERBAIKAN: Hapus display:flex inline agar bisa disembunyikan/ditampilkan -->
-    <div id="wadah-bank-mapel" class="custom-select-content" style="max-height: 220px; padding: 10px;">
-        <!-- Checkbox Mapel dari Bank dirender via JS -->
-    </div>
-</div>
-<!-- AKHIR PERBAIKAN BANK MAPEL -->
+                    <div style="display:flex; gap:8px; margin-bottom:14px; margin-top:5px;">
+                        <input type="text" id="input-tambah-bank-mapel" placeholder="Ketik mapel baru jika belum ada..." style="margin:0; flex:1; font-size: 0.8rem; padding: 10px;">
+                        <button type="button" class="btn-outline" style="margin:0; width:auto; border-color:var(--info); color:var(--info); padding:10px; font-size: 0.8rem;" onclick="tambahBankMapel()">
+                            <i class="fa-solid fa-plus"></i> Tambah
+                        </button>
+                    </div>
+                    <!-- AKHIR PERBAIKAN BANK MAPEL -->
 
-<label style="cursor:pointer; display:flex; align-items:center; gap:8px; color:var(--primary); margin-top:14px;">
+                    <!-- AKHIR PERBAIKAN BANK MAPEL -->
+                    
+                   <label style="cursor:pointer; display:flex; align-items:center; gap:8px; color:var(--primary); margin-top:14px;">
     <input type="checkbox" id="input-opsi-jadwal" onchange="toggleFormJadwalMapel()" style="width:18px; height:18px; margin:0;">
     <span>Atur Jadwal Hari & Jam (Opsional)</span>
 </label>
@@ -815,7 +752,7 @@ body {
         <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Minggu" class="cb-hari-mapel"> Minggu</label>
     </div>
 
-    <!-- PERBAIKAN: Dropdown Pilihan Cepat dari Logika Jam Singkatan -->
+        <!-- PERBAIKAN: Dropdown Pilihan Cepat dari Logika Jam Singkatan -->
     <div style="margin-top:12px;">
         <label style="color:var(--warning); margin-bottom:4px;">
             <i class="fa-solid fa-clock"></i> Pilih Preset Jam Singkatan (BA, BS, BM, dll):
@@ -829,9 +766,10 @@ body {
         <div style="flex:1;"><label>Jam Mulai (Opsional)</label><input type="text" id="input-jam-mulai" placeholder="Cth: BA / 15:30"></div>
         <div style="flex:1;"><label>Jam Selesai (Opsional)</label><input type="text" id="input-jam-selesai" placeholder="Cth: 16:30"></div>
     </div>
-</div>        
+</div>
 
-<!-- PERBAIKAN: Dropdown Ustadz (Mengembalikan yang hilang) -->
+
+<!-- PERBAIKAN: Dropdown Ustadz -->
 <label style="color:var(--primary); margin-top:14px;"><i class="fa-solid fa-users"></i> Pilih Ustadz / Guru Pengajar (Bisa Lebih dari 1):</label>
 <div class="custom-select-wrapper">
     <div class="custom-select-btn" onclick="document.getElementById('input-ustadz-mapel-container').classList.toggle('show')">
@@ -862,18 +800,18 @@ body {
                     </div>
                 </div>
 
-                                <!-- ⬇️ TAMBAHKAN KOTAK INI DI SINI ⬇️ -->
+                                <!-- ⬇️ SETTING LOGIKA JAM (DIBUAT BISA DIKLIK/DITUTUP AGAR RAPI) ⬇️ -->
                 <div class="card card-premium" style="border-left-color: var(--warning);">
-                    <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="document.getElementById('panel-jam-singkatan').classList.toggle('hidden')">
+                    <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="document.getElementById('area-setting-jam-singkatan').classList.toggle('hidden')">
                         <h3 style="margin: 0; color: var(--warning);"><i class="fa-solid fa-clock"></i> Setting Logika Jam Singkatan</h3>
                         <i class="fa-solid fa-chevron-down" style="color:var(--warning);"></i>
                     </div>
                     
-                    <div id="panel-jam-singkatan" class="hidden" style="margin-top: 14px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 14px;">
-                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Definisikan jam aktual untuk singkatan seperti BS (Ba'da Subuh) agar pengingat jadwal dan absensi otomatis berfungsi.</p>
+                    <div id="area-setting-jam-singkatan" class="hidden" style="margin-top:14px;">
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Definisikan jam aktual untuk singkatan seperti BS (Ba'da Subuh) atau BM.</p>
                         
                         <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap: wrap;">
-                            <input type="text" id="input-kode-jam" placeholder="Kode (BS)" style="flex:1; min-width:80px; margin:0;">
+                            <input type="text" id="input-kode-jam" placeholder="Kode (Cth: BS)" style="flex:1; min-width:80px; margin:0;">
                             <input type="time" id="input-waktu-mulai-jam" style="flex:1; min-width:90px; margin:0;" title="Jam Mulai">
                             <input type="time" id="input-waktu-selesai-jam" style="flex:1; min-width:90px; margin:0;" title="Jam Selesai">
                             <button type="button" class="btn-warning" style="margin:0; padding:10px 14px; width:auto;" onclick="tambahJamKustom()">
@@ -886,24 +824,33 @@ body {
                 </div>
                 <!-- ⬆️ SAMPAI SINI ⬆️ -->
 
+
                 <div class="card card-premium">
                     <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-layer-group"></i> Buat Kelas / Forum Baru</h3>
 
                     <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Buat kelas baru terlebih dahulu, lalu Anda dapat mengaturnya di pembuatan mata pelajaran di atas atau klik Edit Plotting di tabel bawah.</p>
-                    <label>Nama Kelas / Forum</label><input type="text" id="input-nama-kelas" placeholder="Cth: Kelas 1-A / Takhassus">
+                                        <label>Nama Kelas / Forum</label><input type="text" id="input-nama-kelas" placeholder="Cth: Kelas 1-A / Takhassus">
+                    
+                    <label style="color: var(--primary); margin-top: 10px;"><i class="fa-solid fa-user-tie"></i> Pilih Wali Kelas (Opsional)</label>
+                    <select id="input-wali-kelas" style="margin-bottom: 14px;">
+                        <option value="">-- Tanpa Wali Kelas --</option>
+                    </select>
 
-<label style="color: var(--primary); margin-top: 10px;"><i class="fa-solid fa-user-tie"></i> Pilih Wali Kelas</label>
-<select id="input-wali-kelas" style="margin-bottom: 10px;">
-    <!-- Opsi akan diisi otomatis oleh JS renderTabelDaftarKelas -->
-</select>
+                    <button class="btn-primary" onclick="simpanKelasBaru()">BUAT & SIMPAN KELAS</button>
 
-<button class="btn-primary" onclick="simpanKelasBaru()">BUAT & SIMPAN KELAS</button>
                 </div>
 
+               <!-- KODE SESUDAHNYA -->
                 <div class="card">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);">Daftar Kelas Aktif & Plotting Santri</h3>
-                    <div style="overflow-x:auto;"><table><thead><tr><th>Nama Kelas</th><th>Jml Mapel</th><th>Jml Santri</th><th>Aksi</th></tr></thead><tbody id="tabel-kelas-body"></tbody></table></div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="document.getElementById('wadah-tabel-kelas').classList.toggle('hidden')">
+                        <h3 style="margin: 0; color: var(--primary);">Daftar Kelas Aktif & Plotting Santri</h3>
+                        <i class="fa-solid fa-chevron-down" style="color:var(--primary);"></i>
+                    </div>
+                    <div id="wadah-tabel-kelas" class="hidden" style="margin-top:14px; overflow-x:auto;">
+                        <table><thead><tr><th>Nama Kelas</th><th>Jml Mapel</th><th>Jml Santri</th><th>Aksi</th></tr></thead><tbody id="tabel-kelas-body"></tbody></table>
+                    </div>
                 </div>
+
             </div>
 
                         <div id="view-absen" class="hidden page-view">
@@ -1030,10 +977,19 @@ body {
                     <label style="color: var(--info);">Tingkat Blur Wallpaper Login (px)</label>
                     <input type="number" id="setting-blur-login" placeholder="Cth: 4 (Semakin kecil makin jelas)">
                     
+                    <!-- KODE SESUDAHNYA -->
                     <label>Wallpaper ID Card & Sertifikat</label><input type="file" id="input-bg-idcard" accept="image/*" onchange="previewGambarApp(event, 'bg-card-preview-yayasan', 'bg_idcard')">
                     <img id="bg-card-preview-yayasan" src="" style="max-width:140px; display:none; margin-top:5px; border-radius:8px; border:2px solid var(--info);">
+                    
+                    <label style="color: var(--primary); margin-top:10px;"><i class="fa-solid fa-stamp"></i> Stempel Pimpinan (Transparan PNG)</label>
+                    <input type="file" id="input-stempel-mudir" accept="image/*" onchange="previewGambarApp(event, 'stempel-preview-yayasan', 'stempel_mudir')">
+                    <img id="stempel-preview-yayasan" src="" style="max-height:55px; display:none; margin-top:5px; border:1px dashed #ddd; padding:4px; border-radius:8px;">
+                    
+                    <label style="color: var(--primary);"><i class="fa-solid fa-palette"></i> Warna Barcode & QR Code</label>
+                    <input type="color" id="setting-warna-barcode" value="#000000" style="height:40px; padding:2px; border:1px solid #ccc; border-radius:8px; width:100%; margin-bottom:10px; cursor:pointer;">
                 </div>
                 <!-- KARTU TAMBAHAN: SLIDESHOW WALLPAPER UNTUK WALI SANTRI -->
+
 <div class="card card-premium" style="border-left-color: #27AE60;">
     <h3 style="margin-bottom: 10px; color: #27AE60;"><i class="fa-solid fa-images"></i> Wallpaper Slideshow Portal Wali Santri</h3>
     <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Unggah foto-foto kegiatan/prestasi sekolah di sini. Foto ini akan diputar sebagai bingkai digital (slideshow) otomatis saat orang tua membuka aplikasi Wali Santri.</p>
@@ -1084,15 +1040,7 @@ body {
 <label style="color: var(--primary);"><i class="fa-solid fa-barcode"></i> Tinggi Barcode 1D Depan (px)</label>
 <input type="number" id="setting-ukuran-barcode1d" placeholder="Rekomendasi: 25 - 40">
 
-<label style="color: var(--primary);"><i class="fa-solid fa-palette"></i> Warna Barcode 1D & QR (Semua Kartu)</label>
-<select id="setting-warna-barcode" style="margin-bottom: 14px;">
-    <option value="#000000">Hitam (Default - Paling Aman)</option>
-    <option value="#04432A">Hijau Tua (Gelap)</option>
-    <option value="#8B0000">Merah Tua (Maroon)</option>
-    <option value="#00008B">Biru Tua (Navy)</option>
-</select>
 <label>Teks Keputusan Kelulusan Sertifikat</label><input type="text" id="setting-teks-lulus" placeholder="Telah mengikuti proses belajar dan dinyatakan:">
-
 <!-- TAMBAHAN PILIHAN KERTAS -->
 <label style="color: var(--danger);"><i class="fa-solid fa-scroll"></i> Ukuran Kertas Cetak Sertifikat</label>
 <select id="setting-kertas-sertifikat">
@@ -1279,6 +1227,41 @@ body {
                     </div>
                 </div>
             </div>
+<!-- VIEW KHUSUS WALI KELAS -->
+<div id="view-walikelas" class="hidden page-view">
+    <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
+    
+    <div class="card card-premium" style="border-left-color: var(--success);">
+        <h3 style="margin-bottom: 14px; color: var(--success);"><i class="fa-solid fa-chalkboard-user"></i> Panel Kelola Kelas</h3>
+        <label>Pilih Kelas Anda</label>
+        <select id="walikelas-pilih-kelas" onchange="renderTabelSantriWali()" style="margin-bottom:15px;"></select>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #eee; padding-top:10px;">
+            <h4 style="font-size: 0.9rem; margin:0; color:var(--primary);">Daftar Santri Binaan</h4>
+            <button class="btn-primary" style="width:auto; padding:8px 12px; margin:0; font-size:0.8rem; background:var(--success);" onclick="bukaFormTambahSantriWali()">
+                <i class="fa-solid fa-user-plus"></i> Tambah Santri
+            </button>
+        </div>
+        <div style="overflow-x:auto; margin-top:10px;">
+            <table>
+                <thead><tr><th>NIS/Kamar</th><th>Nama Santri</th><th>Aksi</th></tr></thead>
+                <tbody id="tabel-santri-wali-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Form Tambah/Edit Santri Khusus Wali -->
+    <div class="card hidden" id="form-santri-wali-card" style="border:2px dashed var(--success);">
+        <h3 id="form-santri-wali-title" style="margin-bottom: 14px; color: var(--primary);">Formulir Data Santri Kelas</h3>
+        <input type="hidden" id="wali-edit-id-santri">
+        <label>Nama Lengkap</label><input type="text" id="wali-input-nama" placeholder="Ketik nama santri...">
+        <label>Kamar / Asrama</label><input type="text" id="wali-input-kamar" placeholder="Cth: Blok A-01">
+        <div style="display:flex; gap:10px; margin-top:10px;">
+             <button class="btn-outline" style="flex:1; justify-content:center; margin:0; border-color:var(--danger); color:var(--danger);" onclick="document.getElementById('form-santri-wali-card').classList.add('hidden')">Batal</button>
+             <button class="btn-primary" style="flex:1; margin:0; background:var(--success);" onclick="simpanSantriWali()"><i class="fa-solid fa-save"></i> Simpan Data</button>
+        </div>
+    </div>
+</div>
 
         </div> 
     </main>
@@ -1382,6 +1365,27 @@ body {
         </div>
     </div>
 </div>
+<!-- MODAL EDIT KELAS DASAR (NAMA & WALI) -->
+<div id="modal-edit-kelas-basic" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 15px;">
+    <div class="glass-panel" style="padding: 24px; border-radius: var(--radius-md); text-align:left; width: 100%; max-width: 420px; background: #fff;">
+        <h3 style="color:var(--primary); margin-bottom:14px; border-bottom:2px solid var(--accent); padding-bottom:8px; font-size: 1rem;">
+            <i class="fa-solid fa-pen"></i> Edit Profil Kelas
+        </h3>
+        <input type="hidden" id="edit-basic-id-kelas">
+        
+        <label>Nama Kelas / Forum</label>
+        <input type="text" id="edit-basic-nama-kelas" placeholder="Cth: Kelas 1-A">
+        
+        <label>Pilih Wali Kelas Baru</label>
+        <select id="edit-basic-wali-kelas"></select>
+        
+        <div style="display:flex; gap:10px; margin-top:16px;">
+            <button type="button" class="btn-outline" style="flex:1; justify-content:center; margin:0;" onclick="document.getElementById('modal-edit-kelas-basic').classList.add('hidden')">Batal</button>
+            <button type="button" class="btn-primary" style="flex:1; margin:0;" onclick="simpanEditKelasBasic()"><i class="fa-solid fa-save"></i> Simpan</button>
+        </div>
+    </div>
+</div>
+
 
 <!-- MODAL SERTIFIKAT KELULUSAN (DENGAN RUANG PREVIEW) -->
 <div id="modal-sertifikat" class="hidden">
@@ -1500,33 +1504,23 @@ body {
                 <div class="id-footer-custom hidden" id="card-footer-custom"></div>
             </div>
 
-
-                                             <div id="sisi-belakang-kartu" class="hidden" style="height:100%; display:flex; flex-direction:column;">
-                <div class="id-header" style="padding:6px;">
-                    <h4 id="back-app-title" style="font-size:0.75rem; margin:0; text-transform: uppercase; letter-spacing: 0.5px;">SISTEM MONITORING SANTRI</h4>
+<!-- KODE SESUDAHNYA -->
+             <div id="sisi-belakang-kartu" class="hidden" style="height:100%; display:flex; flex-direction:column;">
+                <div class="id-header" style="padding:6px; background:linear-gradient(135deg, var(--primary), var(--primary-light));">
+                    <h4 id="back-app-title" style="font-size:0.75rem; margin:0; text-transform: uppercase; color:white; text-align:center;">SISTEM MONITORING SANTRI</h4>
                 </div>
                 <div class="id-back-content">
-                    <div class="id-back-left">
-                        <div>
-                            <div class="id-back-title" id="back-instansi-name">INSTANSI PENDIDIKAN</div>
-                            <div class="id-back-rules" id="back-tata-tertib-text">1. Wajib menjaga tata tertib...</div>
-                        </div>
+                    <div class="id-back-title" id="back-instansi-name">INSTANSI PENDIDIKAN</div>
+                    <div class="id-back-rules" id="back-tata-tertib-text">1. Wajib menjaga tata tertib...</div>
+                    <div class="id-back-ttd-wrapper">
+                        <img src="" id="back-stempel-img" class="stempel-overlay" style="display:none;">
                         <div class="id-back-ttd">
                             <div>Mengetahui, Pimpinan</div>
                             <img src="" id="back-ttd-img" style="display:none;">
                             <div id="back-mudir-nama">Mudir Instansi</div>
                         </div>
                     </div>
-                    
-                                        <!-- KANAN BAWAH: KOLOM DIPERLEBAR (130px), IKON MAPS & ALAMAT RATA KIRI -->
-                    <div class="id-back-right" style="width: 130px; padding-left: 10px; justify-content: center; align-items: center;">
-                        <div style="display: flex; align-items: flex-start; gap: 5px; width: 100%; margin-bottom: 6px;">
-                            <i class="fa-solid fa-location-dot" style="color: var(--primary); font-size: 0.72rem; margin-top: 1px; flex-shrink: 0;"></i>
-                            <span id="back-alamat-text" style="font-size:0.52rem; font-weight:600; color:#222; text-align:left; line-height:1.3; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word;">ALAMAT INSTANSI</span>
-                        </div>
-                        <!-- Barcode QR 2D di Belakang -->
-                        <div class="id-qr-back" id="card-qr" style="width:55px; height:55px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center;"></div>
-                    </div>
+                    <div class="id-qr-back" id="card-qr"></div>
                 </div>
             </div>
 
@@ -1560,10 +1554,7 @@ body {
                 <h3 style="margin: 0;">Silakan Scan Kartu ID Anda</h3>
             </div>
             
-                        <button style="position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: rgba(255,255,255,0.15); font-size: 2rem; cursor: pointer; z-index: 99999; padding: 15px;" onclick="verifikasiTutupATM()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
+            <button class="btn-danger" style="position: absolute; top: 20px; right: 20px; width: auto; padding: 10px 20px; border-radius: 12px; background: rgba(255,59,48,0.5); backdrop-filter: blur(5px);" onclick="tutupKioskATM()">X Tutup Kiosk</button>
         </div>
     </div>
 
@@ -1614,8 +1605,55 @@ body {
 <!-- Wadah Tersembunyi Khusus Printer Thermal -->
 <div id="area-cetak-thermal" class="hidden"></div>
 
+<!-- KODE SESUDAHNYA -->
+<div id="network-status" style="position:fixed; bottom: 85px; right: 20px; background: rgba(52, 199, 89, 0.9); color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 9999; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px); transition: all 0.4s ease;">
+    <i class="fa-solid fa-wifi"></i> <span>Online</span>
+</div>
+
 <script>
+    /* Indikator Online/Offline */
+    function updateNetworkStatus() {
+        const statusEl = document.getElementById('network-status');
+        if (navigator.onLine) {
+            statusEl.style.background = 'rgba(52, 199, 89, 0.9)';
+            statusEl.innerHTML = '<i class="fa-solid fa-wifi"></i> <span>Online</span>';
+            setTimeout(() => { statusEl.style.opacity = '0'; }, 3000);
+        } else {
+            statusEl.style.background = 'rgba(255, 59, 48, 0.9)';
+            statusEl.style.opacity = '1';
+            statusEl.innerHTML = '<i class="fa-solid fa-plane-up"></i> <span>Offline Mode</span>';
+        }
+    }
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+    updateNetworkStatus();
+
+    /* Sound Beep Mewah & Haptic Feedback Global */
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playPremiumBeep() {
+        try {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime); // Nada solid padat
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08);
+            gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+            if (navigator.vibrate) navigator.vibrate([30]);
+        } catch(e){}
+    }
+    document.addEventListener('click', function(e) {
+        const el = e.target.closest('button, .nav-item, .akses-card-item, .dropdown-item, .back-nav');
+        if (el) playPremiumBeep();
+    });
+
     const KODE_RAHASIA_SYNC = "SYNC_PONDOK_SUPABASE_ENTERPRISE_V1";
+
     let appMode = 'pondok';
     let modeTampilanSantri = 'aktif'; 
     let pwaWatchdogInterval = null;
@@ -1633,47 +1671,28 @@ body {
 
     let supabaseConfig = getDB('pondok_supabase_config', { url: '', key: '' });
 
-            function muatScriptEksternal() {
-        // Fungsi sengaja dikosongkan karena library sudah dimuat statis di tag <head>
+        function muatScriptEksternal() {
+        if (typeof QRCode === 'undefined') { const qs = document.createElement('script'); qs.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"; document.body.appendChild(qs); }
+        if (typeof Html5Qrcode === 'undefined') { const hs = document.createElement('script'); hs.src = "https://unpkg.com/html5-qrcode"; document.body.appendChild(hs); }
+        if (typeof JsBarcode === 'undefined') { const jsb = document.createElement('script'); jsb.src = "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"; document.body.appendChild(jsb); }
+
     }
 
-        let currentUser = null, html5QrcodeScanner = null, scannerLoginData = null, scannerIzin = null;
+    let currentUser = null, html5QrcodeScanner = null, scannerLoginData = null, scannerIzin = null;
     let modeScannerIzinAktif = 'keluar';
     let base64TempImages = { logo: '', bg_login: '', bg_idcard: '', ttd_mudir: '' }, tempFotoSantriBase64 = ''; 
     let tempFotoPegawaiBase64 = '', tempSelfFotoBase64 = '';
+const defaultAkses = { 
+    superadmin: ['view-santri', 'view-walikelas', 'view-evaluasi', 'view-izin', 'view-rekap', 'view-kelas', 'view-absen', 'view-scanner-wireless', 'view-keuangan', 'view-tabungan', 'view-paguyuban', 'view-yayasan', 'view-lokasi', 'view-hak-akses', 'view-pengguna', 'view-database'], 
+    admin: ['view-santri', 'view-walikelas', 'view-evaluasi', 'view-izin', 'view-rekap', 'view-kelas', 'view-scanner-wireless', 'view-database', 'view-tabungan'], 
+    ustadz: ['view-absen', 'view-walikelas', 'view-evaluasi', 'view-scanner-wireless', 'view-database'], 
+    accounting: ['view-keuangan', 'view-tabungan', 'view-database'],
+    paguyuban: ['view-paguyuban']
+};
 
-    // --- TAMBAHAN FUNGSI GETAR & SUARA BIP ---
-    function playHapticAndSound() {
-        if (navigator.vibrate) navigator.vibrate(40);
-        try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (AudioContext) {
-                const ctx = new AudioContext();
-                const osc = ctx.createOscillator();
-                const gainNode = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, ctx.currentTime);
-                gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-                osc.connect(gainNode);
-                gainNode.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.1);
-            }
-        } catch (e) { console.log("Audio Error:", e); }
-    }
-    // -----------------------------------------
-    
-                const defaultAkses = { 
-        superadmin: ['view-santri', 'view-evaluasi', 'view-izin', 'view-rekap', 'view-kelas', 'view-absen', 'view-scanner-wireless', 'view-keuangan', 'view-tabungan', 'view-paguyuban', 'view-yayasan', 'view-lokasi', 'view-hak-akses', 'view-pengguna', 'view-database'], 
-        admin: ['view-santri', 'view-evaluasi', 'view-izin', 'view-rekap', 'view-kelas', 'view-scanner-wireless', 'view-database', 'view-tabungan'], 
-        ustadz: ['view-absen', 'view-evaluasi', 'view-scanner-wireless', 'view-database'], 
-        accounting: ['view-keuangan', 'view-tabungan', 'view-database'],
-        paguyuban: ['view-paguyuban']
-    };
-
-    const menuMaster = [ 
-        { id: 'view-paguyuban', nama: 'Kasir Paguyuban (Belanja)', icon: 'fa-store' },
+const menuMaster = [ 
+    { id: 'view-walikelas', nama: 'Kelas Saya (Wali Kelas)', icon: 'fa-chalkboard-user' },
+    { id: 'view-paguyuban', nama: 'Kasir Paguyuban (Belanja)', icon: 'fa-store' },
     { id: 'view-santri', icon: 'fa-id-card' }, 
     { id: 'view-evaluasi', nama: 'Evaluasi & Kelulusan', icon: 'fa-star' }, 
     { id: 'view-izin', nama: 'Surat Izin Santri & Validasi Balik', icon: 'fa-file-signature' }, 
@@ -1690,8 +1709,7 @@ body {
     { id: 'view-database', nama: 'Database & Sync', icon: 'fa-cloud-arrow-up' } 
 ];
 
-
-
+              
     function generateStandardKopSuratHTML() {
         const yayasanDB = getDB('pondok_yayasan', {});
         const logoUrl = (yayasanDB.logo && yayasanDB.logo.trim() !== '') ? yayasanDB.logo : 'https://cdn-icons-png.flaticon.com/512/3592/3592078.png';
@@ -1715,24 +1733,16 @@ body {
     const yayasanConfig = getDB('pondok_yayasan', {});
     const ukuranKertasDinamic = yayasanConfig.kertas_sertifikat || 'A4';
     
-    // KODE PERBAIKAN: Ambil variabel warna aktif dari aplikasi untuk dikirim ke print
-    const rootStyles = getComputedStyle(document.documentElement);
-    const varPrimary = rootStyles.getPropertyValue('--primary').trim() || '#04432A';
-    const varPrimaryLight = rootStyles.getPropertyValue('--primary-light').trim() || '#0B6B46';
-    const varAccent = rootStyles.getPropertyValue('--accent').trim() || '#D4AF37';
-
     const iframeLama = document.getElementById('iframe-pencetakan-aman');
     if (iframeLama) iframeLama.remove();
     
     const iframe = document.createElement('iframe'); 
     iframe.id = 'iframe-pencetakan-aman'; 
-    
-    // KODE PERBAIKAN: Jangan posisikan di bottom/right, ini penyebab hasil print lari ke pojok!
     iframe.style.position = 'fixed'; 
-    iframe.style.top = '-10000px'; 
-    iframe.style.left = '-10000px'; 
-    iframe.style.width = '100vw'; 
-    iframe.style.height = '100vh'; 
+    iframe.style.right = '0'; 
+    iframe.style.bottom = '0'; 
+    iframe.style.width = '0'; 
+    iframe.style.height = '0'; 
     iframe.style.border = '0'; 
     document.body.appendChild(iframe);
     
@@ -1744,14 +1754,9 @@ body {
     <meta charset="utf-8">
     <title>Cetak Dokumen</title>
     <style>
-        :root {
-            --primary: ${varPrimary};
-            --primary-light: ${varPrimaryLight};
-            --accent: ${varAccent};
-        }
         @page {
             size: ${ukuranKertasDinamic} ${orientasiHalaman === 'landscape' ? 'landscape' : 'portrait'};
-            margin: 8mm; 
+            margin: 8mm; /* Margin dipadatkan agar tidak memicu halaman ke-2 */
         }
         * {
             -webkit-print-color-adjust: exact !important;
@@ -1759,44 +1764,139 @@ body {
             box-sizing: border-box !important;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
         }
-                html, body {
-            margin: 0; padding: 0; width: 100%; background: #fff !important; color: #000;
-        }
-                    /* =================================================== */
-            /* KODE PERBAIKAN: CSS TABEL UNTUK CETAK PDF/PRINT     */
-            /* =================================================== */
-            table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                margin-bottom: 15px; 
-                font-size: 11px; 
-            }
-            /* ... kode tabel lainnya ... */
-            table th { 
-                background-color: var(--primary) !important; 
-                color: white !important; 
-                font-weight: bold; 
-                text-align: center; 
-            }
-            /* =================================================== */
-            
-        /* TAMBAHKAN KODE INI AGAR BACKGROUND TIDAK BOCOR SAAT PRINT */
-                      .id-card-wrapper { 
-            position: relative !important; 
-            overflow: hidden !important; 
-            background: #ffffff;
-            border-radius: 14px;
-            box-sizing: border-box;
-            border: 1px solid #ccc !important; /* Tambahan frame border agar presisi di kertas */
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background: #fff !important;
+            color: #000;
         }
         
-        .id-card-wrapper.portrait { width: 204px; height: 324px; max-height: 324px; }
+        /* ATURAN TABEL AGAR RAPI & TIDAK TERPOTONG JELEK */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 12px;
+            font-size: 11px;
+            page-break-inside: auto;
+        }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #e0e0e0 !important;
+            font-weight: bold;
+        }
+        
+        /* CSS SERTIFIKAT - DIKUNCI PAS 1 LEMBAR A4 (TIDAK JADI 2 HALAMAN) */
+        .sertifikat-wrapper {
+            width: 100%;
+            height: ${orientasiHalaman === 'landscape' ? '188mm' : '275mm'};
+            max-height: ${orientasiHalaman === 'landscape' ? '188mm' : '275mm'};
+            background-color: #fff;
+            background-size: cover;
+            background-position: center;
+            border: 8px solid #04432A;
+            padding: 16px 24px;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            position: relative;
+            margin: 0 auto;
+            color: #111;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+        }
+        .sertifikat-header img {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 4px;
+        }
+        .sertifikat-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #04432A;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            letter-spacing: 2px;
+        }
+        .sertifikat-subtitle {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+        .sertifikat-body {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .sertifikat-name {
+            font-size: 2.1rem;
+            font-weight: bold;
+            font-style: italic;
+            color: #000;
+            border-bottom: 2px solid #ccc;
+            display: inline-block;
+            padding: 0 20px;
+            margin: 8px auto;
+            text-transform: uppercase;
+        }
+        .sertifikat-predikat {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #D4AF37;
+            margin: 8px 0;
+        }
+        .sertifikat-footer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 30px;
+            text-align: center;
+        }
+        .sertifikat-ttd img {
+            max-height: 50px;
+            margin: 4px auto;
+            display: block;
+        }
 
+                                /* CSS ID CARD & LAINNYA */
+        :root {
+            --primary: #04432A;
+            --primary-light: #0B6B46;
+            --accent: #D4AF37;
+        }
+
+        .id-card-wrapper {
+            width: 324px; height: 204px; max-height: 204px;
+            /* Efek Liquid Glass & Border yang dipertahankan untuk print */
+            background-color: rgba(255, 255, 255, 0.35) !important; 
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 14px; 
+            overflow: hidden; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            display: flex; flex-direction: column; page-break-inside: avoid;
+        }
+        .id-card-wrapper.portrait { width: 204px; height: 324px; max-height: 324px; }
         
         .id-card-wrapper::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+            /* Mempertahankan Gradasi Warna */
             background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important;
             clip-path: polygon(0 0, 100% 0, 100% 45%, 0% 100%); z-index: 0;
         }
@@ -1809,75 +1909,117 @@ body {
         }
         .id-card-wrapper.portrait::after { height: 42%; clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 105%); }
 
-        /* PERBAIKAN: Layout Simetris & Rata Tengah Untuk Depan (Landscape) */
         .id-header {
             background: transparent !important; color: white !important; border: none !important;
-            padding: 12px 14px 4px 14px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; z-index: 1; position: relative;
+            padding: 12px 14px 8px 14px; text-align: left; display: flex; align-items: center; justify-content: flex-start; gap: 10px; z-index: 1; position: relative;
         }
-        .id-card-wrapper.portrait .id-header { flex-direction: column; padding: 12px 10px 4px 10px; gap: 4px; }
+        .id-card-wrapper.portrait .id-header { flex-direction: column; padding: 12px 10px 4px 10px; gap: 4px; text-align: center; }
         
-        .id-header img { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.95) !important; padding: 3px; object-fit: contain; }
+        .id-header img { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.95) !important; padding: 3px; object-fit: contain; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .id-header h4 { font-size: 0.85rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
         .id-header p { font-size: 0.55rem; color: #F4E29F !important; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
 
         .id-body {
-            padding: 6px 14px 12px 14px; display: flex; gap: 8px; background: transparent !important;
-            flex: 1; position: relative; align-items: center; justify-content: space-between; overflow: hidden; z-index: 1;
+            padding: 6px 14px 12px 14px; display: flex; gap: 12px; background: transparent !important;
+            flex: 1; position: relative; align-items: center; overflow: hidden; z-index: 1;
         }
-                .id-card-wrapper.portrait .id-body { flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; padding: 4px 10px 38px 10px; }
+        .id-card-wrapper.portrait .id-body { flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; padding: 4px 10px 25px 10px; }
         
-        .id-photo { width: 65px; height: 85px; object-fit: cover; border: 2px solid rgba(255,255,255,0.9); border-radius: 10px; flex-shrink: 0; }
+        .id-photo { width: 65px; height: 85px; object-fit: cover; border: 2px solid rgba(255,255,255,0.9); border-radius: 10px; background: #eee; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .id-card-wrapper.portrait .id-photo { width: 60px; height: 75px; margin-top: 0; }
 
         .id-details {
-            flex: 1; font-size: 0.65rem; line-height: 1.4; color: #111; font-weight: bold; text-align: center; overflow: hidden;
-            background: transparent !important; padding: 0 2px; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            flex: 1; font-size: 0.65rem; line-height: 1.4; color: #111; font-weight: bold; text-align: left; overflow: hidden;
+            background: transparent !important; padding: 0 2px; border: none; border-radius: 0; box-shadow: none;
         }
-        .id-card-wrapper.portrait .id-details { width: 100%; }
-        .id-details strong { color: var(--primary) !important; font-size: 0.85rem; display: block; margin-bottom: 2px; text-transform: uppercase; }
+        .id-card-wrapper.portrait .id-details { text-align: center; width: 100%; }
+        .id-details strong { color: var(--primary) !important; font-size: 0.85rem; display: block; margin-bottom: 2px; border-bottom: none; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .id-footer-custom { background: rgba(4, 67, 42, 0.85) !important; backdrop-filter: blur(5px); color: white !important; text-align: center; font-size: 0.6rem; padding: 4px; font-weight: bold; width: 100%; z-index: 10; position: absolute; bottom: 0; left: 0; border-top: 1px solid rgba(255,255,255,0.3); }
+                .id-footer-custom { background: rgba(4, 67, 42, 0.85) !important; backdrop-filter: blur(5px); color: white !important; text-align: center; font-size: 0.6rem; padding: 4px; font-weight: bold; width: 100%; z-index: 10; position: absolute; bottom: 0; left: 0; border-top: 1px solid rgba(255,255,255,0.3); }
         
-        .id-qr-depan { width: 65px !important; display: flex; align-items: center; justify-content: center; margin: 0; background: transparent !important;}
+        /* Barcode 1D Print Dibuat Auto */
+        .id-qr-depan { width: auto !important; height: auto !important; min-width: 60px; padding: 3px; background: white !important; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-left: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .id-card-wrapper.portrait .id-qr-depan { margin: 6px auto 0 auto; width: auto !important; max-width: 90% !important; }
         
-                        #sisi-belakang-kartu { position: relative !important; z-index: 10 !important; }
-        
-        /* 1. Efek Layer Putih Transparan (85% Opacity) */
-        .id-back-content { 
-            position: relative !important; 
-            z-index: 10 !important; 
-            background-color: rgba(255, 255, 255, 0.85) !important; 
-            border-radius: 0 0 14px 14px !important;
+        /* KODE PERBAIKAN: Memaksa teks belakang di atas ornamen gambar */
+        #sisi-belakang-kartu {
+            position: relative !important;
+            z-index: 10 !important;
+        }
+        .id-back-content {
+            position: relative !important;
+            z-index: 10 !important;
+            background-color: #ffffff !important;
         }
         
-        /* 2. Mengembalikan Layout Normal Portrait */
-        .id-card-wrapper.portrait .id-back-content { 
-            flex-direction: column !important; 
-            align-items: flex-start !important; 
-            justify-content: flex-start !important; 
-        }
+        /* KODE PERBAIKAN: Meluruskan Posisi Kartu Belakang Print Mode Portrait */
+        .id-card-wrapper.portrait .id-back-content { flex-direction: column !important; text-align: center !important; }
+        .id-card-wrapper.portrait .id-back-left { text-align: left !important; align-items: stretch !important; width: 100% !important; }
+        .id-card-wrapper.portrait .id-back-title, .id-card-wrapper.portrait .id-back-ttd { text-align: center !important; }
+        .id-card-wrapper.portrait .id-back-right { border-left: none !important; border-top: 1px dashed #999 !important; padding-left: 0 !important; padding-top: 8px !important; width: 100% !important; margin-top: auto !important; flex-direction: row !important; justify-content: space-between !important; }
+
         
-        /* 3. MUNCULKAN KEMBALI TEKS TATA TERTIB (display: block) */
-        .id-card-wrapper.portrait .id-back-left { 
-            display: block !important; 
-            width: 100% !important;
-        }
-        
-        /* 4. Susun TTD dan Barcode supaya Jejer Rapi di Bawah */
-        .id-card-wrapper.portrait .id-back-right { 
-            border-top: 1px dashed #999 !important; 
-            padding-top: 8px !important; 
-            width: 100% !important; 
-            flex-direction: row !important; 
-            justify-content: space-between !important; 
-            align-items: center !important; 
-            gap: 8px !important; 
+           .kolektif-grid-gabung {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            padding-bottom: 15px;
         }
 
-
-        .kolektif-grid-gabung { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding-bottom: 15px; }
-        /* ... (BIARKAN CSS SURAT IZIN TETAP SEPERTI ASLINYA) ... */
+        
+        .surat-izin-box {
+            border: 2px solid #04432A;
+            padding: 25px;
+            border-radius: 8px;
+            background: #fff;
+            color: #111;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .surat-header {
+            text-align: center;
+            border-bottom: 3px double #04432A;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .surat-header img { width: 48px; height: 48px; object-fit: contain; }
+        .surat-header-text h3 {
+            color: #04432A;
+            margin: 0;
+            font-size: 17px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .surat-no {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            text-decoration: underline;
+            margin-bottom: 15px;
+            color: #04432A;
+        }
+        .evaluasi-izin-box {
+            background: #f8f9fa;
+            border: 1px solid #D4AF37;
+            border-left: 4px solid #04432A;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin: 12px 0;
+            font-size: 12px;
+        }
+        .surat-ttd-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
     </style>
     </head>
     <body>${htmlIsiKonten}</body>
@@ -1885,8 +2027,12 @@ body {
     doc.close();
     
     setTimeout(() => { 
-        try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } 
-        catch(err) { alert("Fitur Print dipicu melalui dialog browser."); } 
+        try { 
+            iframe.contentWindow.focus(); 
+            iframe.contentWindow.print(); 
+        } catch(err) { 
+            alert("Fitur Print dipicu melalui dialog browser."); 
+        } 
     }, 800);
 }
 
@@ -1984,11 +2130,7 @@ body {
         alamatEl.style.fontSize = sizeFontAlamatPrint + 'px';
     });
 
-            // KODE PERBAIKAN: Looping menggunakan JsBarcode, bukan QRCode
-    
-    // 1. TAMBAHKAN VARIABEL WARNA DI SINI
-    const warnaGarisBarcode = dataYayasan.warna_barcode || "#000000";
-
+        // KODE PERBAIKAN: Looping menggunakan JsBarcode, bukan QRCode
     databaseSantri.forEach(santri => {
         const wadahBarcode = containerTemp.querySelector(`#barcode-gabung-${santri.nis}`);
         if (wadahBarcode && typeof JsBarcode !== 'undefined') {
@@ -1999,12 +2141,12 @@ body {
                     height: size1DPrint,
                     displayValue: false,
                     margin: 10, /* Margin ditambah (white space) mempercepat scan */
-                    background: "transparent",
-                    lineColor: warnaGarisBarcode /* 2. MASUKKAN WARNA KE DALAM PARAMETER INI */
+                    background: "transparent"
                 });
             } catch(err) { console.log("Barcode error:", err); }
         }
     });
+
 
     setTimeout(() => { 
         const canvases = containerTemp.querySelectorAll('canvas');
@@ -2018,14 +2160,10 @@ body {
         containerTemp.remove();
     }, 600);
 }
-        function cetakKolektifF4Belakang(orientasi = 'portrait') {
+    function cetakKolektifF4Belakang(orientasi = 'portrait') {
         let databaseSantri = getDB('pondok_santri', []).filter(s => !s.is_alumni); 
         if (databaseSantri.length === 0) return alert("Belum ada data santri aktif.");
         const yayasan = getDB('pondok_yayasan', {});
-        
-        // Menarik custom background gambar (wallpaper) jika diatur oleh pengguna
-        let bgCardStyle = yayasan.bg_idcard ? `background-image: url('${yayasan.bg_idcard}');` : ''; 
-        
         const teksTertib = yayasan.tata_tertib || "1. Wajib menjaga tata tertib...";
         const daftarPoin = teksTertib.split('\n').filter(baris => baris.trim() !== '');
         const formatTertib = daftarPoin.map(baris => `<div class="poin-tertib">${baris}</div>`).join('');
@@ -2034,23 +2172,23 @@ body {
         databaseSantri.forEach((santri) => {
             let qrPayload = JSON.stringify({ n: santri.nis, u: supabaseConfig.url || "", k: supabaseConfig.key || "" });
             htmlKartuKolektif += `
-                <div class="id-card-wrapper portrait" style="${bgCardStyle}">
+                <div class="id-card-wrapper portrait">
                     <div id="sisi-belakang-kartu" style="height:100%; display:flex; flex-direction:column;">
-                        <div class="id-header" style="padding:12px 10px 4px 10px; background:transparent; text-align:center;">
-                            <h4 style="font-size:0.75rem; margin:0; text-transform:uppercase; color:white; font-weight:bold; letter-spacing:0.5px; text-shadow:1px 1px 3px rgba(0,0,0,0.4);">SISTEM MONITORING SANTRI</h4>
+                        <div class="id-header" style="padding:6px; background:linear-gradient(135deg, var(--primary), var(--primary-light));">
+                            <h4 style="font-size:0.75rem; margin:0; text-transform: uppercase; color:white; text-align:center;">SISTEM MONITORING SANTRI</h4>
                         </div>
-                        <div class="id-back-content" style="display:flex; flex-direction:column; padding:10px; flex:1; background:transparent; text-align:center;">
-                            <div class="id-back-left" style="width:100%; flex:1; text-align:left;">
-                                <div class="id-back-title" style="font-size:0.75rem; font-weight:bold; color:var(--primary); border-bottom:1px solid var(--primary); margin-bottom:4px; text-align:center;">${yayasan.pondok || 'INSTANSI'}</div>
-                                <div class="id-back-rules" style="font-size:0.55rem; text-align:left; color:#111; font-weight:bold;">${formatTertib}</div>
+                        <div class="id-back-content" style="display:flex; flex-direction:column; padding:10px; flex:1; background:rgba(255, 255, 255, 0.9); text-align:center;">
+                            <div class="id-back-left" style="width:100%; flex:1;">
+                                <div class="id-back-title" style="font-size:0.75rem; font-weight:bold; color:var(--primary); border-bottom:1px solid #ccc; margin-bottom:4px;">${yayasan.pondok || 'INSTANSI'}</div>
+                                <div class="id-back-rules" style="font-size: 0.55rem; text-align:left;">${formatTertib}</div>
                             </div>
-                            <div class="id-back-right" style="width:100%; border-top:1px dashed #999; padding-top:10px; display:flex; flex-direction:row; justify-content:space-between; align-items:center; gap:8px;">
-                                <div class="id-back-ttd" style="text-align:center; font-size:0.55rem; color:var(--primary); font-weight:bold; flex:1;">
+                            <div class="id-back-right" style="width:100%; border-top:1px dashed #999; padding-top:8px; display:flex; flex-direction:row; justify-content:space-between; align-items:center; gap:5px;">
+                                <div class="id-back-ttd" style="text-align:left; font-size:0.5rem; color:var(--primary); font-weight:bold; width:50%;">
                                     <div>Mengetahui,</div>
-                                    ${yayasan.ttd_mudir ? `<img src="${yayasan.ttd_mudir}" style="height:30px; margin:4px auto; display:block;">` : '<div style="height:30px;"></div>'}
+                                    ${yayasan.ttd_mudir ? `<img src="${yayasan.ttd_mudir}" style="height:25px; margin:2px 0; display:block;">` : '<div style="height:25px;"></div>'}
                                     <div>${yayasan.mudir || 'Pimpinan'}</div>
                                 </div>
-                                <div class="id-qr-back" id="qr-back-${santri.nis}" data-payload='${qrPayload}' style="width:60px; height:60px; min-width:60px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center;"></div>
+                                <div class="id-qr-back" id="qr-back-${santri.nis}" data-payload='${qrPayload}' style="width:55px; height:55px; min-width:55px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center;"></div>
                             </div>
                         </div>
                     </div>
@@ -2059,11 +2197,8 @@ body {
         htmlKartuKolektif += `</div>`;
         
         const containerTemp = document.createElement('div'); 
-        containerTemp.style.position = 'absolute'; 
-        containerTemp.style.left = '-9999px'; 
-        containerTemp.style.top = '-9999px'; 
+        containerTemp.style.position = 'fixed'; containerTemp.style.right = '200vw'; 
         document.body.appendChild(containerTemp); 
-
         containerTemp.innerHTML = htmlKartuKolektif;
         
         const sizeQRPrint = parseInt(yayasan.ukuran_qr) || 60;
@@ -2086,7 +2221,6 @@ body {
             containerTemp.remove();
         }, 600);
     }
-
 
     function cetakRekapSantriPDF() {
         let databaseSantri = getDB('pondok_santri', []).filter(s => modeTampilanSantri === 'alumni' ? s.is_alumni : !s.is_alumni); 
@@ -2478,8 +2612,17 @@ function cetakLaporanPDF() {
         window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(teks); utterance.lang = 'id-ID'; window.speechSynthesis.speak(utterance);
     }
 
-        function initApp() {
-        registerServiceWorker(); // Hapus muatScriptEksternal() di sini
+    /* KODE SESUDAHNYA */
+    function initApp() {
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            if(splash) {
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 600);
+            }
+        }, 1500);
+        muatScriptEksternal(); registerServiceWorker();
+
         
         // ⬇️ TAMBAHKAN INISIALISASI INI DI SINI ⬇️
         if (!localStorage.getItem('pondok_jam_kustom')) {
@@ -2517,9 +2660,9 @@ function cetakLaporanPDF() {
             if (modified) localStorage.setItem('pondok_master_mapel', JSON.stringify(listM));
         }
 
-        if (!localStorage.getItem('pondok_kelas')) {
+                if (!localStorage.getItem('pondok_kelas')) {
             localStorage.setItem('pondok_kelas', JSON.stringify([
-                { id: 201, nama: "Kelas 1-A / Reguler", mapel_ids: [101, 102], santri_ids: [] }
+                { id: 201, nama: "Kelas 1-A / Reguler", mapel_ids: [101, 102], santri_ids: [], wali_kelas: "" }
             ]));
         } else {
             let listK = getDB('pondok_kelas', []);
@@ -2527,9 +2670,11 @@ function cetakLaporanPDF() {
             listK.forEach(k => {
                 if (!k.mapel_ids) { k.mapel_ids = []; modified = true; }
                 if (!k.santri_ids) { k.santri_ids = []; modified = true; }
+                if (typeof k.wali_kelas === 'undefined') { k.wali_kelas = ""; modified = true; }
             });
             if (modified) localStorage.setItem('pondok_kelas', JSON.stringify(listK));
         }
+
         
         if (!localStorage.getItem('pondok_gps')) {
             localStorage.setItem('pondok_gps', JSON.stringify({
@@ -2543,7 +2688,7 @@ function cetakLaporanPDF() {
         if (!localStorage.getItem('pondok_yayasan')) { 
             localStorage.setItem('pondok_yayasan', JSON.stringify({ 
                 mode: 'pondok', 
-                pondok: "Amtsilatul Huda", 
+                pondok: "sistem monitoring santri", 
                 yayasan: "Yayasan Amtsilatul Huda Mesaleng", 
                 blur_login: "4", 
                 logo: "https://cdn-icons-png.flaticon.com/512/3592/3592078.png", 
@@ -2570,49 +2715,12 @@ function cetakLaporanPDF() {
 
         loadIdentitasApp();
 
-                const savedSession = localStorage.getItem('pondok_active_user');
+        const savedSession = localStorage.getItem('pondok_active_user');
         if (savedSession) { currentUser = getDB('pondok_active_user', null); if(currentUser && currentUser.role) { masukKeSistemSetelahLogin(false); } }
         
         // Mulai PWA Watchdog untuk mendeteksi jadwal & pengingat secara permanen
         mulaiWatchdogJadwal();
-
-        // 2. IMPROVEMENT: Matikan Splash Screen perlahan saat semua sudah siap
-        setTimeout(() => {
-            const splash = document.getElementById('splash-screen');
-            if (splash) {
-                splash.style.opacity = '0';
-                setTimeout(() => splash.remove(), 600);
-            }
-        }, 1200);
-
-        // 3. IMPROVEMENT: Pantau Status Internet (Online/Offline)
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
-        updateOnlineStatus(); // Eksekusi saat inisialisasi awal
     }
-
-    // Fungsi Deteksi Status Internet
-    function updateOnlineStatus() {
-        let badge = document.getElementById('badge-koneksi-status');
-        if (!badge) {
-            badge = document.createElement('div');
-            badge.id = 'badge-koneksi-status';
-            badge.className = 'badge-koneksi';
-            const targetContainer = document.querySelector('.header-top');
-            if(targetContainer) targetContainer.appendChild(badge);
-        }
-        
-        if (navigator.onLine) {
-            badge.className = 'badge-koneksi koneksi-online';
-            badge.innerText = 'Mode: Online';
-            setTimeout(() => badge.style.opacity = '0', 3000); // Hilang sendiri kalau aman
-        } else {
-            badge.style.opacity = '1';
-            badge.className = 'badge-koneksi koneksi-offline';
-            badge.innerText = 'MODE OFFLINE';
-        }
-    }
-
 
     // ═══ PWA WATCHDOG ENGINE (PERMANEN MUTLAK) ═══
     function mulaiWatchdogJadwal() {
@@ -2688,54 +2796,26 @@ function cetakLaporanPDF() {
     }
 }
 
-        function masukKeSistemSetelahLogin(playSuara = true) {
-    document.getElementById('header-user-name').innerText = currentUser.nama || "User";
-    document.getElementById('header-user-photo').src = currentUser.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-    document.getElementById('dropdown-user-role').innerText = currentUser.role.toUpperCase();
+    function masukKeSistemSetelahLogin(playSuara = true) {
+        document.getElementById('header-user-name').innerText = currentUser.nama || "User";
+        document.getElementById('header-user-photo').src = currentUser.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+        document.getElementById('dropdown-user-role').innerText = currentUser.role.toUpperCase();
 
-    // 1. IMPROVEMENT: Sapaan Waktu Kontekstual & Personal
-    const jamSkrg = new Date().getHours();
-    let sapaan = "Selamat Malam,";
-    if (jamSkrg >= 3 && jamSkrg < 10) sapaan = "Selamat Pagi,";
-    else if (jamSkrg >= 10 && jamSkrg < 15) sapaan = "Selamat Siang,";
-    else if (jamSkrg >= 15 && jamSkrg < 18) sapaan = "Selamat Sore,";
-    
-    const sapaanEl = document.getElementById('greeting-text');
-    if (sapaanEl) sapaanEl.innerText = sapaan;
-
-    terapkanTemaBerdasarkanRole(currentUser.role);
-    document.getElementById('view-login').classList.add('hidden'); 
-    document.getElementById('app-header').classList.remove('hidden'); 
-    document.getElementById('dashboard-wrapper').classList.remove('hidden'); 
-    document.getElementById('app-nav').classList.remove('hidden');
-
-    renderMenuBerdasarkanAkses();
-    if (playSuara) { setTimeout(jalankanSapaanSuara, 300); }
-    
-    // --- PENGAMAN TAB ANTI-BLANK ---
-    const lastTab = localStorage.getItem('pondok_active_tab') || 'view-dashboard';
-    document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
-    
-    const targetTab = document.getElementById(lastTab);
-// Cek apakah tab yang tersimpan benar-benar ada di dalam HTML
-if (targetTab && lastTab !== 'view-login') {
-    targetTab.classList.remove('hidden');
-    if (lastTab !== 'view-dashboard') bukaFungsiTabSesuaiTujuan(lastTab);
-} else {
-    // Jika gagal / tidak ada, paksa kembali ke dashboard utama
-    document.getElementById('view-dashboard').classList.remove('hidden');
-    localStorage.setItem('pondok_active_tab', 'view-dashboard');
-}
-
-        document.getElementById('view-dashboard').classList.remove('hidden');
-        localStorage.setItem('pondok_active_tab', 'view-dashboard');
+        terapkanTemaBerdasarkanRole(currentUser.role);
+        document.getElementById('view-login').classList.add('hidden'); document.getElementById('app-header').classList.remove('hidden'); document.getElementById('dashboard-wrapper').classList.remove('hidden'); document.getElementById('app-nav').classList.remove('hidden');
+        renderMenuBerdasarkanAkses();
+        if (playSuara) { setTimeout(jalankanSapaanSuara, 300); }
+        const lastTab = localStorage.getItem('pondok_active_tab') || 'view-dashboard';
+        document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+        if (lastTab === 'view-dashboard' || lastTab === 'view-login') document.getElementById('view-dashboard').classList.remove('hidden');
+        else { document.getElementById(lastTab).classList.remove('hidden'); bukaFungsiTabSesuaiTujuan(lastTab); }
     }
 
         function bukaFungsiTabSesuaiTujuan(lastTab) {
         if(lastTab === 'view-santri') { switchTabSantri('aktif'); renderDropdownKelasSantri(); }
         if(lastTab === 'view-evaluasi') renderDropdownKelasEvaluasi();
         if(lastTab === 'view-izin') renderTabelIzinAktif();
-        if(lastTab === 'view-kelas') { renderMasterMapel(); renderTabelDaftarKelas(); renderJamKustom(); }    
+                if(lastTab === 'view-kelas') { renderMasterMapel(); renderTabelDaftarKelas(); renderJamKustom(); renderDropdownWaliKelas(); }    
                if (lastTab === 'view-absen') startAnalisisGPSUstadz(); 
         if (lastTab === 'view-scanner-wireless') { document.getElementById('input-dummy-wireless').focus(); document.getElementById('input-dummy-wireless').value = ''; }
 
@@ -2743,6 +2823,7 @@ if (targetTab && lastTab !== 'view-login') {
         if (lastTab === 'view-paguyuban') { document.getElementById('area-input-paguyuban').classList.add('hidden'); } 
         if(lastTab === 'view-hak-akses') renderCheckboxHakAkses(); 
         if(lastTab === 'view-lokasi') renderFormGeofencing(); 
+        if(lastTab === 'view-walikelas') initWaliKelasView();
         if(lastTab === 'view-pengguna') renderTabelPegawai(); 
         if(lastTab === 'view-rekap') loadDropdownRekapKelas(); 
         if(lastTab === 'view-database') { 
@@ -2753,58 +2834,59 @@ if (targetTab && lastTab !== 'view-login') {
     }
 
     function loadIdentitasApp() {
-    const data = getDB('pondok_yayasan', null);
-    if(data) {
-        terapkanModeAplikasi(data.mode || 'pondok');
-        if(document.getElementById('login-pondok-name')) document.getElementById('login-pondok-name').innerText = data.pondok || "Sistem Monitoring";
-        if(document.getElementById('yayasan-name-pondok')) document.getElementById('yayasan-name-pondok').innerText = data.pondok || "Sistem Manajemen";
-        if(document.getElementById('yayasan-name-legal')) document.getElementById('yayasan-name-legal').innerText = data.yayasan || "Sistem Instansi";
-        
-        let validLogo = (data.logo && data.logo.trim() !== "") ? data.logo : "https://cdn-icons-png.flaticon.com/512/3592/3592078.png";
-        if(document.getElementById('login-logo')) document.getElementById('login-logo').src = validLogo;
-        if(document.getElementById('header-logo')) document.getElementById('header-logo').src = validLogo;
-        
-        // --- LOGIKA SPLASH SCREEN ---
-        if(document.getElementById('splash-logo')) document.getElementById('splash-logo').src = validLogo;
-        if(document.getElementById('splash-title')) document.getElementById('splash-title').innerText = data.pondok || "Sistem Monitoring";
-        // ----------------------------
-        
-        let validBg = (data.bg_login && data.bg_login.trim() !== "") ? data.bg_login : "https://images.unsplash.com/photo-1519817650390-28a59b20892c?q=80&w=1000&auto=format&fit=crop";
-        if(document.getElementById('view-login')) document.getElementById('view-login').style.backgroundImage = `url('${validBg}')`;
-        
-        let tingkatBlur = data.blur_login !== undefined ? data.blur_login : "4";
-        const overlay = document.querySelector('.login-overlay'); if(overlay) { overlay.style.backdropFilter = `blur(${tingkatBlur}px)`; overlay.style.webkitBackdropFilter = `blur(${tingkatBlur}px)`; }
-
-        if(document.getElementById('input-nama-pondok-edit')) {
-            document.getElementById('setting-app-mode').value = data.mode || 'pondok'; 
-            document.getElementById('input-nama-pondok-edit').value = data.pondok || ""; 
-            document.getElementById('input-yayasan-edit').value = data.yayasan || ""; 
-            document.getElementById('input-mudir-edit').value = data.mudir || ''; 
-            document.getElementById('input-alamat-edit').value = data.alamat || ''; 
-            document.getElementById('setting-footer-text').value = data.teks_footer || ""; 
-            document.getElementById('setting-teks-lulus').value = data.teks_lulus || ""; 
+        const data = getDB('pondok_yayasan', null);
+        if(data) {
+            terapkanModeAplikasi(data.mode || 'pondok');
+            if(document.getElementById('login-pondok-name')) document.getElementById('login-pondok-name').innerText = data.pondok || "Sistem Monitoring";
+            if(document.getElementById('yayasan-name-pondok')) document.getElementById('yayasan-name-pondok').innerText = data.pondok || "Sistem Manajemen";
+            if(document.getElementById('yayasan-name-legal')) document.getElementById('yayasan-name-legal').innerText = data.yayasan || "Sistem Instansi";
+            let validLogo = (data.logo && data.logo.trim() !== "") ? data.logo : "https://cdn-icons-png.flaticon.com/512/3592/3592078.png";
+            if(document.getElementById('login-logo')) document.getElementById('login-logo').src = validLogo;
+            if(document.getElementById('header-logo')) document.getElementById('header-logo').src = validLogo;
+            let validBg = (data.bg_login && data.bg_login.trim() !== "") ? data.bg_login : "https://images.unsplash.com/photo-1519817650390-28a59b20892c?q=80&w=1000&auto=format&fit=crop";
+            if(document.getElementById('view-login')) document.getElementById('view-login').style.backgroundImage = `url('${validBg}')`;
             
-            document.getElementById('setting-kertas-sertifikat').value = data.kertas_sertifikat || "A4";
-            document.getElementById('setting-warna-barcode').value = data.warna_barcode || "#000000";
-            document.getElementById('setting-font-nama').value = data.font_nama || "13";
-            document.getElementById('setting-font-alamat').value = data.font_alamat || "9";
+            let tingkatBlur = data.blur_login !== undefined ? data.blur_login : "4";
+            const overlay = document.querySelector('.login-overlay'); if(overlay) { overlay.style.backdropFilter = `blur(${tingkatBlur}px)`; overlay.style.webkitBackdropFilter = `blur(${tingkatBlur}px)`; }
 
-            document.getElementById('setting-ukuran-qr').value = data.ukuran_qr || "60";
-            document.getElementById('setting-ukuran-barcode1d').value = data.ukuran_barcode1d || "30";
-            document.getElementById('setting-voice-aktif').value = data.voice_aktif || "1"; 
-            document.getElementById('setting-voice-teks').value = data.voice_teks || ""; 
-            document.getElementById('setting-tata-tertib').value = data.tata_tertib || ""; 
-            document.getElementById('setting-izin-judul').value = data.izin_judul || ""; 
-            document.getElementById('setting-izin-catatan').value = data.izin_catatan || ""; 
-            document.getElementById('setting-blur-login').value = tingkatBlur;
-            document.getElementById('setting-pwa-notif-aktif').value = data.pwa_notif_aktif || "1";
-            document.getElementById('setting-pwa-notif-teks').value = data.pwa_notif_teks || "Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}.";
-            document.getElementById('setting-teks-berita').value = data.teks_berita || "";
+            if(document.getElementById('input-nama-pondok-edit')) {
+                document.getElementById('setting-app-mode').value = data.mode || 'pondok'; 
+                document.getElementById('input-nama-pondok-edit').value = data.pondok || ""; 
+                document.getElementById('input-yayasan-edit').value = data.yayasan || ""; 
+                document.getElementById('input-mudir-edit').value = data.mudir || ''; 
+                document.getElementById('input-alamat-edit').value = data.alamat || ''; 
+                document.getElementById('setting-footer-text').value = data.teks_footer || ""; 
+                document.getElementById('setting-teks-lulus').value = data.teks_lulus || ""; 
+                
+document.getElementById('setting-kertas-sertifikat').value = data.kertas_sertifikat || "A4";
+               
+               document.getElementById('setting-font-nama').value = data.font_nama || "13";
+               document.getElementById('setting-font-alamat').value = data.font_alamat || "9";
 
-            if(data.ttd_mudir) { base64TempImages.ttd_mudir = data.ttd_mudir; document.getElementById('ttd-preview-yayasan').src = data.ttd_mudir; document.getElementById('ttd-preview-yayasan').style.display = 'block'; }
+                document.getElementById('setting-ukuran-qr').value = data.ukuran_qr || "60";
+                document.getElementById('setting-ukuran-barcode1d').value = data.ukuran_barcode1d || "30";
+                 document.getElementById('setting-voice-aktif').value = data.voice_aktif || "1"; 
+                document.getElementById('setting-voice-teks').value = data.voice_teks || ""; 
+                document.getElementById('setting-tata-tertib').value = data.tata_tertib || ""; 
+                document.getElementById('setting-izin-judul').value = data.izin_judul || ""; 
+                document.getElementById('setting-izin-catatan').value = data.izin_catatan || ""; 
+                document.getElementById('setting-blur-login').value = tingkatBlur;
+                document.getElementById('setting-pwa-notif-aktif').value = data.pwa_notif_aktif || "1";
+                document.getElementById('setting-pwa-notif-teks').value = data.pwa_notif_teks || "Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}.";
+                /* KODE SESUDAHNYA */
+                document.getElementById('setting-teks-berita').value = data.teks_berita || "";
+                document.getElementById('setting-warna-barcode').value = data.warna_barcode || "#000000";
+
+                if(data.ttd_mudir) { base64TempImages.ttd_mudir = data.ttd_mudir; document.getElementById('ttd-preview-yayasan').src = data.ttd_mudir; document.getElementById('ttd-preview-yayasan').style.display = 'block'; }
+                if(data.stempel_mudir) { base64TempImages.stempel_mudir = data.stempel_mudir; document.getElementById('stempel-preview-yayasan').src = data.stempel_mudir; document.getElementById('stempel-preview-yayasan').style.display = 'block'; }
+                
+                // Set Splash Screen Logo & Title
+                if(document.getElementById('splash-logo')) document.getElementById('splash-logo').src = data.logo || "icon-512.png";
+                if(document.getElementById('splash-title')) document.getElementById('splash-title').innerText = data.pondok || "Memuat...";
+            }
         }
     }
-}
+
 
     function kompresiGambar(fileImage, maxLebar, callbackSelesai) {
         if(!fileImage) return callbackSelesai(''); const readerData = new FileReader(); readerData.readAsDataURL(fileImage);
@@ -2820,27 +2902,39 @@ if (targetTab && lastTab !== 'view-login') {
         if (currentUser) { localStorage.setItem('pondok_active_user', JSON.stringify(currentUser)); localStorage.setItem('pondok_active_tab', 'view-dashboard'); document.getElementById('login-error').classList.add('hidden'); masukKeSistemSetelahLogin(); } else { document.getElementById('login-error').classList.remove('hidden'); } 
     }
     
-        function prosesLogout() { playHapticAndSound(); localStorage.removeItem('pondok_active_user'); localStorage.removeItem('pondok_active_tab'); location.reload(); }
-    function switchTab(viewId) { playHapticAndSound(); document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden')); document.getElementById(viewId).classList.remove('hidden'); localStorage.setItem('pondok_active_tab', viewId); bukaFungsiTabSesuaiTujuan(viewId); }
+    function prosesLogout() { localStorage.removeItem('pondok_active_user'); localStorage.removeItem('pondok_active_tab'); location.reload(); }
+    function switchTab(viewId) { document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden')); document.getElementById(viewId).classList.remove('hidden'); localStorage.setItem('pondok_active_tab', viewId); bukaFungsiTabSesuaiTujuan(viewId); }
     function openSubMenu(id) { switchTab(id); } function closeSubMenu() { if(html5QrcodeScanner) html5QrcodeScanner.stop(); if(scannerIzin) scannerIzin.stop(); switchTab('view-dashboard'); }
     
     function renderMenuBerdasarkanAkses() { 
-        const containerMenu = document.getElementById('render-menu-buttons'); containerMenu.innerHTML = ''; 
-        const seluruhAkses = getDB('pondok_akses', defaultAkses); const aksesSaya = seluruhAkses[currentUser.role] || []; 
-        const dynMenuMaster = menuMaster.map(item => {
-            if(item.id === 'view-santri') return { ...item, nama: `Database ${getTerm('santri')} & Ruang Alumni` };
-            if(item.id === 'view-izin') return { ...item, nama: `Surat Izin ${getTerm('santri')} & Validasi Balik` };
-            return item;
-        });
+    const containerMenu = document.getElementById('render-menu-buttons'); containerMenu.innerHTML = ''; 
+    const seluruhAkses = getDB('pondok_akses', defaultAkses); const aksesSaya = seluruhAkses[currentUser.role] || []; 
+    const dynMenuMaster = menuMaster.map(item => {
+        if(item.id === 'view-santri') return { ...item, nama: `Database ${getTerm('santri')} & Ruang Alumni` };
+        if(item.id === 'view-izin') return { ...item, nama: `Surat Izin ${getTerm('santri')} & Validasi Balik` };
+        return item;
+    });
 
-        aksesSaya.forEach(menuId => { const detailMenu = dynMenuMaster.find(m => m.id === menuId); if (detailMenu) { containerMenu.innerHTML += `<button class="btn-outline" onclick="openSubMenu('${detailMenu.id}')"><i class="fa-solid ${detailMenu.icon}"></i> ${detailMenu.nama}</button>`; } }); 
-        
-        const navBawah = document.getElementById('app-nav'); 
-        navBawah.innerHTML = `<div class="nav-item active" onclick="switchTab('view-dashboard')"><i class="fa-solid fa-house"></i> Beranda</div>`; 
-        if (aksesSaya.includes('view-absen')) navBawah.innerHTML += `<div class="nav-item" onclick="switchTab('view-absen')"><i class="fa-solid fa-camera"></i> Absen</div>`; 
-        if (aksesSaya.includes('view-keuangan')) navBawah.innerHTML += `<div class="nav-item" onclick="switchTab('view-keuangan')"><i class="fa-solid fa-wallet"></i> Keuangan</div>`; 
-        navBawah.innerHTML += `<div class="nav-item" onclick="prosesLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</div>`; 
-    }
+    const dbKelas = getDB('pondok_kelas', []);
+    const isWaliKelasAktif = dbKelas.some(k => k.wali_kelas === currentUser.nama);
+
+    aksesSaya.forEach(menuId => { 
+        // Logika penyembunyian: Jika bukan Superadmin/Admin dan bukan wali kelas, jangan tampilkan menu wali kelas
+        if (menuId === 'view-walikelas' && currentUser.role === 'ustadz' && !isWaliKelasAktif) return;
+
+        const detailMenu = dynMenuMaster.find(m => m.id === menuId); 
+        if (detailMenu) { 
+            containerMenu.innerHTML += `<button class="btn-outline" onclick="openSubMenu('${detailMenu.id}')"><i class="fa-solid ${detailMenu.icon}"></i> ${detailMenu.nama}</button>`; 
+        } 
+    }); 
+    
+    const navBawah = document.getElementById('app-nav'); 
+    navBawah.innerHTML = `<div class="nav-item active" onclick="switchTab('view-dashboard')"><i class="fa-solid fa-house"></i> Beranda</div>`; 
+    if (aksesSaya.includes('view-absen')) navBawah.innerHTML += `<div class="nav-item" onclick="switchTab('view-absen')"><i class="fa-solid fa-camera"></i> Absen</div>`; 
+    if (aksesSaya.includes('view-keuangan')) navBawah.innerHTML += `<div class="nav-item" onclick="switchTab('view-keuangan')"><i class="fa-solid fa-wallet"></i> Keuangan</div>`; 
+    navBawah.innerHTML += `<div class="nav-item" onclick="prosesLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</div>`; 
+}
+
 
     function previewFotoSantri(event) { const file = event.target.files[0]; if (!file) return; kompresiGambar(file, 150, (base64Hasil) => { tempFotoSantriBase64 = base64Hasil; const imgPreview = document.getElementById('preview-foto-santri-ui'); imgPreview.src = base64Hasil; imgPreview.style.display = 'block'; }); }
     
@@ -2895,6 +2989,7 @@ if (targetTab && lastTab !== 'view-login') {
             btnEl.innerHTML = '<i class="fa-solid fa-eye" id="icon-toggle-tabel"></i> Tampilkan Daftar';
         }
     }
+   
 
     function simpanSantri() { 
         const idEdit = document.getElementById('edit-id-santri').value; 
@@ -3014,7 +3109,7 @@ if (targetTab && lastTab !== 'view-login') {
         alert(`Data "${target.nama}" berhasil dihapus.`);
     }
 
-        function renderTabelSantri() { 
+    function renderTabelSantri() { 
         let databaseSantri = getDB('pondok_santri', []);
         const aktifList = databaseSantri.filter(s => !s.is_alumni);
         const alumniList = databaseSantri.filter(s => s.is_alumni === true);
@@ -3033,9 +3128,6 @@ if (targetTab && lastTab !== 'view-login') {
         if(dataDitampilkan.length === 0) { 
             return elemenTbody.innerHTML = `<tr><td colspan="3" align="center">Belum ada data ${modeTampilanSantri === 'alumni' ? 'alumni' : 'santri aktif'}.</td></tr>`; 
         } 
-
-        // Panggil database kelas untuk mengecek siapa wali kelasnya
-        const dbKelas = getDB('pondok_kelas', []);
 
         dataDitampilkan.forEach(s => {
             if (modeTampilanSantri === 'alumni') {
@@ -3059,31 +3151,15 @@ if (targetTab && lastTab !== 'view-login') {
                     </td>
                 </tr>`;
             } else {
-                // Cari kelas dari santri ini
-                const kelasSantri = dbKelas.find(k => (k.santri_ids || []).includes(s.id));
-                
-                // Cek apakah user yang sedang login adalah wali kelas dari kelas santri ini
-                const isWaliKelas = kelasSantri && kelasSantri.wali_kelas === currentUser.username;
-                
-                // Tentukan hak akses (Bisa edit jika Superadmin, Admin, atau Wali Kelasnya sendiri)
-                const punyaAksesEdit = currentUser.role === 'superadmin' || currentUser.role === 'admin' || isWaliKelas;
-
-                // Tombol default yang bisa dilihat siapa saja
-                let htmlTombolAksi = `<button class="btn-print" style="margin:0; padding:6px; font-size:0.7rem;" onclick="prosesCetakIDCard('${s.nis}', 'santri')">Kartu</button>
-                                      <button class="btn-outline" style="margin:0; padding:6px; font-size:0.7rem; border-color:var(--info); color:var(--info);" onclick="bukaModalSertifikat('${s.nis}')">Sertifikat</button>`;
-
-                // Hanya render tombol Edit & Hapus jika punya akses
-                if (punyaAksesEdit) {
-                    htmlTombolAksi += `<button class="btn-warning" style="margin:0; padding:6px; font-size:0.7rem;" onclick="editSantriMode(${s.id})">Edit</button>
-                                       <button class="btn-danger" style="margin:0; padding:6px; font-size:0.7rem;" onclick="hapusSantri(${s.id})">Hapus</button>`;
-                }
-
                 elemenTbody.innerHTML += `<tr>
                     <td><strong>${s.nis}</strong><br><span style="font-size:0.65rem; color:var(--text-muted);">${s.kamar}</span></td>
                     <td>${s.nama}</td>
                     <td>
                         <div style="display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-start;">
-                            ${htmlTombolAksi}
+                            <button class="btn-print" style="margin:0; padding:6px; font-size:0.7rem;" onclick="prosesCetakIDCard('${s.nis}', 'santri')">Kartu</button>
+                            <button class="btn-outline" style="margin:0; padding:6px; font-size:0.7rem; border-color:var(--info); color:var(--info);" onclick="bukaModalSertifikat('${s.nis}')">Sertifikat</button>
+                            <button class="btn-warning" style="margin:0; padding:6px; font-size:0.7rem;" onclick="editSantriMode(${s.id})">Edit</button>
+                            <button class="btn-danger" style="margin:0; padding:6px; font-size:0.7rem;" onclick="hapusSantri(${s.id})">Hapus</button>
                         </div>
                     </td>
                 </tr>`;
@@ -3275,10 +3351,13 @@ function bukaModalSertifikat(nis) {
         document.getElementById('back-tata-tertib-text').innerHTML = daftarPoin
             .map(baris => `<div class="poin-tertib">${baris}</div>`)
             .join('');
+        /* KODE SESUDAHNYA */
         document.getElementById('back-mudir-nama').innerText = yayasan.mudir || "Pimpinan";
         if (yayasan.ttd_mudir) { document.getElementById('back-ttd-img').src = yayasan.ttd_mudir; document.getElementById('back-ttd-img').style.display = 'block'; } else { document.getElementById('back-ttd-img').style.display = 'none'; }
+        if (yayasan.stempel_mudir) { document.getElementById('back-stempel-img').src = yayasan.stempel_mudir; document.getElementById('back-stempel-img').style.display = 'block'; } else { document.getElementById('back-stempel-img').style.display = 'none'; }
 
         // --- TAMBAHAN BARU: OTOMATIS SET JUDUL APLIKASI & ALAMAT KARTU BELAKANG ---
+
         const sebutan = getTerm('santri') || 'Santri';
         document.getElementById('back-app-title').innerText = "SISTEM MONITORING " + sebutan.toUpperCase();
         document.getElementById('back-alamat-text').innerText = yayasan.alamat || "-";
@@ -3321,7 +3400,7 @@ function bukaModalSertifikat(nis) {
         document.getElementById('id-card-modal').classList.remove('hidden'); 
     }
 
-            function terapkanKustomisasiLayoutIDCard(teksFooter, qrText) { 
+        function terapkanKustomisasiLayoutIDCard(teksFooter, qrText) { 
         const wadahQR = document.getElementById("card-qr"); 
         wadahQR.innerHTML = ''; 
         
@@ -3333,7 +3412,7 @@ function bukaModalSertifikat(nis) {
             footerEl.classList.add('hidden'); 
         } 
         
-        // Ambil ukuran dari pengaturan (default 60 jika kosong)
+               // Ambil ukuran dari pengaturan (default 60 jika kosong)
         const yayasan = getDB('pondok_yayasan', {});
         const sizeQR = parseInt(yayasan.ukuran_qr) || 60;
         const sizeFont = parseInt(yayasan.font_nama) || 13;
@@ -3346,9 +3425,8 @@ function bukaModalSertifikat(nis) {
         document.getElementById('card-nama').style.fontSize = sizeFont + 'px';
         const sizeFontAlamat = parseInt(yayasan.font_alamat) || 9;
         document.getElementById('card-alamat').style.fontSize = sizeFontAlamat + 'px';
-
-                        // --- CARI WARNA BARCODE DARI IDENTITAS YAYASAN ---
-        let warnaGarisBarcode = yayasan.warna_barcode || "#000000";
+/* KODE SESUDAHNYA */
+        const warnaBarcodeCustom = yayasan.warna_barcode || "#000000";
 
         // Render Barcode 1D (Depan)
         if (typeof JsBarcode !== 'undefined') {
@@ -3357,28 +3435,29 @@ function bukaModalSertifikat(nis) {
                 try { let parsed = JSON.parse(qrText); if(parsed.n) nisRaw = parsed.n; } catch(e){}
                 JsBarcode("#card-barcode", nisRaw, {
                     format: "CODE128",
-                    width: 2.2, /* Lebar Garis Diperlebar */
+                    width: 2.2, 
                     height: size1D,
                     displayValue: false,
-                    margin: 10, /* White space ditambah */
-                    background: "transparent",
-                    lineColor: warnaGarisBarcode // <-- Warna diterapkan di sini
+                    margin: 10,
+                    lineColor: warnaBarcodeCustom,
+                    background: "transparent"
                 });
             } catch(err) { console.log("Barcode error:", err); }
         }
 
-        // Render QR dengan ukuran presisi (Belakang)
+        // Render QR dengan ukuran presisi & warna dinamis (Belakang)
         if (typeof QRCode !== 'undefined') { 
             new QRCode(wadahQR, { 
                 text: qrText, 
                 width: sizeQR, 
                 height: sizeQR, 
-                colorDark: warnaGarisBarcode, // <-- Warna QR diterapkan di sini
+                colorDark: warnaBarcodeCustom, 
                 colorLight: "#ffffff", 
                 correctLevel: QRCode.CorrectLevel.L 
             }); 
-                } 
+        } 
     }
+
     function getStatistikIzin(nisSantri) { const histDB = getDB('pondok_history_izin', []); const riwayatSantri = histDB.filter(x => x.nis === nisSantri); let totalHari = 0; riwayatSantri.forEach(item => { totalHari += (parseInt(item.durasi_hari) || 1); }); return { total_kali: riwayatSantri.length, total_hari: totalHari }; }
 
     function startScannerIzin(mode = 'keluar') {
@@ -3579,43 +3658,47 @@ function bukaModalSertifikat(nis) {
     }
 
         function renderMasterMapel() {
-        // PERBAIKAN: Render Bank Mapel Checkbox
-        const wadahBank = document.getElementById('wadah-bank-mapel');
-        if (wadahBank) {
-            wadahBank.innerHTML = '';
-            const bank = getDB('pondok_bank_mapel', []);
-            if (bank.length === 0) {
-                wadahBank.innerHTML = '<span style="color:red; font-size:0.8rem; font-style:italic;">Bank mapel kosong. Tambahkan lewat kolom di atas.</span>';
-            } else {
-                bank.forEach((nama, idx) => {
-                    wadahBank.innerHTML += `
-                    <div style="display:flex; align-items:center; background:#fff; padding:6px 12px; border-radius:20px; border:1px solid #ccc; gap:8px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
-                        <input type="checkbox" value="${nama}" class="cb-bank-mapel" id="cb_bank_${idx}" style="margin:0; width:16px; height:16px; cursor:pointer;">
-                        <label for="cb_bank_${idx}" style="margin:0; font-size:0.75rem; cursor:pointer; font-weight:600; color:var(--primary);">${nama}</label>
-                        <i class="fa-solid fa-times-circle" style="color:var(--danger); font-size:0.85rem; cursor:pointer; margin-left:4px;" onclick="hapusBankMapel('${nama}')"></i>
-                    </div>`;
-                });
-            }
-        }
+        // --- REPLACE BAGIAN WADAH BANK MAPEL ---
+const wadahBank = document.getElementById('wadah-bank-mapel');
+if (wadahBank) {
+    wadahBank.innerHTML = '';
+    const bank = getDB('pondok_bank_mapel', []);
+    if (bank.length === 0) {
+        wadahBank.innerHTML = '<div style="color:red; font-size:0.8rem; padding:10px;">Bank mapel kosong. Tambahkan di atas.</div>';
+    } else {
+        bank.forEach((nama, idx) => {
+            wadahBank.innerHTML += `
+            <label style="display:flex; align-items:center; justify-content:space-between; padding:10px; border-bottom:1px solid rgba(0,0,0,0.05); font-size:0.85rem; cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <input type="checkbox" value="${nama}" class="cb-bank-mapel" style="width:18px; height:18px; margin:0; cursor:pointer;">
+                    <strong>${nama}</strong>
+                </div>
+                <i class="fa-solid fa-times-circle" style="color:var(--danger); font-size:1.1rem; cursor:pointer;" onclick="hapusBankMapel('${nama}'); event.preventDefault();"></i>
+            </label>`;
+        });
+    }
+}
 
-        const wadahUstadz = document.getElementById('input-ustadz-mapel-container');
+// --- REPLACE BAGIAN WADAH USTADZ ---
+const wadahUstadz = document.getElementById('input-ustadz-mapel-container');
 if (wadahUstadz) {
     wadahUstadz.innerHTML = '';
-    // Filter diubah hanya mengambil role 'ustadz' saja
+    // FILTER HANYA ROLE USTADZ SAJA
     const listUst = getDB('pondok_users', []).filter(user => user.role === 'ustadz');
     if (listUst.length === 0) {
-        wadahUstadz.innerHTML = '<div style="color:red; font-size:0.8rem; padding:10px;">Belum ada akun dengan role Ustadz.</div>';
+        wadahUstadz.innerHTML = '<div style="color:red; font-size:0.8rem; padding:10px;">Belum ada akun ustadz.</div>';
     } else {
         listUst.forEach(ust => {
-            let fotoUst = ust.foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-            wadahUstadz.innerHTML += '<label style="display:flex; align-items:center; gap:12px; padding:10px 12px; border-bottom:1px solid rgba(0,0,0,0.05); cursor:pointer; background:#fff; transition:0.2s;">' +
-                '<input type="checkbox" value="' + ust.username + '" data-nama="' + ust.nama + '" class="cb-ustadz-mapel" style="margin:0; width:18px; height:18px; accent-color:var(--primary); cursor:pointer; flex-shrink:0;">' +
-                '<img src="' + fotoUst + '" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); flex-shrink:0; box-shadow:0 2px 5px rgba(0,0,0,0.1);">' +
-                '<div style="display:flex; flex-direction:column; justify-content:center;">' +
-                    '<strong style="color:var(--primary); font-size:0.88rem; line-height:1.2;">' + ust.nama + '</strong>' +
-                    '<span style="color:var(--text-muted); font-size:0.7rem; margin-top:2px;"><i class="fa-solid fa-at"></i> ' + ust.username + '</span>' +
-                '</div>' +
-            '</label>';
+            // TAMPILAN CHECKBOX DENGAN FOTO
+            wadahUstadz.innerHTML += `
+            <label style="display:flex; align-items:center; gap:12px; padding:10px; border-bottom:1px solid rgba(0,0,0,0.05); font-size:0.85rem; cursor:pointer;">
+                <input type="checkbox" value="${ust.username}" data-nama="${ust.nama}" class="cb-ustadz-mapel" style="width:18px; height:18px; margin:0; cursor:pointer;">
+                <img src="${ust.foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width:35px; height:35px; border-radius:50%; object-fit:cover; border:2px solid var(--accent);">
+                <div style="flex:1;">
+                    <strong>${ust.nama}</strong><br>
+                    <span style="font-size:0.7rem; color:var(--text-muted);">@${ust.username}</span>
+                </div>
+            </label>`;
         });
     }
 }
@@ -3658,17 +3741,8 @@ if (wadahUstadz) {
                 ? `<span style="color:#D35400; font-weight:700;"><i class="fa-solid fa-clock"></i> ${m.hari}, ${m.jam_mulai || ''} - ${m.jam_selesai || ''} WITA</span>`
                 : `<span style="color:#7f8c8d; font-style:italic;">Fleksibel / Belum Diatur</span>`;
 
-                        const detailText = `Pengajar: ${m.ustadz_nama}\nJadwal: ${(m.hari || 'Fleksibel')} ${m.jam_mulai || ''}-${m.jam_selesai || ''}\nKelas: ${namaKelasTerpilih.join(", ")}`;
-            
-            // Generate Waktu untuk Sinkronisasi Kalender Google
-            let timeStr = "";
-            if (m.jam_mulai && m.jam_selesai) {
-                let tStart = m.jam_mulai.replace(':', '') + '00';
-                let tEnd = m.jam_selesai.replace(':', '') + '00';
-                let tglSekarang = new Date().toISOString().split('T')[0].replace(/-/g, '');
-                timeStr = `&dates=${tglSekarang}T${tStart}/${tglSekarang}T${tEnd}`;
-            }
-            const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(m.nama_mapel)}&details=${encodeURIComponent(detailText)}&location=${encodeURIComponent("Area Kelas")}${timeStr}`;
+            const detailText = `Pengajar: ${m.ustadz_nama}\nJadwal: ${(m.hari || 'Fleksibel')} ${m.jam_mulai || ''}-${m.jam_selesai || ''}\nKelas: ${namaKelasTerpilih.join(", ")}`;
+            const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(m.nama_mapel)}&details=${encodeURIComponent(detailText)}&location=${encodeURIComponent("Ruang Kelas Pondok / Sekolah")}`;
 
             tbodyMapel.innerHTML += `<tr>
                 <td><strong>${m.nama_mapel}</strong></td>
@@ -3677,10 +3751,10 @@ if (wadahUstadz) {
                     <div style="font-size:0.75rem; color:var(--primary); font-weight:bold;">${txtKelas}</div>
                     <div style="font-size:0.72rem; margin-top:3px;">${txtJadwal}</div>
                 </td>
-                <td>
+                                <td>
                     <div style="display:flex; gap:4px; flex-wrap:wrap;">
-                        <a href="${gcalUrl}" target="_blank" class="btn-outline" style="margin:0; padding:6px 8px; font-size:0.7rem; border-color:#F39C12; color:#F39C12; text-decoration:none;"><i class="fa-solid fa-calendar-plus"></i> Kalender HP</a>
-                        <button class="btn-success" style="margin:0; padding:6px 8px; font-size:0.7rem;" onclick="validasiDanNotifManual(${m.id})"><i class="fa-solid fa-bell"></i> Bunyikan</button>
+                        <button class="btn-success" style="margin:0; padding:6px 8px; font-size:0.7rem;" onclick="validasiDanNotifManual(${m.id})"><i class="fa-solid fa-check"></i> Valid & Notif</button>
+                        <button class="btn-print" style="margin:0; padding:6px 8px; font-size:0.7rem; background:#2C3E50;" onclick="cetakJadwalMapelPDF(${m.id})"><i class="fa-solid fa-file-pdf"></i> PDF</button>
                         <button class="btn-danger" style="margin:0; padding:6px 8px; font-size:0.7rem;" onclick="hapusMasterMapel(${m.id})"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </td>
@@ -3779,70 +3853,87 @@ if (wadahUstadz) {
         renderTabelDaftarKelas();
     }
 
-        function simpanKelasBaru() {
-    const namaKelas = document.getElementById('input-nama-kelas').value.trim();
-    const waliKelas = document.getElementById('input-wali-kelas').value;
-
-    if (!namaKelas) return alert("Isi nama kelas terlebih dahulu!");
-    
-    let listKelas = getDB('pondok_kelas', []);
-    listKelas.push({
-        id: Date.now(),
-        nama: namaKelas,
-        wali_kelas: waliKelas, // Menyimpan username ustadz
-        mapel_ids: [],
-        santri_ids: []
-    });
-
+   function simpanKelasBaru() {
+        const namaKelas = document.getElementById('input-nama-kelas').value.trim();
+        if (!namaKelas) return alert("Isi nama kelas terlebih dahulu!");
+        
+        let listKelas = getDB('pondok_kelas', []);
+        listKelas.push({
+            id: Date.now(),
+            nama: namaKelas,
+            mapel_ids: [],
+            santri_ids: []
+        });
         localStorage.setItem('pondok_kelas', JSON.stringify(listKelas));
         document.getElementById('input-nama-kelas').value = '';
         alert(`Kelas "${namaKelas}" berhasil dibuat!\nSilakan atur mata pelajaran yang dipelajarinya melalui form Master Mata Pelajaran di atas.`);
         renderMasterMapel();
         renderTabelDaftarKelas();
     }
-
-    function renderTabelDaftarKelas() {
-    // [TAMBAHAN] Isi dropdown Wali Kelas
-    const dropWali = document.getElementById('input-wali-kelas');
-    if (dropWali) {
-        dropWali.innerHTML = '<option value="">-- Tanpa Wali Kelas --</option>';
-        getDB('pondok_users', []).forEach(u => {
-            if (u.role === 'ustadz' || u.role === 'admin' || u.role === 'superadmin') {
-                dropWali.innerHTML += `<option value="${u.username}">${u.nama}</option>`;
-            }
+    function renderDropdownWaliKelas() {
+        const sel = document.getElementById('input-wali-kelas');
+        if (!sel) return;
+        sel.innerHTML = '<option value="">-- Tanpa Wali Kelas --</option>';
+        // Ambil data ustadz dari akun pengguna
+        const listUst = getDB('pondok_users', []).filter(u => u.role === 'ustadz');
+        listUst.forEach(u => {
+            sel.innerHTML += `<option value="${u.nama}">${u.nama}</option>`;
         });
     }
 
-    const elemenTbodyKelas = document.getElementById('tabel-kelas-body');
-    if (!elemenTbodyKelas) return;
-    elemenTbodyKelas.innerHTML = '';
-    const databaseKelas = getDB('pondok_kelas', []);
-    const dbSantri = getDB('pondok_santri', []);
-    if (databaseKelas.length === 0) return elemenTbodyKelas.innerHTML = '<tr><td colspan="4" align="center">Belum ada kelas.</td></tr>';
-    
-    databaseKelas.forEach(kls => {
-        const santriAktifDiKelas = dbSantri.filter(s => !s.is_alumni && (kls.santri_ids || []).includes(s.id));
-        // Cari nama wali kelas berdasarkan username yang tersimpan
-        const objWali = getDB('pondok_users', []).find(u => u.username === kls.wali_kelas);
-        const namaWali = objWali ? objWali.nama : 'Belum Atur';
+    function simpanKelasBaru() {
+        const namaKelas = document.getElementById('input-nama-kelas').value.trim();
+        const waliKelas = document.getElementById('input-wali-kelas').value;
+        if (!namaKelas) return alert("Isi nama kelas terlebih dahulu!");
+        
+        let listKelas = getDB('pondok_kelas', []);
+        listKelas.push({
+            id: Date.now(),
+            nama: namaKelas,
+            mapel_ids: [],
+            santri_ids: [],
+            wali_kelas: waliKelas // MENYIMPAN DATA WALI KELAS
+        });
+        localStorage.setItem('pondok_kelas', JSON.stringify(listKelas));
+        
+        document.getElementById('input-nama-kelas').value = '';
+        document.getElementById('input-wali-kelas').value = '';
+        alert(`Kelas "${namaKelas}" berhasil dibuat!\nSilakan atur mata pelajaran yang dipelajarinya melalui form Master Mata Pelajaran di atas.`);
+        
+        renderMasterMapel();
+        renderTabelDaftarKelas();
+    }
 
-        elemenTbodyKelas.innerHTML += `<tr>
-            <td>
-                <strong>${kls.nama}</strong><br>
-                <span style="font-size:0.7rem; color:var(--text-muted);">Wali: ${namaWali}</span>
-            </td>
-            <td>${(kls.mapel_ids || []).length} Mapel</td>
-            <td>${santriAktifDiKelas.length} Santri</td>
-            <td>
-                <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                    <button class="btn-print" style="margin:0; padding:6px 10px; font-size:0.75rem;" onclick="cetakJadwalPerKelas(${kls.id})"><i class="fa-solid fa-file-pdf"></i> Jadwal</button>
-                    <button class="btn-warning" style="margin:0; padding:6px 10px; font-size:0.75rem;" onclick="bukaModalPlottingKelas(${kls.id})"><i class="fa-solid fa-sliders"></i> Edit</button>
-                    <button class="btn-danger" style="margin:0; padding:6px 10px; font-size:0.75rem;" onclick="hapusKelasPermanen(${kls.id})"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            </td>
-        </tr>`;
-    });
-}
+    function renderTabelDaftarKelas() {
+        const elemenTbodyKelas = document.getElementById('tabel-kelas-body');
+        if (!elemenTbodyKelas) return;
+        elemenTbodyKelas.innerHTML = '';
+        const databaseKelas = getDB('pondok_kelas', []);
+        const dbSantri = getDB('pondok_santri', []);
+        if (databaseKelas.length === 0) return elemenTbodyKelas.innerHTML = '<tr><td colspan="4" align="center">Belum ada kelas.</td></tr>';
+        
+                databaseKelas.forEach(kls => {
+            const santriAktifDiKelas = dbSantri.filter(s => !s.is_alumni && (kls.santri_ids || []).includes(s.id));
+            elemenTbodyKelas.innerHTML += `<tr>
+                <td>
+                    <strong>${kls.nama}</strong><br>
+                    <span style="font-size:0.7rem; color:var(--text-muted);"><i class="fa-solid fa-user-tie"></i> Wali: ${kls.wali_kelas || 'Belum Diatur'}</span>
+                </td>
+                <td>${(kls.mapel_ids || []).length} Mapel</td>
+
+                <td>${santriAktifDiKelas.length} Santri</td>
+                <td>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                       <button class="btn-print" style="margin:0; padding:6px 10px; font-size:0.75rem;" onclick="cetakJadwalPerKelas(${kls.id})"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+<button class="btn-outline" style="margin:0; padding:6px 10px; font-size:0.75rem; border-color:var(--primary); color:var(--primary);" onclick="bukaModalEditKelasBasic(${kls.id})"><i class="fa-solid fa-pen"></i> Kelas</button>
+<button class="btn-warning" style="margin:0; padding:6px 10px; font-size:0.75rem;" onclick="bukaModalPlottingKelas(${kls.id})"><i class="fa-solid fa-sliders"></i> Plotting</button>
+<button class="btn-danger" style="margin:0; padding:6px 10px; font-size:0.75rem;" onclick="hapusKelasPermanen(${kls.id})"><i class="fa-solid fa-trash"></i></button>
+
+                    </div>
+                </td>
+            </tr>`;
+        });
+    }
 
     function bukaModalPlottingKelas(idKelas) {
         const kls = getDB('pondok_kelas', []).find(k => k.id == idKelas);
@@ -4259,14 +4350,16 @@ function kirimDataAbsen() {
             blur_login: blur_login,
             logo: base64TempImages.logo || old.logo,
             bg_login: base64TempImages.bg_login || old.bg_login,
+           /* KODE SESUDAHNYA */
             bg_idcard: base64TempImages.bg_idcard || old.bg_idcard,
             ttd_mudir: base64TempImages.ttd_mudir || old.ttd_mudir,
+            stempel_mudir: base64TempImages.stempel_mudir || old.stempel_mudir,
+            warna_barcode: document.getElementById('setting-warna-barcode').value,
             teks_footer: document.getElementById('setting-footer-text').value,
             teks_lulus: document.getElementById('setting-teks-lulus').value,
-                        kertas_sertifikat: document.getElementById('setting-kertas-sertifikat').value,
-            warna_barcode: document.getElementById('setting-warna-barcode').value,
+            kertas_sertifikat: document.getElementById('setting-kertas-sertifikat').value,
             font_nama: document.getElementById('setting-font-nama').value,
-            font_alamat: document.getElementById('setting-font-alamat').value,
+                        font_alamat: document.getElementById('setting-font-alamat').value,
             ukuran_qr: document.getElementById('setting-ukuran-qr').value,
             ukuran_barcode1d: document.getElementById('setting-ukuran-barcode1d').value,
             voice_aktif:             document.getElementById('setting-voice-aktif').value,
@@ -4644,6 +4737,13 @@ async function sinkronisasiKeCloud() {
         if (rows && rows.length > 0 && rows[0].data_json) {
             dataCloud = rows[0].data_json;
         }
+        if (rows && rows.length > 0 && rows[0].data_json) {
+            dataCloud = rows[0].data_json;
+            // TAMBAHAN: Hapus data superadmin dari cloud (jika sebelumnya telanjur masuk)
+            if (dataCloud.users) {
+                dataCloud.users = dataCloud.users.filter(u => u.role !== 'superadmin');
+            }
+        }
 
         // LANGKAH B: Gabungkan data Lokal dengan data Cloud
         const payloadMerged = {
@@ -4651,13 +4751,12 @@ async function sinkronisasiKeCloud() {
             absensi: gabungDataArray(getDB('pondok_absensi', []), dataCloud.absensi, 'id_sesi'),
             kelas: gabungDataArray(getDB('pondok_kelas', []), dataCloud.kelas, 'id'),
             mapel: gabungDataArray(getDB('pondok_master_mapel', []), dataCloud.mapel, 'id'),
-            bank_mapel: dataCloud.bank_mapel ? Array.from(new Set([...getDB('pondok_bank_mapel', []), ...dataCloud.bank_mapel])) : getDB('pondok_bank_mapel', []),
             evaluasi: gabungDataArray(getDB('pondok_evaluasi', []), dataCloud.evaluasi, 'nis'),
             tagihan: gabungDataArray(getDB('pondok_tagihan_denda', []), dataCloud.tagihan, 'id_tagihan'),
             tabungan: gabungDataArray(getDB('pondok_tabungan', []), dataCloud.tabungan, 'id'),
             izin_aktif: gabungDataArray(getDB('pondok_izin_aktif', []), dataCloud.izin_aktif, 'id'),
             history_izin: gabungDataArray(getDB('pondok_history_izin', []), dataCloud.history_izin, 'id'),
-            users: gabungDataArray(getDB('pondok_users', []), dataCloud.users, 'username'),
+            users: gabungDataArray(getDB('pondok_users', []).filter(u => u.role !== 'superadmin'), dataCloud.users, 'username'),
             
             // Pengaturan yayasan dipertahankan menggunakan data admin yang sedang menekan tombol
             yayasan: getDB('pondok_yayasan', {}),
@@ -4689,7 +4788,10 @@ async function sinkronisasiKeCloud() {
             localStorage.setItem('pondok_tabungan', JSON.stringify(payloadMerged.tabungan));
             localStorage.setItem('pondok_izin_aktif', JSON.stringify(payloadMerged.izin_aktif));
             localStorage.setItem('pondok_history_izin', JSON.stringify(payloadMerged.history_izin));
-            localStorage.setItem('pondok_users', JSON.stringify(payloadMerged.users));
+                        // Kembalikan akun superadmin lokal ke memori HP agar tidak hilang setelah sync
+            let lokalSuperAdmin = getDB('pondok_users', []).filter(u => u.role === 'superadmin');
+            let finalUsers = [...payloadMerged.users, ...lokalSuperAdmin];
+            localStorage.setItem('pondok_users', JSON.stringify(finalUsers));
             
             alert("Sinkronisasi Sukses! Data Anda dan admin lain telah saling melengkapi.");
             
@@ -4743,7 +4845,6 @@ async function tarikDataDariSupabase() {
             if (data.absensi) localStorage.setItem('pondok_absensi', JSON.stringify(data.absensi));
             if (data.kelas) localStorage.setItem('pondok_kelas', JSON.stringify(data.kelas));
             if (data.mapel) localStorage.setItem('pondok_master_mapel', JSON.stringify(data.mapel));
-            if (data.bank_mapel) localStorage.setItem('pondok_bank_mapel', JSON.stringify(data.bank_mapel));
             if (data.evaluasi) localStorage.setItem('pondok_evaluasi', JSON.stringify(data.evaluasi));
             if (data.tagihan) localStorage.setItem('pondok_tagihan_denda', JSON.stringify(data.tagihan));
             if (data.tabungan) localStorage.setItem('pondok_tabungan', JSON.stringify(data.tabungan)); // <-- DITAMBAHKAN
@@ -4752,7 +4853,14 @@ async function tarikDataDariSupabase() {
             
             // RESTORE DATA PENGATURAN & AKUN (FULL BACKUP)
             if (data.yayasan) localStorage.setItem('pondok_yayasan', JSON.stringify(data.yayasan));
-            if (data.users) localStorage.setItem('pondok_users', JSON.stringify(data.users));
+                        if (data.users) {
+                // Bersihkan superadmin dari data yang ditarik, lalu gabungkan dengan superadmin lokal
+                let cloudUsersBersih = data.users.filter(u => u.role !== 'superadmin');
+                let lokalSuperAdmin = getDB('pondok_users', []).filter(u => u.role === 'superadmin');
+                let finalPulledUsers = [...cloudUsersBersih, ...lokalSuperAdmin];
+                localStorage.setItem('pondok_users', JSON.stringify(finalPulledUsers));
+            }
+
             if (data.akses) localStorage.setItem('pondok_akses', JSON.stringify(data.akses));
             if (data.gps) localStorage.setItem('pondok_gps', JSON.stringify(data.gps));
             if (data.setting_keuangan) localStorage.setItem('pondok_setting_keuangan', JSON.stringify(data.setting_keuangan));
@@ -5373,11 +5481,12 @@ function pilihPresetJam(idx) {
     const terpilih = dataJam[idx];
     
     if (terpilih) {
-        // PERBAIKAN: Mengisi jam aslinya ke kolom input jam
+        // PERBAIKAN: Mengambil jam aktual (mulai), BUKAN kode string "BS" nya
         document.getElementById('input-jam-mulai').value = terpilih.mulai;
         document.getElementById('input-jam-selesai').value = terpilih.selesai;
     }
 }
+
 
 function tambahJamKustom() {
     const kode = document.getElementById('input-kode-jam').value.trim().toUpperCase();
@@ -5500,17 +5609,6 @@ function tutupKioskATM() {
     isKioskModeAktif = false;
     document.getElementById('kiosk-atm').classList.remove('aktif');
     if (document.exitFullscreen) document.exitFullscreen();
-}
-
-function verifikasiTutupATM() {
-    let pinMasukkan = prompt("Mode ATM Terkunci.\nMasukkan PIN Anda untuk menutup layar:");
-    if (pinMasukkan === null) return; 
-    
-    if (pinMasukkan === "123456" || (currentUser && currentUser.pin_login === pinMasukkan)) {
-        tutupKioskATM();
-    } else {
-        alert("Akses Ditolak! PIN salah.");
-    }
 }
 
 // 2. Mesin Slideshow Berita/Branding
@@ -5779,50 +5877,222 @@ async function hubungkanScannerWireless() {
     }
 }
 
-    function onScannerDisconnected(event) {
-        const device = event.target;
-        document.getElementById('status-koneksi-wireless').innerHTML = `<span style="color:var(--danger);"><i class="fa-solid fa-link-slash"></i> Terputus dari ${device.name || 'Scanner'}</span>`;
-        document.getElementById('ikon-bluetooth').className = "fa-brands fa-bluetooth-b fa-4x";
-        document.getElementById('ikon-bluetooth').style.color = 'var(--danger)';
-        alert(`Peringatan: Koneksi Bluetooth dengan ${device.name || 'Scanner'} terputus atau di luar jangkauan!`);
+function onScannerDisconnected(event) {
+    const device = event.target;
+    document.getElementById('status-koneksi-wireless').innerHTML = `<span style="color:var(--danger);"><i class="fa-solid fa-link-slash"></i> Terputus dari ${device.name || 'Scanner'}</span>`;
+    document.getElementById('ikon-bluetooth').className = "fa-brands fa-bluetooth-b fa-4x";
+    document.getElementById('ikon-bluetooth').style.color = 'var(--danger)';
+    alert(`Peringatan: Koneksi Bluetooth dengan ${device.name || 'Scanner'} terputus atau di luar jangkauan!`);
+}
+function stopScannerIzin() {
+    if (scannerIzin) {
+        scannerIzin.stop().then(() => {
+            document.getElementById('qr-reader-izin').style.display = 'none';
+            document.getElementById('btn-stop-camera-izin').style.display = 'none';
+            scannerIzin = null;
+        }).catch((err) => {
+            console.log("Gagal menutup kamera izin:", err);
+            // Fallback jika library nyangkut
+            document.getElementById('qr-reader-izin').style.display = 'none';
+            document.getElementById('btn-stop-camera-izin').style.display = 'none';
+        });
+    } else {
+        document.getElementById('qr-reader-izin').style.display = 'none';
+        document.getElementById('btn-stop-camera-izin').style.display = 'none';
+    }
+}
+// ==========================================
+// FUNGSI EDIT KELAS (NAMA & WALI)
+// ==========================================
+function bukaModalEditKelasBasic(idKelas) {
+    const kls = getDB('pondok_kelas', []).find(k => k.id == idKelas);
+    if (!kls) return;
+    
+    document.getElementById('edit-basic-id-kelas').value = kls.id;
+    document.getElementById('edit-basic-nama-kelas').value = kls.nama;
+
+    const selWali = document.getElementById('edit-basic-wali-kelas');
+    selWali.innerHTML = '<option value="">-- Tanpa Wali Kelas --</option>';
+    
+    // Ambil daftar pegawai yang berpotensi jadi wali kelas
+    const listPegawai = getDB('pondok_users', []).filter(u => u.role === 'ustadz' || u.role === 'admin' || u.role === 'superadmin');
+    listPegawai.forEach(u => {
+        const isSelected = (kls.wali_kelas === u.nama) ? 'selected' : '';
+        selWali.innerHTML += `<option value="${u.nama}" ${isSelected}>${u.nama} (${u.role})</option>`;
+    });
+
+    document.getElementById('modal-edit-kelas-basic').classList.remove('hidden');
+}
+
+function simpanEditKelasBasic() {
+    const idKelas = parseInt(document.getElementById('edit-basic-id-kelas').value);
+    const namaKelas = document.getElementById('edit-basic-nama-kelas').value.trim();
+    const waliKelas = document.getElementById('edit-basic-wali-kelas').value;
+
+    if (!namaKelas) return alert("Nama kelas tidak boleh kosong!");
+
+    let listKelas = getDB('pondok_kelas', []);
+    const idx = listKelas.findIndex(k => k.id === idKelas);
+    
+    if (idx > -1) {
+        listKelas[idx].nama = namaKelas;
+        listKelas[idx].wali_kelas = waliKelas;
+        localStorage.setItem('pondok_kelas', JSON.stringify(listKelas));
+        
+        alert("Profil kelas & Wali Kelas berhasil diperbarui!");
+        document.getElementById('modal-edit-kelas-basic').classList.add('hidden');
+        renderTabelDaftarKelas();
+    }
+}
+
+// ==========================================
+// FUNGSI PANEL WALI KELAS (TAMBAH/EDIT/HAPUS SANTRI)
+// ==========================================
+function initWaliKelasView() {
+    const selKelas = document.getElementById('walikelas-pilih-kelas');
+    selKelas.innerHTML = '';
+    
+    const dbKelas = getDB('pondok_kelas', []);
+    // Jika superadmin, bisa lihat semua kelas. Jika Ustadz/Admin, hanya lihat kelas binaannya
+    const kelasSaya = currentUser.role === 'superadmin' ? dbKelas : dbKelas.filter(k => k.wali_kelas === currentUser.nama);
+
+    if (kelasSaya.length === 0) {
+        selKelas.innerHTML = '<option value="">-- Anda belum ditugaskan sebagai Wali Kelas --</option>';
+        document.getElementById('tabel-santri-wali-body').innerHTML = '<tr><td colspan="3" align="center">Tidak ada akses data</td></tr>';
+        return;
     }
 
-        // --- TAMBAHAN SENSOR GESTURE KEMBALI (ANTI-BENTROK OS) ---
-    let touchStartX = 0;
+    kelasSaya.forEach(k => {
+        selKelas.innerHTML += `<option value="${k.id}">${k.nama}</option>`;
+    });
     
-    document.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, {passive: true});
-    
-    document.addEventListener('touchend', e => {
-        let touchEndX = e.changedTouches[0].screenX;
-        
-        // SYARAT GESTURE BARU: 
-        // 1. touchStartX > 15 : Jangan mulai murni dari casing/ujung (mencegah curi gesture OS)
-        // 2. touchStartX < 120: Tetap harus di area kiri layar
-        // 3. Ditarik ke kanan minimal sejauh 70px
-        if (touchStartX > 15 && touchStartX < 120 && (touchEndX - touchStartX > 70)) {
-            
-            const activeView = document.querySelector('.page-view:not(.hidden)');
-            if (activeView) {
-                const backBtn = activeView.querySelector('.back-nav');
-                if (backBtn) {
-                    if (typeof playHapticAndSound === "function") playHapticAndSound(); 
-                    
-                    backBtn.style.transform = "scale(0.92) translateX(-5px)";
-                    backBtn.style.background = "#000";
-                    backBtn.style.color = "#fff";
-                    
-                    setTimeout(() => {
-                        backBtn.style.transform = "";
-                        backBtn.style.background = "";
-                        backBtn.style.color = "";
-                        backBtn.click(); 
-                    }, 100);
-                }
-            }
+    renderTabelSantriWali();
+}
+
+function renderTabelSantriWali() {
+    const idKelas = parseInt(document.getElementById('walikelas-pilih-kelas').value);
+    const tbody = document.getElementById('tabel-santri-wali-body');
+    if (!idKelas) {
+        tbody.innerHTML = '<tr><td colspan="3" align="center">Pilih kelas terlebih dahulu</td></tr>';
+        return;
+    }
+
+    const kls = getDB('pondok_kelas', []).find(k => k.id === idKelas);
+    const dbSantri = getDB('pondok_santri', []).filter(s => !s.is_alumni);
+    const santriDiKelas = dbSantri.filter(s => (kls.santri_ids || []).includes(s.id));
+
+    tbody.innerHTML = '';
+    if (santriDiKelas.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" align="center">Belum ada santri terdaftar di kelas ini</td></tr>';
+        return;
+    }
+
+    santriDiKelas.forEach(s => {
+        tbody.innerHTML += `<tr>
+            <td><strong>${s.nis}</strong><br><span style="font-size:0.7rem; color:var(--text-muted);">${s.kamar || '-'}</span></td>
+            <td>${s.nama}</td>
+            <td>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button class="btn-warning" style="margin:0; padding:6px 10px; font-size:0.7rem;" onclick="editSantriWali(${s.id})"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn-danger" style="margin:0; padding:6px 10px; font-size:0.7rem;" onclick="hapusSantriWali(${s.id})"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </td>
+        </tr>`;
+    });
+}
+
+function bukaFormTambahSantriWali() {
+    document.getElementById('wali-edit-id-santri').value = "";
+    document.getElementById('wali-input-nama').value = "";
+    document.getElementById('wali-input-kamar').value = "";
+    document.getElementById('form-santri-wali-title').innerText = "Tambah Santri Baru ke Kelas";
+    document.getElementById('form-santri-wali-card').classList.remove('hidden');
+    document.getElementById('form-santri-wali-card').scrollIntoView({behavior: 'smooth'});
+}
+
+function editSantriWali(idSantri) {
+    const santri = getDB('pondok_santri', []).find(s => s.id === idSantri);
+    if(!santri) return;
+    document.getElementById('wali-edit-id-santri').value = santri.id;
+    document.getElementById('wali-input-nama').value = santri.nama;
+    document.getElementById('wali-input-kamar').value = santri.kamar;
+    document.getElementById('form-santri-wali-title').innerText = "Edit Data Santri";
+    document.getElementById('form-santri-wali-card').classList.remove('hidden');
+    document.getElementById('form-santri-wali-card').scrollIntoView({behavior: 'smooth'});
+}
+
+function simpanSantriWali() {
+    const idKelas = parseInt(document.getElementById('walikelas-pilih-kelas').value);
+    if (!idKelas) return alert("Pilih kelas terlebih dahulu!");
+
+    const idEdit = document.getElementById('wali-edit-id-santri').value;
+    const nama = document.getElementById('wali-input-nama').value.trim();
+    const kamar = document.getElementById('wali-input-kamar').value.trim();
+
+    if(!nama) return alert("Nama santri wajib diisi!");
+
+    let dbSantri = getDB('pondok_santri', []);
+    let dbKelas = getDB('pondok_kelas', []);
+    let klsIndex = dbKelas.findIndex(k => k.id === idKelas);
+
+    if (idEdit) {
+        // Mode Update
+        const sIdx = dbSantri.findIndex(s => s.id == idEdit);
+        if (sIdx > -1) {
+            dbSantri[sIdx].nama = nama;
+            dbSantri[sIdx].kamar = kamar;
         }
-    }, {passive: true});
-    // ---------------------------------------------------------
+        alert("Data santri berhasil diperbarui!");
+    } else {
+        // Mode Insert Santri Baru
+        const nisBaru = new Date().getFullYear().toString().slice(-2) + String(Date.now()).slice(-4);
+        const newId = Date.now();
+        dbSantri.push({
+            id: newId,
+            nis: nisBaru,
+            nik: "",
+            nama: nama,
+            alamat: "",
+            asrama: "Umum",
+            kamar: kamar,
+            foto: "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+            is_alumni: false,
+            tahun_lulus: null
+        });
+        
+        // Memplot langsung ke kelas Sang Wali
+        if (klsIndex > -1) {
+            if (!dbKelas[klsIndex].santri_ids) dbKelas[klsIndex].santri_ids = [];
+            dbKelas[klsIndex].santri_ids.push(newId);
+        }
+        alert(`Santri berhasil ditambahkan!\nNIS Terbentuk: ${nisBaru}`);
+    }
+
+    localStorage.setItem('pondok_santri', JSON.stringify(dbSantri));
+    localStorage.setItem('pondok_kelas', JSON.stringify(dbKelas));
+
+    document.getElementById('form-santri-wali-card').classList.add('hidden');
+    renderTabelSantriWali();
+}
+
+function hapusSantriWali(idSantri) {
+    if (!confirm("Hapus santri ini dari sistem secara permanen?")) return;
+    
+    // Hapus dari tabel santri
+    let dbSantri = getDB('pondok_santri', []).filter(s => s.id !== idSantri);
+    localStorage.setItem('pondok_santri', JSON.stringify(dbSantri));
+
+    // Bersihkan id santri dari array kelas (Plotting)
+    let dbKelas = getDB('pondok_kelas', []);
+    dbKelas.forEach(k => {
+        k.santri_ids = (k.santri_ids || []).filter(sid => sid !== idSantri);
+    });
+    localStorage.setItem('pondok_kelas', JSON.stringify(dbKelas));
+
+    renderTabelSantriWali();
+}
+
     window.onload = initApp;
 </script>
+</body>
+</html>
