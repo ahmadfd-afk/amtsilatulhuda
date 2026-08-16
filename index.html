@@ -2170,7 +2170,7 @@ const menuMaster = [
         
         let htmlKartuKolektif = `<div class="kolektif-grid-gabung">`;
         databaseSantri.forEach((santri) => {
-            let qrPayload = JSON.stringify({ n: santri.nis, u: supabaseConfig.url || "", k: supabaseConfig.key || "" });
+            let qrPayload = "https://ahmadfd-afk.github.io/Wali-santri/?nis=" + santri.nis + "&u=" + encodeURIComponent(supabaseConfig.url || "") + "&k=" + encodeURIComponent(supabaseConfig.key || "");
             htmlKartuKolektif += `
                 <div class="id-card-wrapper portrait">
                     <div id="sisi-belakang-kartu" style="height:100%; display:flex; flex-direction:column;">
@@ -3383,7 +3383,7 @@ function bukaModalSertifikat(nis) {
             }
 
             document.getElementById('card-alamat').innerText = (s.alamat || '-'); 
-            qrDataPayload = JSON.stringify({ n: s.nis, u: supabaseConfig.url || "", k: supabaseConfig.key || "" });
+            qrDataPayload = "https://ahmadfd-afk.github.io/Wali-santri/?nis=" + s.nis + "&u=" + encodeURIComponent(supabaseConfig.url || "") + "&k=" + encodeURIComponent(supabaseConfig.key || "");
         } else { 
             let db = getDB('pondok_users', []); let p = db.find(x => x.username === identifier); if(!p) return; 
             document.getElementById('card-foto').src = p.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
@@ -3428,11 +3428,19 @@ function bukaModalSertifikat(nis) {
 /* KODE SESUDAHNYA */
         const warnaBarcodeCustom = yayasan.warna_barcode || "#000000";
 
-        // Render Barcode 1D (Depan)
+                // Render Barcode 1D (Depan)
         if (typeof JsBarcode !== 'undefined') {
             try {
                 let nisRaw = qrText;
                 try { let parsed = JSON.parse(qrText); if(parsed.n) nisRaw = parsed.n; } catch(e){}
+                
+                // --- KODE BARU: Memastikan Barcode 1D hanya mengambil NIS dari Tautan URL ---
+                if (qrText.includes('nis=')) {
+                    let params = new URLSearchParams(qrText.split('?')[1]);
+                    if (params.get('nis')) nisRaw = params.get('nis');
+                }
+                // -----------------------------------------------------------------------------
+
                 JsBarcode("#card-barcode", nisRaw, {
                     format: "CODE128",
                     width: 2.2, 
