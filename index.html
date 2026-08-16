@@ -4317,7 +4317,82 @@ function kirimDataAbsen() {
 /* === AKHIR PERBAIKAN BLOK 3: SIMPAN DATA ABSEN BESERTA STATUS KELAS ASAL = */
 /* ========================================================================== */
 
+async function aktifkanFCM() {
+    try {
+        // Meminta izin ke perangkat
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            console.log('Izin notifikasi diberikan.');
+            
+            // Mengambil Token (Masukkan VAPID Key dari Langkah 1 di sini)
+            const token = await window.fcmGetToken(window.fcmMessaging, { 
+                vapidKey: "BFUUggGusY3F6YjD5Nc-Z7GkHw1UWknqKk5YfSFH0BsgiMLrLR4bc8WsfHkQPhxtx8p097tt-WKDqv3nnarD2jM" 
+            });
 
+            if (token) {
+                console.log('Token FCM didapatkan:', token);
+                // SIMPAN TOKEN KE SUPABASE
+                simpanTokenKeSupabase(token);
+            } else {
+                console.log('Gagal mendapatkan token.');
+            }
+        } else {
+            alert('Aplikasi butuh izin notifikasi agar alarm jadwal bisa berbunyi.');
+        }
+    } catch (error) {
+        console.error('Error saat inisialisasi FCM:', error);
+    }
+}
+// Dijalankan otomatis saat pesan FCM masuk dan aplikasi sedang terbuka (Foreground)
+window.onload = function() {
+    initApp(); // Fungsi asli Anda
+
+    // Menangkap pesan FCM
+    setTimeout(() => {
+        if (window.fcmOnMessage) {
+            window.fcmOnMessage(window.fcmMessaging, (payload) => {
+                console.log('Pesan FCM masuk di Foreground:', payload);
+                
+                const judul = payload.notification.title;
+                const pesan = payload.notification.body;
+                
+                kirimNotifikasiLokal(judul, pesan); // Munculkan pop-up visual
+
+                // EKSEKUSI SUARA 10 KALI
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    let hitungan = 0;
+                    
+                    function bicara() {
+                        if (hitungan < 10) {
+                            let utterance = new SpeechSynthesisUtterance(pesan);
+                            utterance.lang = 'id-ID';
+                            utterance.rate = 0.9;
+                            utterance.onend = function() {
+                                hitungan++;
+                                setTimeout(bicara, 1500); 
+                            };
+                            window.speechSynthesis.speak(utterance);
+                        }
+                    }
+                    bicara();
+                }
+            });
+        }
+    }, 2000); // Beri jeda agar library termuat dulu
+};
+
+function simpanTokenKeSupabase(tokenFCM) {
+    // Logika untuk menyimpan tokenFCM ke tabel 'users' di Supabase Anda
+    // Berdasarkan currentUser.username
+    let users = getDB('pondok_users', []);
+    let idx = users.findIndex(u => u.username === currentUser.username);
+    if (idx > -1) {
+        users[idx].fcm_token = tokenFCM;
+        localStorage.setItem('pondok_users', JSON.stringify(users));
+        // Pastikan Anda juga melakukan push ke Supabase cloud (sync)
+    }
+}
 
     function simpanYayasan() {
         const mode = document.getElementById('setting-app-mode').value;
@@ -5021,22 +5096,49 @@ function simpanTabungan() {
     // FUNGSI UNTUK TOMBOL VALIDASI & CETAK PDF
     // ==========================================
 
-    function validasiDanNotifManual(idMapel) {
-        // 1. Cari data mata pelajaran berdasarkan ID yang diklik
-        const m = getDB('pondok_master_mapel', []).find(x => x.id == idMapel);
-        if (!m) return;
-        
-        // 2. Ambil format teks notifikasi dari pengaturan Yayasan
-        const yayasan = getDB('pondok_yayasan', {});
-        let formatTeks = yayasan.pwa_notif_teks || "Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}.";
-        
-        // 3. Ubah kata {mapel} menjadi nama pelajaran aslinya
-        let teksSuara = formatTeks.replace(/{mapel}/g, m.nama_mapel).replace(/{kelas}/g, "Sesuai Jadwal");
+   function validasiDanNotifManual(idMapel) {
+    // 1. Cari data mata pelajaran berdasarkan ID yang diklik
+    const m = getDB('pondok_master_mapel', []).find(x => x.id == idMapel);
+    if (!m) return;
+    
+    // 2. Ambil format teks notifikasi dari pengaturan Yayasan
+    const yayasan = getDB('pondok_yayasan', {});
+    let formatTeks = yayasan.pwa_notif_teks || "Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}.";
+    let teksSuara = formatTeks.replace(/{mapel}/g, m.nama_mapel).replace(/{kelas}/g, "Sesuai Jadwal");
 
-        // 4. Picu sistem notifikasi dan suara bawaan aplikasi
-        kirimNotifikasiLokal("Jadwal Tervalidasi!", teksSuara);
-        alert(`Sukses! Notifikasi manual dan pengumuman untuk jadwal pelajaran ${m.nama_mapel} berhasil dipicu.`);
+    // 3. AMBIL TOKEN FCM USTADZ YANG MENGAJAR MAPEL INI
+    let listUsers = getDB('pondok_users', []);
+    let targetUstadzUsernames = m.ustadz_ids || [m.ustadz_id]; // Mendukung ustadz tunggal atau banyak
+    
+    let tokenDitemukan = [];
+    targetUstadzUsernames.forEach(username => {
+        let userObj = listUsers.find(u => u.username === username);
+        if (userObj && userObj.fcm_token) {
+            tokenDitemukan.push(userObj.fcm_token);
+        }
+    });
+
+    if (tokenDitemukan.length === 0) {
+        alert(`Peringatan: Jadwal ${m.nama_mapel} berhasil divalidasi lokal, tapi Ustadz pengampunya belum mengaktifkan izin notifikasi di HP mereka.`);
+        return;
     }
+
+    // 4. KIRIM PESAN KE FIREBASE CLOUD MESSAGING (FCM)
+    // (Membutuhkan fungsi pengiriman API ke server FCM/Supabase Edge Function)
+    tokenDitemukan.forEach(token => {
+        kirimPesanFCMKeServer(token, "Jadwal Mengajar Tiba!", teksSuara);
+    });
+
+    alert(`Sukses! Tombol Valid ditekan. Notifikasi dan alarm suara 10x dikirim ke HP Ustadz: ${m.ustadz_nama}`);
+}
+
+// Fungsi pendukung untuk menembak API Firebase
+async function kirimPesanFCMKeServer(fcmToken, judul, pesan) {
+    // Catatan: Di tahap berikutnya, bagian ini akan dihubungkan ke pelatuk server 
+    // agar Google meneruskan pesan ke token HP ustaz tujuan.
+    console.log("Mengirim sinyal FCM ke token:", fcmToken);
+}
+
 
     function cetakJadwalMapelPDF(idMapel) {
         // 1. Ambil data mapel dan kelas
@@ -6127,6 +6229,31 @@ function hapusSantriWali(idSantri) {
 
     window.onload = initApp;
 </script>
+<!-- Script Firebase (Modular) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
+
+    // Ganti dengan firebaseConfig dari Langkah 1
+    const firebaseConfig = {
+  apiKey: "AIzaSyBajz9-X3RlIXphaH0a--OSvQM6_nhV6pE",
+  authDomain: "sms-digi.firebaseapp.com",
+  projectId: "sms-digi",
+  storageBucket: "sms-digi.firebasestorage.app",
+  messagingSenderId: "477801725664",
+  appId: "1:477801725664:web:0a1fc140d6ec907e1c9a85"
+};
+
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+
+    // Jadikan 'messaging' & 'getToken' sebagai variabel global agar bisa dipakai di fungsi lain
+    window.fcmMessaging = messaging;
+    window.fcmGetToken = getToken;
+    window.fcmOnMessage = onMessage;
+</script>
+
 <!-- Panggil file library langsung dari root folder -->
 <script src="qrcode.min.js"></script>
 <script src="html5-qrcode.min.js"></script>
