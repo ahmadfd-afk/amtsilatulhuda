@@ -1783,7 +1783,25 @@ const menuMaster = [
         /* PERBAIKAN: Memastikan sisi yang tidak dipilih benar-benar hilang saat dicetak */
         .hidden { display: none !important; }
         
+                /* KODE PERBAIKAN: Sembunyikan elemen yang tidak dipilih (kartu depan saat cetak belakang) */
+        .hidden { display: none !important; }
+        
+        /* KODE PERBAIKAN: Matikan ornamen warna depan jika sedang mencetak kartu belakang */
+        .id-card-wrapper.kartu-belakang-saja::before,
+        .id-card-wrapper.kartu-belakang-saja::after {
+            display: none !important;
+            background: none !important;
+        }
+
+        /* KODE PERBAIKAN: Cegah Barcode/QR bentrok dengan teks Pengasuh */
+        .id-qr-back img {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: contain;
+        }
+        
         /* ATURAN TABEL AGAR RAPI & TIDAK TERPOTONG JELEK */
+
 
         table {
             width: 100%;
@@ -2185,10 +2203,11 @@ const menuMaster = [
         let htmlKartuKolektif = `<div class="kolektif-grid-gabung">`;
         databaseSantri.forEach((santri) => {
             let qrPayload = "https://ahmadfd-afk.github.io/Wali-santri/?nis=" + santri.nis + "&u=" + encodeURIComponent(supabaseConfig.url || "") + "&k=" + encodeURIComponent(supabaseConfig.key || "");
-                    htmlKartuKolektif += `
-            <div class="id-card-wrapper portrait">
-                <!-- PERBAIKAN: Mengganti ID menjadi Class agar layout kolektif tidak bertumpuk -->
-                <div class="sisi-belakang-kartu-kolektif" style="height:100%; display:flex; flex-direction:column;">
+                                htmlKartuKolektif += `
+                <!-- PERBAIKAN: Tambahkan class 'kartu-belakang-saja' dan ubah ID menjadi class agar mau berjejer kolektif -->
+                <div class="id-card-wrapper portrait kartu-belakang-saja">
+                    <div class="sisi-belakang-kartu-kolektif" style="height:100%; display:flex; flex-direction:column;">
+
                     <div class="id-header" style="padding:6px; background:linear-gradient(135deg, var(--primary), var(--primary-light));">
 
                             <h4 style="font-size:0.75rem; margin:0; text-transform: uppercase; color:white; text-align:center;">SISTEM MONITORING SANTRI</h4>
