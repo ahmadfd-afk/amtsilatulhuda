@@ -1041,6 +1041,8 @@
 <input type="number" id="setting-ukuran-barcode1d" placeholder="Rekomendasi: 25 - 40">
 
 <label>Teks Keputusan Kelulusan Sertifikat</label><input type="text" id="setting-teks-lulus" placeholder="Telah mengikuti proses belajar dan dinyatakan:">
+<label style="color: var(--primary);"><i class="fa-solid fa-text-height"></i> Ukuran Font Nama Sertifikat (px)</label>
+<input type="number" id="setting-font-sertifikat" placeholder="Rekomendasi: 24">
 <!-- TAMBAHAN PILIHAN KERTAS -->
 <label style="color: var(--danger);"><i class="fa-solid fa-scroll"></i> Ukuran Kertas Cetak Sertifikat</label>
 <select id="setting-kertas-sertifikat">
@@ -1505,26 +1507,32 @@
             </div>
 
 <!-- KODE SESUDAHNYA -->
-             <div id="sisi-belakang-kartu" class="hidden" style="height:100%; display:flex; flex-direction:column;">
+                          <div id="sisi-belakang-kartu" class="hidden" style="height:100%; display:flex; flex-direction:column;">
                 <div class="id-header" style="padding:6px; background:linear-gradient(135deg, var(--primary), var(--primary-light));">
                     <h4 id="back-app-title" style="font-size:0.75rem; margin:0; text-transform: uppercase; color:white; text-align:center;">SISTEM MONITORING SANTRI</h4>
                 </div>
-                <div class="id-back-content">
+                <div class="id-back-content" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; text-align: center;">
                     <div class="id-back-title" id="back-instansi-name">INSTANSI PENDIDIKAN</div>
-                    <div class="id-back-rules" id="back-tata-tertib-text">1. Wajib menjaga tata tertib...</div>
-                    <div class="id-back-ttd-wrapper">
+                    
+                    <!-- Tata tertib dibuat justify -->
+                    <div class="id-back-rules" id="back-tata-tertib-text" style="text-align: justify; margin-bottom: 5px;">1. Wajib menjaga tata tertib...</div>
+                    
+                    <!-- Tanda tangan dan Barcode di tengah -->
+                    <div class="id-back-ttd-wrapper" style="width: 100%; align-items: center;">
                         <img src="" id="back-stempel-img" class="stempel-overlay" style="display:none;">
-                        <div class="id-back-ttd">
+                        <div class="id-back-ttd" style="text-align: center; width: 100%;">
                             <div>Mengetahui, Pimpinan</div>
-                            <img src="" id="back-ttd-img" style="display:none;">
+                            <img src="" id="back-ttd-img" style="display:none; margin: 2px auto;">
                             <div id="back-mudir-nama">Mudir Instansi</div>
                         </div>
                     </div>
-                    <div class="id-qr-back" id="card-qr"></div>
+                    <div class="id-qr-back" id="card-qr" style="margin: 5px auto;"></div>
+                    
+                    <!-- Elemen alamat yang sebelumnya hilang (Penyebab Modal tidak muncul) -->
+                    <div id="back-alamat-text" style="font-size: 0.5rem; text-align: center; margin-top: auto; padding-top: 5px; border-top: 1px dashed #ccc; width: 100%;"></div>
                 </div>
             </div>
-
-        </div>
+</div>
 
         <div style="margin-top: 22px; display:flex; gap:10px;">
             <button class="btn-outline" onclick="document.getElementById('id-card-modal').classList.add('hidden')" style="flex:1; justify-content:center;">Batal</button>
@@ -2131,6 +2139,7 @@ const menuMaster = [
     });
 
         // KODE PERBAIKAN: Looping menggunakan JsBarcode, bukan QRCode
+        const warnaBarcodeCustom = dataYayasan.warna_barcode || "#000000";
     databaseSantri.forEach(santri => {
         const wadahBarcode = containerTemp.querySelector(`#barcode-gabung-${santri.nis}`);
         if (wadahBarcode && typeof JsBarcode !== 'undefined') {
@@ -2141,12 +2150,13 @@ const menuMaster = [
                     height: size1DPrint,
                     displayValue: false,
                     margin: 10, /* Margin ditambah (white space) mempercepat scan */
+                    lineColor: warnaBarcodeCustom,
                     background: "transparent"
                 });
             } catch(err) { console.log("Barcode error:", err); }
         }
     });
-
+    
 
     setTimeout(() => { 
         const canvases = containerTemp.querySelectorAll('canvas');
@@ -2178,19 +2188,21 @@ const menuMaster = [
                             <h4 style="font-size:0.75rem; margin:0; text-transform: uppercase; color:white; text-align:center;">SISTEM MONITORING SANTRI</h4>
                         </div>
                         <div class="id-back-content" style="display:flex; flex-direction:column; padding:10px; flex:1; background:rgba(255, 255, 255, 0.9); text-align:center;">
-                            <div class="id-back-left" style="width:100%; flex:1;">
-                                <div class="id-back-title" style="font-size:0.75rem; font-weight:bold; color:var(--primary); border-bottom:1px solid #ccc; margin-bottom:4px;">${yayasan.pondok || 'INSTANSI'}</div>
-                                <div class="id-back-rules" style="font-size: 0.55rem; text-align:left;">${formatTertib}</div>
-                            </div>
-                            <div class="id-back-right" style="width:100%; border-top:1px dashed #999; padding-top:8px; display:flex; flex-direction:row; justify-content:space-between; align-items:center; gap:5px;">
-                                <div class="id-back-ttd" style="text-align:left; font-size:0.5rem; color:var(--primary); font-weight:bold; width:50%;">
-                                    <div>Mengetahui,</div>
-                                    ${yayasan.ttd_mudir ? `<img src="${yayasan.ttd_mudir}" style="height:25px; margin:2px 0; display:block;">` : '<div style="height:25px;"></div>'}
-                                    <div>${yayasan.mudir || 'Pimpinan'}</div>
+                                                        <div style="width:100%; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                                <div>
+                                    <div class="id-back-title" style="font-size:0.75rem; font-weight:bold; color:var(--primary); border-bottom:1px solid #ccc; margin-bottom:4px;">${yayasan.pondok || 'INSTANSI'}</div>
+                                    <div class="id-back-rules" style="font-size: 0.55rem; text-align:justify;">${formatTertib}</div>
                                 </div>
-                                <div class="id-qr-back" id="qr-back-${santri.nis}" data-payload='${qrPayload}' style="width:55px; height:55px; min-width:55px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center;"></div>
+                                <div style="width:100%; padding-top:4px; display:flex; flex-direction:column; align-items:center;">
+                                    <div class="id-back-ttd" style="text-align:center; font-size:0.5rem; color:var(--primary); font-weight:bold; width:100%;">
+                                        <div>Mengetahui,</div>
+                                        ${yayasan.ttd_mudir ? `<img src="${yayasan.ttd_mudir}" style="height:25px; margin:2px auto; display:block;">` : '<div style="height:25px;"></div>'}
+                                        <div>${yayasan.mudir || 'Pimpinan'}</div>
+                                    </div>
+                                    <div class="id-qr-back" id="qr-back-${santri.nis}" data-payload='${qrPayload}' style="width:55px; height:55px; min-width:55px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center; margin: 4px auto;"></div>
+                                    <div style="font-size: 0.45rem; text-align: center; margin-top: 4px; padding-top: 4px; border-top: 1px dashed #ccc; width: 100%;">${yayasan.alamat || '-'}</div>
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>`;
         });
@@ -2201,13 +2213,22 @@ const menuMaster = [
         document.body.appendChild(containerTemp); 
         containerTemp.innerHTML = htmlKartuKolektif;
         
-        const sizeQRPrint = parseInt(yayasan.ukuran_qr) || 60;
+               const sizeQRPrint = parseInt(yayasan.ukuran_qr) || 60;
+        const warnaQRCodeCustom = yayasan.warna_barcode || "#000000"; // Tambahkan baris ini
         databaseSantri.forEach(santri => {
             const wadahQR = containerTemp.querySelector(`#qr-back-${santri.nis}`);
             if (wadahQR && typeof QRCode !== 'undefined') {
-                new QRCode(wadahQR, { text: wadahQR.getAttribute('data-payload'), width: sizeQRPrint, height: sizeQRPrint, correctLevel: QRCode.CorrectLevel.L });
+                new QRCode(wadahQR, { 
+                    text: wadahQR.getAttribute('data-payload'), 
+                    width: sizeQRPrint, 
+                    height: sizeQRPrint,
+                    colorDark: warnaQRCodeCustom, // Terapkan warna gelapnya di sini
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.L 
+                });
             }
         });
+
 
         setTimeout(() => { 
             const canvases = containerTemp.querySelectorAll('canvas');
@@ -2745,7 +2766,11 @@ function cetakLaporanPDF() {
 
                 listMapel.forEach(m => {
             // Mengakomodasi hari yang kini string dipisah koma (Misal: "Senin, Selasa")
-            if (m.jadwal_aktif && m.hari && m.hari.includes(namaHariIni) && m.jam_mulai === jamSekarangID) {
+            if (m.jadwal_aktif && m.hari && m.hari.includes(namaHariIni) && m.jam_mulai) {
+                // Memastikan toleransi 1 menit jika interval meleset
+                const jamMulaiMenit = parseInt(m.jam_mulai.split(':')[0]) * 60 + parseInt(m.jam_mulai.split(':')[1]);
+                const jamSekarangMenit = sekarang.getHours() * 60 + sekarang.getMinutes();
+                if (jamSekarangMenit === jamMulaiMenit) {     
                 // Periksa apakah user adalah Ustadz pengampu ATAU Super Admin (untuk keperluan testing)
                 const isPengampu = (m.ustadz_ids || []).includes(currentUser.username) || (m.ustadz_id === currentUser.username);
                 if (isPengampu || currentUser.role === 'superadmin') {
@@ -2774,6 +2799,7 @@ function cetakLaporanPDF() {
                         }
                     }
                 }
+            }
             }
         });
     }
@@ -2863,6 +2889,7 @@ document.getElementById('setting-kertas-sertifikat').value = data.kertas_sertifi
                document.getElementById('setting-font-nama').value = data.font_nama || "13";
                document.getElementById('setting-font-alamat').value = data.font_alamat || "9";
 
+document.getElementById('setting-font-sertifikat').value = data.font_sertifikat || "24";
                 document.getElementById('setting-ukuran-qr').value = data.ukuran_qr || "60";
                 document.getElementById('setting-ukuran-barcode1d').value = data.ukuran_barcode1d || "30";
                  document.getElementById('setting-voice-aktif').value = data.voice_aktif || "1"; 
@@ -3221,6 +3248,7 @@ document.getElementById('setting-kertas-sertifikat').value = data.kertas_sertifi
     
     const yayasan = getDB('pondok_yayasan', {});
     const evaluasi = getDB('pondok_evaluasi', []).find(e => e.nis === nis) || { rata: 0, predikat: "Belum Ada Nilai" };
+    const sizeFontSertifikat = parseInt(yayasan.font_sertifikat) || 24;
     const tglID = tgl ? new Date(tgl).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-';
     let bgStyle = yayasan.bg_idcard ? `background-image: url('${yayasan.bg_idcard}');` : `background: #fff;`;
     
@@ -3252,7 +3280,9 @@ document.getElementById('setting-kertas-sertifikat').value = data.kertas_sertifi
             </div>
             <div class="sertifikat-body" style="font-size:0.85rem; line-height:1.4;">
                 <p>Diberikan Kepada:</p>
-                <div class="sertifikat-name" style="font-size:1.4rem; margin:8px 0; padding:0 10px;">${santri.nama}</div>
+              
+<div class="sertifikat-name" style="font-size:${sizeFontSertifikat}px; margin:8px 0; padding:0 10px;">${santri.nama}</div>
+
                 <p style="font-size:0.8rem;">NIS: ${santri.nis} ${santri.nik ? ' | NIK: ' + santri.nik : ''}</p>
                 <p style="margin-top: 10px; font-size:0.8rem;">${yayasan.teks_lulus || 'Telah mengikuti seluruh program pembelajaran dengan baik dan dinyatakan:'}</p>
                 <div class="sertifikat-predikat" style="font-size:1rem; margin:6px 0;">LULUS DENGAN PREDIKAT: ${evaluasi.predikat.toUpperCase()}</div>
@@ -3292,6 +3322,7 @@ function bukaModalSertifikat(nis) {
         let idx = santriDB.findIndex(s => s.nis === nis);
         if(idx === -1) return;
         const santri = santriDB[idx];
+        const sizeFontSertifikat = parseInt(yayasan.font_sertifikat) || 24;
         const yayasan = getDB('pondok_yayasan', {});
         const evaluasi = getDB('pondok_evaluasi', []).find(e => e.nis === nis) || { rata: 0, predikat: "Belum Dievaluasi" };
         
@@ -3312,7 +3343,7 @@ function bukaModalSertifikat(nis) {
                 </div>
                 <div class="sertifikat-body">
                     <p>Diberikan Kepada:</p>
-                    <div class="sertifikat-name">${santri.nama}</div>
+                    <div class="sertifikat-name" style="font-size:${sizeFontSertifikat}px; margin:8px 0; padding:0 10px;">${santri.nama}</div>
                     <p>NIS: ${santri.nis} ${santri.nik ? ' | NIK: ' + santri.nik : ''}</p>
                     <p style="margin-top: 20px;">${yayasan.teks_lulus || 'Telah mengikuti seluruh program pembelajaran dengan baik dan dinyatakan:'}</p>
                     <div class="sertifikat-predikat">LULUS DENGAN PREDIKAT: ${evaluasi.predikat.toUpperCase()}</div>
@@ -4357,7 +4388,10 @@ function kirimDataAbsen() {
             alamat: alamat,
             blur_login: blur_login,
             logo: base64TempImages.logo || old.logo,
-            bg_login: base64TempImages.bg_login || old.bg_login,
+            bg_login: base64TempImages.bg_login ||old.bg_login,
+            // Tambahkan di dalam variabel newConfig = { ... }
+font_sertifikat: document.getElementById('setting-font-sertifikat').value,
+
            /* KODE SESUDAHNYA */
             bg_idcard: base64TempImages.bg_idcard || old.bg_idcard,
             ttd_mudir: base64TempImages.ttd_mudir || old.ttd_mudir,
