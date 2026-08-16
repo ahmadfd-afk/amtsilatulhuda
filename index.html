@@ -1992,7 +1992,7 @@ const menuMaster = [
                   .kolektif-grid-gabung {
             display: grid !important;
             grid-template-columns: repeat(3, 1fr) !important;
-            gap: 15px !important;
+            gap: 6px !important;
             justify-items: center !important;
             padding-bottom: 15px !important;
             width: 100% !important;
@@ -2105,98 +2105,7 @@ const menuMaster = [
     }
 }
 
-    function cetakKolektifF4Gabung(orientasi = 'landscape') {
-    let databaseSantri = getDB('pondok_santri', []).filter(s => !s.is_alumni); 
-    if (databaseSantri.length === 0) return alert("Belum ada data santri aktif untuk dicetak F4.");
-    
-    const dataYayasan = getDB('pondok_yayasan', {});
-    let bgCardStyle = dataYayasan.bg_idcard ? `background-image: url('${dataYayasan.bg_idcard}');` : ''; 
-    let footerHTML = (dataYayasan.teks_footer && dataYayasan.teks_footer.trim() !== "") ? `<div class="id-footer-custom">${dataYayasan.teks_footer}</div>` : '';
-    
-    let htmlKartuKolektif = ``;
-    let classTambahan = orientasi === 'portrait' ? ' portrait' : '';
-
-    // WADAH DIBUKA DI SINI (Di luar loop agar kartu bisa berjejer)
-    htmlKartuKolektif += `<div class="kolektif-grid-gabung">`;
-
-    databaseSantri.forEach((santri) => {
-        let qrPayload = JSON.stringify({ n: santri.nis, u: supabaseConfig.url || "", k: supabaseConfig.key || "" });
-
-        htmlKartuKolektif += `
-            <div class="id-card-wrapper${classTambahan}" style="${bgCardStyle}">
-                <div class="id-header">
-                    <img src="${dataYayasan.logo || 'https://cdn-icons-png.flaticon.com/512/3592/3592078.png'}">
-                    <div><h4 style="margin: 0;">${dataYayasan.pondok || 'Nama Instansi'}</h4><p style="margin: 0;">${dataYayasan.yayasan || 'Sistem Manajemen'}</p></div>
-                </div>
-                <div class="id-body">
-                    <img src="${santri.foto}" class="id-photo">
-                                        <div class="id-details">
-                        <strong style="text-transform: uppercase;">${santri.nama}</strong>
-                        <div style="margin-top: 5px;">
-                            <span style="display:inline-block; width: 38px;">NIS</span>: <b style="color:var(--primary);">${santri.nis}</b><br>
-                            <b class="alamat-cetak" style="display:-webkit-inline-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; vertical-align:top; max-width: 180px; line-height:1.2; margin-top: 4px;">${(santri.alamat || '-')}</b>
-                        </div>
-                    </div>
-                    <!-- KODE PERBAIKAN: Wadah diganti menjadi SVG untuk Barcode 1D -->
-                    <div class="id-qr-depan" style="border:none; padding:0; background:transparent; box-shadow:none; width:auto; height:auto; overflow:hidden;">
-                        <svg id="barcode-gabung-${santri.nis}" style="width: 100%; max-width: 80px;"></svg>
-                    </div>
-                </div>
-
-                ${footerHTML}
-            </div>
-        `;
-    });
-
-    // WADAH DITUTUP DI SINI SETELAH LOOP SELESAI
-    htmlKartuKolektif += `</div>`;
-
-    const containerTemp = document.createElement('div'); 
-    containerTemp.style.position = 'fixed'; containerTemp.style.right = '200vw'; 
-    document.body.appendChild(containerTemp); 
-    containerTemp.innerHTML = htmlKartuKolektif;
-    
-        const size1DPrint = parseInt(dataYayasan.ukuran_barcode1d) || 30; // Ambil settingan tinggi barcode 1D
-    const sizeFontPrint = parseInt(dataYayasan.font_nama) || 13;
-    const sizeFontAlamatPrint = parseInt(dataYayasan.font_alamat) || 9;
-
-    containerTemp.querySelectorAll('.alamat-cetak').forEach(alamatEl => {
-        alamatEl.style.fontSize = sizeFontAlamatPrint + 'px';
-    });
-
-        // KODE PERBAIKAN: Looping menggunakan JsBarcode, bukan QRCode
-        const warnaBarcodeCustom = dataYayasan.warna_barcode || "#000000";
-    databaseSantri.forEach(santri => {
-        const wadahBarcode = containerTemp.querySelector(`#barcode-gabung-${santri.nis}`);
-        if (wadahBarcode && typeof JsBarcode !== 'undefined') {
-            try {
-                JsBarcode(wadahBarcode, santri.nis, {
-                    format: "CODE128",
-                    width: 2.2, /* Lebar Garis Diperlebar agar tidak kaku */
-                    height: size1DPrint,
-                    displayValue: false,
-                    margin: 10, /* Margin ditambah (white space) mempercepat scan */
-                    lineColor: warnaBarcodeCustom,
-                    background: "transparent"
-                });
-            } catch(err) { console.log("Barcode error:", err); }
-        }
-    });
-    
-
-    setTimeout(() => { 
-        const canvases = containerTemp.querySelectorAll('canvas');
-        canvases.forEach(canvas => {
-            const img = document.createElement('img'); img.src = canvas.toDataURL('image/png'); 
-            img.style.width = sizeQRPrint + 'px'; img.style.height = sizeQRPrint + 'px';
-            const siblingImg = canvas.nextElementSibling; if(siblingImg && siblingImg.tagName === 'IMG') siblingImg.remove();
-            canvas.parentNode.replaceChild(img, canvas);
-        });
-        cetakElemenHTML(containerTemp.innerHTML, 'portrait'); 
-        containerTemp.remove();
-    }, 600);
-}
-    function cetakKolektifF4Belakang(orientasi = 'portrait') {
+        function cetakKolektifF4Belakang(orientasi = 'portrait') {
         let databaseSantri = getDB('pondok_santri', []).filter(s => !s.is_alumni); 
         if (databaseSantri.length === 0) return alert("Belum ada data santri aktif.");
         const yayasan = getDB('pondok_yayasan', {});
@@ -2204,10 +2113,13 @@ const menuMaster = [
         const daftarPoin = teksTertib.split('\n').filter(baris => baris.trim() !== '');
         const formatTertib = daftarPoin.map(baris => `<div class="poin-tertib">${baris}</div>`).join('');
         
+        // --- MENGAMBIL UKURAN QR DARI PENGATURAN ---
+        const sizeQRPrint = parseInt(yayasan.ukuran_qr) || 60;
+        
         let htmlKartuKolektif = `<div class="kolektif-grid-gabung">`;
         databaseSantri.forEach((santri) => {
             let qrPayload = "https://ahmadfd-afk.github.io/Wali-santri/?nis=" + santri.nis + "&u=" + encodeURIComponent(supabaseConfig.url || "") + "&k=" + encodeURIComponent(supabaseConfig.key || "");
-                                                htmlKartuKolektif += `
+            htmlKartuKolektif += `
                 <div class="id-card-wrapper portrait kartu-belakang-saja" style="background-color: #fff !important; page-break-inside: avoid;">
                     <div class="id-header" style="padding:6px; background:linear-gradient(135deg, var(--primary), var(--primary-light)) !important; width:100%; box-sizing:border-box;">
                         <h4 style="font-size:0.75rem; margin:0; text-transform: uppercase; color:white; text-align:center; width:100%;">SISTEM MONITORING SANTRI</h4>
@@ -2221,12 +2133,14 @@ const menuMaster = [
                                 ${yayasan.ttd_mudir ? `<img src="${yayasan.ttd_mudir}" style="height:25px; margin:2px auto; display:block;">` : '<div style="height:25px;"></div>'}
                                 <div>${yayasan.mudir || 'Mudir Instansi'}</div>
                             </div>
-                            <div class="id-qr-back" id="qr-back-${santri.nis}" data-payload='${qrPayload}' style="width:55px; height:55px; min-width:55px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center; margin: 4px auto;"></div>
+                            
+                            <!-- PERBAIKAN: Inline style sekarang menyesuaikan settingan sizeQRPrint -->
+                            <div class="id-qr-back" id="qr-back-${santri.nis}" data-payload='${qrPayload}' style="width:${sizeQRPrint}px; height:${sizeQRPrint}px; min-width:${sizeQRPrint}px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center; margin: 4px auto;"></div>
+                            
                             <div style="font-size:0.45rem; text-align:center; padding-top:4px; border-top:1px dashed #ccc; width:100%;">${yayasan.alamat || '-'}</div>
                         </div>
                     </div>
                 </div>`;
-
         });
         htmlKartuKolektif += `</div>`;
         
@@ -2235,8 +2149,7 @@ const menuMaster = [
         document.body.appendChild(containerTemp); 
         containerTemp.innerHTML = htmlKartuKolektif;
         
-               const sizeQRPrint = parseInt(yayasan.ukuran_qr) || 60;
-        const warnaQRCodeCustom = yayasan.warna_barcode || "#000000"; // Tambahkan baris ini
+        const warnaQRCodeCustom = yayasan.warna_barcode || "#000000";
         databaseSantri.forEach(santri => {
             const wadahQR = containerTemp.querySelector(`#qr-back-${santri.nis}`);
             if (wadahQR && typeof QRCode !== 'undefined') {
@@ -2244,13 +2157,12 @@ const menuMaster = [
                     text: wadahQR.getAttribute('data-payload'), 
                     width: sizeQRPrint, 
                     height: sizeQRPrint,
-                    colorDark: warnaQRCodeCustom, // Terapkan warna gelapnya di sini
+                    colorDark: warnaQRCodeCustom, 
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.L 
                 });
             }
         });
-
 
         setTimeout(() => { 
             const canvases = containerTemp.querySelectorAll('canvas');
