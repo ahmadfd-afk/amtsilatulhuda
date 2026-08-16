@@ -1772,15 +1772,19 @@ const menuMaster = [
             box-sizing: border-box !important;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
         }
-        html, body {
+            html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             background: #fff !important;
             color: #000;
         }
+
+        /* PERBAIKAN: Memastikan sisi yang tidak dipilih benar-benar hilang saat dicetak */
+        .hidden { display: none !important; }
         
         /* ATURAN TABEL AGAR RAPI & TIDAK TERPOTONG JELEK */
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -1949,8 +1953,8 @@ const menuMaster = [
         .id-qr-depan { width: auto !important; height: auto !important; min-width: 60px; padding: 3px; background: white !important; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-left: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .id-card-wrapper.portrait .id-qr-depan { margin: 6px auto 0 auto; width: auto !important; max-width: 90% !important; }
         
-        /* KODE PERBAIKAN: Memaksa teks belakang di atas ornamen gambar */
-        #sisi-belakang-kartu {
+               /* KODE PERBAIKAN: Memaksa teks belakang di atas ornamen gambar */
+        #sisi-belakang-kartu, .sisi-belakang-kartu-kolektif {
             position: relative !important;
             z-index: 10 !important;
         }
@@ -2181,10 +2185,12 @@ const menuMaster = [
         let htmlKartuKolektif = `<div class="kolektif-grid-gabung">`;
         databaseSantri.forEach((santri) => {
             let qrPayload = "https://ahmadfd-afk.github.io/Wali-santri/?nis=" + santri.nis + "&u=" + encodeURIComponent(supabaseConfig.url || "") + "&k=" + encodeURIComponent(supabaseConfig.key || "");
-            htmlKartuKolektif += `
-                <div class="id-card-wrapper portrait">
-                    <div id="sisi-belakang-kartu" style="height:100%; display:flex; flex-direction:column;">
-                        <div class="id-header" style="padding:6px; background:linear-gradient(135deg, var(--primary), var(--primary-light));">
+                    htmlKartuKolektif += `
+            <div class="id-card-wrapper portrait">
+                <!-- PERBAIKAN: Mengganti ID menjadi Class agar layout kolektif tidak bertumpuk -->
+                <div class="sisi-belakang-kartu-kolektif" style="height:100%; display:flex; flex-direction:column;">
+                    <div class="id-header" style="padding:6px; background:linear-gradient(135deg, var(--primary), var(--primary-light));">
+
                             <h4 style="font-size:0.75rem; margin:0; text-transform: uppercase; color:white; text-align:center;">SISTEM MONITORING SANTRI</h4>
                         </div>
                         <div class="id-back-content" style="display:flex; flex-direction:column; padding:10px; flex:1; background:rgba(255, 255, 255, 0.9); text-align:center;">
