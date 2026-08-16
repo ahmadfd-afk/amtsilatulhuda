@@ -2756,7 +2756,7 @@ function cetakLaporanPDF() {
     }
 }
 
-    function masukKeSistemSetelahLogin(playSuara = true) {
+        function masukKeSistemSetelahLogin(playSuara = true) {
         document.getElementById('header-user-name').innerText = currentUser.nama || "User";
         document.getElementById('header-user-photo').src = currentUser.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         document.getElementById('dropdown-user-role').innerText = currentUser.role.toUpperCase();
@@ -2765,7 +2765,17 @@ function cetakLaporanPDF() {
         document.getElementById('view-login').classList.add('hidden'); document.getElementById('app-header').classList.remove('hidden'); document.getElementById('dashboard-wrapper').classList.remove('hidden'); document.getElementById('app-nav').classList.remove('hidden');
         renderMenuBerdasarkanAkses();
         if (playSuara) { setTimeout(jalankanSapaanSuara, 300); }
+        
+        // --- KODE PERBAIKAN: Otomatis minta izin notifikasi saat Ustadz/Admin login ---
+        setTimeout(() => {
+            if (typeof aktifkanFCM === 'function') {
+                aktifkanFCM();
+            }
+        }, 2000); // Diberi jeda 2 detik agar sistem selesai memuat halaman
+        // --------------------------------------------------------------------------
+
         const lastTab = localStorage.getItem('pondok_active_tab') || 'view-dashboard';
+
         document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
         if (lastTab === 'view-dashboard' || lastTab === 'view-login') document.getElementById('view-dashboard').classList.remove('hidden');
         else { document.getElementById(lastTab).classList.remove('hidden'); bukaFungsiTabSesuaiTujuan(lastTab); }
@@ -4383,16 +4393,24 @@ window.onload = function() {
 };
 
 function simpanTokenKeSupabase(tokenFCM) {
-    // Logika untuk menyimpan tokenFCM ke tabel 'users' di Supabase Anda
-    // Berdasarkan currentUser.username
     let users = getDB('pondok_users', []);
     let idx = users.findIndex(u => u.username === currentUser.username);
     if (idx > -1) {
-        users[idx].fcm_token = tokenFCM;
-        localStorage.setItem('pondok_users', JSON.stringify(users));
-        // Pastikan Anda juga melakukan push ke Supabase cloud (sync)
+        // --- KODE PERBAIKAN: Cek jika token baru, simpan lalu otomatis Sync ke Cloud ---
+        if (users[idx].fcm_token !== tokenFCM) {
+            users[idx].fcm_token = tokenFCM;
+            localStorage.setItem('pondok_users', JSON.stringify(users));
+            
+            // Otomatis tembak data terbaru ke Supabase agar Admin bisa mendeteksi token ini
+            if (typeof sinkronisasiKeCloud === 'function') {
+                console.log("Menyinkronkan Token FCM Ustadz ke Cloud...");
+                sinkronisasiKeCloud();
+            }
+        }
+        // ------------------------------------------------------------------------------
     }
 }
+
 
     function simpanYayasan() {
         const mode = document.getElementById('setting-app-mode').value;
