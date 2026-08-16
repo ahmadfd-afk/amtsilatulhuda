@@ -2756,7 +2756,7 @@ function cetakLaporanPDF() {
     }
 }
 
-        function masukKeSistemSetelahLogin(playSuara = true) {
+    function masukKeSistemSetelahLogin(playSuara = true) {
         document.getElementById('header-user-name').innerText = currentUser.nama || "User";
         document.getElementById('header-user-photo').src = currentUser.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         document.getElementById('dropdown-user-role').innerText = currentUser.role.toUpperCase();
@@ -2765,17 +2765,7 @@ function cetakLaporanPDF() {
         document.getElementById('view-login').classList.add('hidden'); document.getElementById('app-header').classList.remove('hidden'); document.getElementById('dashboard-wrapper').classList.remove('hidden'); document.getElementById('app-nav').classList.remove('hidden');
         renderMenuBerdasarkanAkses();
         if (playSuara) { setTimeout(jalankanSapaanSuara, 300); }
-        
-        // --- KODE PERBAIKAN: Otomatis minta izin notifikasi saat Ustadz/Admin login ---
-        setTimeout(() => {
-            if (typeof aktifkanFCM === 'function') {
-                aktifkanFCM();
-            }
-        }, 2000); // Diberi jeda 2 detik agar sistem selesai memuat halaman
-        // --------------------------------------------------------------------------
-
         const lastTab = localStorage.getItem('pondok_active_tab') || 'view-dashboard';
-
         document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
         if (lastTab === 'view-dashboard' || lastTab === 'view-login') document.getElementById('view-dashboard').classList.remove('hidden');
         else { document.getElementById(lastTab).classList.remove('hidden'); bukaFungsiTabSesuaiTujuan(lastTab); }
@@ -4327,89 +4317,6 @@ function kirimDataAbsen() {
 /* === AKHIR PERBAIKAN BLOK 3: SIMPAN DATA ABSEN BESERTA STATUS KELAS ASAL = */
 /* ========================================================================== */
 
-async function aktifkanFCM() {
-    try {
-        // Meminta izin ke perangkat
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-            console.log('Izin notifikasi diberikan.');
-            
-            // Mengambil Token (Masukkan VAPID Key dari Langkah 1 di sini)
-            const token = await window.fcmGetToken(window.fcmMessaging, { 
-                vapidKey: "BFUUggGusY3F6YjD5Nc-Z7GkHw1UWknqKk5YfSFH0BsgiMLrLR4bc8WsfHkQPhxtx8p097tt-WKDqv3nnarD2jM" 
-            });
-
-            if (token) {
-                console.log('Token FCM didapatkan:', token);
-                // SIMPAN TOKEN KE SUPABASE
-                simpanTokenKeSupabase(token);
-            } else {
-                console.log('Gagal mendapatkan token.');
-            }
-        } else {
-            alert('Aplikasi butuh izin notifikasi agar alarm jadwal bisa berbunyi.');
-        }
-    } catch (error) {
-        console.error('Error saat inisialisasi FCM:', error);
-    }
-}
-// Dijalankan otomatis saat pesan FCM masuk dan aplikasi sedang terbuka (Foreground)
-window.onload = function() {
-    initApp(); // Fungsi asli Anda
-
-    // Menangkap pesan FCM
-    setTimeout(() => {
-        if (window.fcmOnMessage) {
-            window.fcmOnMessage(window.fcmMessaging, (payload) => {
-                console.log('Pesan FCM masuk di Foreground:', payload);
-                
-                const judul = payload.notification.title;
-                const pesan = payload.notification.body;
-                
-                kirimNotifikasiLokal(judul, pesan); // Munculkan pop-up visual
-
-                // EKSEKUSI SUARA 10 KALI
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                    let hitungan = 0;
-                    
-                    function bicara() {
-                        if (hitungan < 10) {
-                            let utterance = new SpeechSynthesisUtterance(pesan);
-                            utterance.lang = 'id-ID';
-                            utterance.rate = 0.9;
-                            utterance.onend = function() {
-                                hitungan++;
-                                setTimeout(bicara, 1500); 
-                            };
-                            window.speechSynthesis.speak(utterance);
-                        }
-                    }
-                    bicara();
-                }
-            });
-        }
-    }, 2000); // Beri jeda agar library termuat dulu
-};
-
-function simpanTokenKeSupabase(tokenFCM) {
-    let users = getDB('pondok_users', []);
-    let idx = users.findIndex(u => u.username === currentUser.username);
-    if (idx > -1) {
-        // --- KODE PERBAIKAN: Cek jika token baru, simpan lalu otomatis Sync ke Cloud ---
-        if (users[idx].fcm_token !== tokenFCM) {
-            users[idx].fcm_token = tokenFCM;
-            localStorage.setItem('pondok_users', JSON.stringify(users));
-            
-            // Otomatis tembak data terbaru ke Supabase agar Admin bisa mendeteksi token ini
-            if (typeof sinkronisasiKeCloud === 'function') {
-                console.log("Menyinkronkan Token FCM Ustadz ke Cloud...");
-                sinkronisasiKeCloud();
-            }
-        }
-        // ------------------------------------------------------------------------------
-    }
-}
 
 
     function simpanYayasan() {
@@ -5114,95 +5021,22 @@ function simpanTabungan() {
     // FUNGSI UNTUK TOMBOL VALIDASI & CETAK PDF
     // ==========================================
 
-   function validasiDanNotifManual(idMapel) {
-    // 1. Cari data mata pelajaran berdasarkan ID yang diklik
-    const m = getDB('pondok_master_mapel', []).find(x => x.id == idMapel);
-    if (!m) return;
-    
-    // 2. Ambil format teks notifikasi dari pengaturan Yayasan
-    const yayasan = getDB('pondok_yayasan', {});
-    let formatTeks = yayasan.pwa_notif_teks || "Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}.";
-    let teksSuara = formatTeks.replace(/{mapel}/g, m.nama_mapel).replace(/{kelas}/g, "Sesuai Jadwal");
+    function validasiDanNotifManual(idMapel) {
+        // 1. Cari data mata pelajaran berdasarkan ID yang diklik
+        const m = getDB('pondok_master_mapel', []).find(x => x.id == idMapel);
+        if (!m) return;
+        
+        // 2. Ambil format teks notifikasi dari pengaturan Yayasan
+        const yayasan = getDB('pondok_yayasan', {});
+        let formatTeks = yayasan.pwa_notif_teks || "Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}.";
+        
+        // 3. Ubah kata {mapel} menjadi nama pelajaran aslinya
+        let teksSuara = formatTeks.replace(/{mapel}/g, m.nama_mapel).replace(/{kelas}/g, "Sesuai Jadwal");
 
-    // 3. AMBIL TOKEN FCM USTADZ YANG MENGAJAR MAPEL INI
-    let listUsers = getDB('pondok_users', []);
-    let targetUstadzUsernames = m.ustadz_ids || [m.ustadz_id]; // Mendukung ustadz tunggal atau banyak
-    
-    let tokenDitemukan = [];
-    targetUstadzUsernames.forEach(username => {
-        let userObj = listUsers.find(u => u.username === username);
-        if (userObj && userObj.fcm_token) {
-            tokenDitemukan.push(userObj.fcm_token);
-        }
-    });
-
-    if (tokenDitemukan.length === 0) {
-        alert(`Peringatan: Jadwal ${m.nama_mapel} berhasil divalidasi lokal, tapi Ustadz pengampunya belum mengaktifkan izin notifikasi di HP mereka.`);
-        return;
+        // 4. Picu sistem notifikasi dan suara bawaan aplikasi
+        kirimNotifikasiLokal("Jadwal Tervalidasi!", teksSuara);
+        alert(`Sukses! Notifikasi manual dan pengumuman untuk jadwal pelajaran ${m.nama_mapel} berhasil dipicu.`);
     }
-
-    // 4. KIRIM PESAN KE FIREBASE CLOUD MESSAGING (FCM)
-    // (Membutuhkan fungsi pengiriman API ke server FCM/Supabase Edge Function)
-    tokenDitemukan.forEach(token => {
-        kirimPesanFCMKeServer(token, "Jadwal Mengajar Tiba!", teksSuara);
-    });
-
-    alert(`Sukses! Tombol Valid ditekan. Notifikasi dan alarm suara 10x dikirim ke HP Ustadz: ${m.ustadz_nama}`);
-}
-
-// Fungsi pendukung untuk menembak API Firebaseasync 
-/**
- * Mengirim pesan atau pemicu notifikasi FCM ke server backend/Edge Function.
- * @param {string} targetToken - Token perangkat tujuan (FCM Device Token).
- * @param {string} title - Judul notifikasi.
- * @param {string} body - Isi pesan notifikasi.
- * @param {Object} customData - Data tambahan opsional (payload).
- */
-async function kirimPesanFCMKeServer(targetToken, title, body, customData = {}) {
-    // Mengambil konfigurasi dari sistem lokal (mengikuti pola yang ada)
-    const config = getDB('pondok_supabase_config', { url: '', key: '' });
-    
-    if (!config.url || !config.key) {
-        console.warn("Konfigurasi server belum tersedia untuk pengiriman FCM.");
-        return false;
-    }
-
-    // Menyusun payload untuk dikirim ke Supabase Edge Function (misal: endpoint 'kirim-notif')
-    const fcmPacket = {
-        token: targetToken,
-        notification: {
-            title: title,
-            body: body
-        },
-        data: customData
-    };
-
-    try {
-        // Menembakkan request ke Supabase Edge Function yang menangani FCM
-        const response = await fetch(`${config.url}/functions/v1/kirim-notif`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'apikey': config.key,
-                'Authorization': `Bearer ${config.key}`
-            },
-            body: JSON.stringify(fcmPacket)
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log("Notifikasi FCM berhasil dikirim:", result);
-            return true;
-        } else {
-            console.error("Gagal mengirim FCM. Status:", response.statusText);
-            return false;
-        }
-    } catch (error) {
-        console.error("Kesalahan jaringan saat mengirim FCM:", error);
-        return false;
-    }
-}
-
 
     function cetakJadwalMapelPDF(idMapel) {
         // 1. Ambil data mapel dan kelas
@@ -6293,31 +6127,6 @@ function hapusSantriWali(idSantri) {
 
     window.onload = initApp;
 </script>
-<!-- Script Firebase (Modular) -->
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
-
-    // Ganti dengan firebaseConfig dari Langkah 1
-    const firebaseConfig = {
-  apiKey: "AIzaSyBajz9-X3RlIXphaH0a--OSvQM6_nhV6pE",
-  authDomain: "sms-digi.firebaseapp.com",
-  projectId: "sms-digi",
-  storageBucket: "sms-digi.firebasestorage.app",
-  messagingSenderId: "477801725664",
-  appId: "1:477801725664:web:0a1fc140d6ec907e1c9a85"
-};
-
-    // Inisialisasi Firebase
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-
-    // Jadikan 'messaging' & 'getToken' sebagai variabel global agar bisa dipakai di fungsi lain
-    window.fcmMessaging = messaging;
-    window.fcmGetToken = getToken;
-    window.fcmOnMessage = onMessage;
-</script>
-
 <!-- Panggil file library langsung dari root folder -->
 <script src="qrcode.min.js"></script>
 <script src="html5-qrcode.min.js"></script>
