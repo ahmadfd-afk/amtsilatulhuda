@@ -4875,11 +4875,11 @@ async function sinkronisasiKeCloud() {
 
             const waktuKirim = new Date().toISOString();
 
-            // LANGKAH C: Kirim kembali ke Cloud dengan Syarat Waktu (Optimistic Locking)
+                       // LANGKAH C: Kirim kembali ke Cloud dengan Syarat Waktu (Optimistic Locking)
             let patchUrl = `${supabaseConfig.url}/rest/v1/backup_lms?id=eq.1`;
             if (cloudUpdatedAt) {
                 // Syarat mutlak: Jangan timpa data jika ada Device lain yang mendahului detik pengiriman ini
-                patchUrl += `&updated_at=eq.${cloudUpdatedAt}`;
+                patchUrl += `&updated_at=eq.${encodeURIComponent(cloudUpdatedAt)}`;
             }
 
             const response = await fetch(patchUrl, {
