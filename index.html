@@ -1039,7 +1039,8 @@
 
 <label style="color: var(--primary);"><i class="fa-solid fa-barcode"></i> Tinggi Barcode 1D Depan (px)</label>
 <input type="number" id="setting-ukuran-barcode1d" placeholder="Rekomendasi: 25 - 40">
-
+<label style="color: var(--primary);"><i class="fa-solid fa-arrows-left-right"></i> Lebar Barcode 1D Depan (Rapat/Renggang)</label>
+<input type="number" step="0.1" id="setting-lebar-barcode1d" placeholder="Rekomendasi: 1.5 - 2.5">
 <label>Teks Keputusan Kelulusan Sertifikat</label><input type="text" id="setting-teks-lulus" placeholder="Telah mengikuti proses belajar dan dinyatakan:">
 <label style="color: var(--primary);"><i class="fa-solid fa-text-height"></i> Ukuran Font Nama Sertifikat (px)</label>
 <input type="number" id="setting-font-sertifikat" placeholder="Rekomendasi: 24">
@@ -2847,6 +2848,7 @@ document.getElementById('setting-kertas-sertifikat').value = data.kertas_sertifi
 document.getElementById('setting-font-sertifikat').value = data.font_sertifikat || "24";
                 document.getElementById('setting-ukuran-qr').value = data.ukuran_qr || "60";
                 document.getElementById('setting-ukuran-barcode1d').value = data.ukuran_barcode1d || "30";
+                document.getElementById('setting-lebar-barcode1d').value = data.lebar_barcode1d || "2.2";
                  document.getElementById('setting-voice-aktif').value = data.voice_aktif || "1"; 
                 document.getElementById('setting-voice-teks').value = data.voice_teks || ""; 
                 document.getElementById('setting-tata-tertib').value = data.tata_tertib || ""; 
@@ -3418,7 +3420,7 @@ function bukaModalSertifikat(nis) {
         const sizeQR = parseInt(yayasan.ukuran_qr) || 60;
         const sizeFont = parseInt(yayasan.font_nama) || 13;
         const size1D = parseInt(yayasan.ukuran_barcode1d) || 30;
-
+const lebar1D = parseFloat(yayasan.lebar_barcode1d) || 2.2;
         // Terapkan ukuran dinamis ke tampilan
         wadahQR.style.width = sizeQR + 'px';
         wadahQR.style.height = sizeQR + 'px';
@@ -3444,7 +3446,7 @@ function bukaModalSertifikat(nis) {
 
                 JsBarcode("#card-barcode", nisRaw, {
                     format: "CODE128",
-                    width: 2.2, 
+                    width: lebar1D, 
                     height: size1D,
                     displayValue: false,
                     margin: 10,
