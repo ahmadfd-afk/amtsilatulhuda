@@ -6289,6 +6289,94 @@ function simpanSantriWali() {
     document.getElementById('form-santri-wali-card').classList.add('hidden');
     renderTabelSantriWali();
 }
+function cetakKolektifF4Gabung(orientasi = 'portrait') {
+    let databaseSantri = getDB('pondok_santri', []).filter(s => !s.is_alumni);
+    if (databaseSantri.length === 0) return alert("Belum ada data santri aktif.");
+
+    const yayasan = getDB('pondok_yayasan', {});
+    const logoSrc = yayasan.logo || "https://cdn-icons-png.flaticon.com/512/3592/3592078.png";
+    const pondokName = yayasan.pondok || "Sistem Manajemen";
+    const yayasanName = yayasan.yayasan || "Instansi";
+    const sizeFont = parseInt(yayasan.font_nama) || 13;
+    const sizeFontAlamat = parseInt(yayasan.font_alamat) || 9;
+    const size1D = parseInt(yayasan.ukuran_barcode1d) || 30;
+    const lebar1D = parseFloat(yayasan.lebar_barcode1d) || 2.2;
+    const warnaBarcodeCustom = yayasan.warna_barcode || "#000000";
+
+    let htmlKartuKolektif = `<div class="kolektif-grid-gabung">`;
+
+    databaseSantri.forEach((santri) => {
+        let fotoSrc = santri.foto || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+        htmlKartuKolektif += `
+            <div class="id-card-wrapper portrait" style="page-break-inside: avoid; background-color: #fff !important; border: 1px solid #ccc;">
+                <div id="sisi-depan-kartu">
+                    <div class="id-header" style="background:linear-gradient(135deg, var(--primary), var(--primary-light)) !important;">
+                        <img src="${logoSrc}">
+                        <div><h4 style="color:white !important;">${pondokName}</h4><p style="color:#F4E29F !important;">${yayasanName}</p></div>
+                    </div>
+                    <div class="id-body" style="background:#fff !important;">
+                        <img src="${fotoSrc}" class="id-photo">
+                        <div class="id-details">
+                            <strong style="text-transform: uppercase; font-size: ${sizeFont}px;">${santri.nama}</strong>
+                            <div style="margin-top: 5px;">
+                                <span style="display:inline-block; width: 38px;">NIS</span>: <span style="font-weight: bold; color: var(--primary);">${santri.nis}</span><br>
+                                <span style="font-size: ${sizeFontAlamat}px; display:-webkit-inline-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-width: 180px;">${santri.alamat || '-'}</span>
+                            </div>
+                        </div>
+                        <div class="id-qr-depan" style="border:none; padding:0; background:transparent; box-shadow:none;">
+                            <svg id="barcode-depan-${santri.nis}"></svg>
+                        </div>
+                    </div>
+                    ${yayasan.teks_footer ? `<div class="id-footer-custom">${yayasan.teks_footer}</div>` : ''}
+                </div>
+            </div>`;
+    });
+
+    htmlKartuKolektif += `</div>`;
+
+    const containerTemp = document.createElement('div');
+    containerTemp.style.position = 'fixed';
+    containerTemp.style.right = '200vw';
+    document.body.appendChild(containerTemp);
+    containerTemp.innerHTML = htmlKartuKolektif;
+
+    // Render Barcode 1D
+    if (typeof JsBarcode !== 'undefined') {
+        databaseSantri.forEach(santri => {
+            try {
+                JsBarcode(containerTemp.querySelector(`#barcode-depan-${santri.nis}`), santri.nis, {
+                    format: "CODE128",
+                    width: lebar1D,
+                    height: size1D,
+                    displayValue: false,
+                    margin: 10,
+                    lineColor: warnaBarcodeCustom,
+                    background: "transparent"
+                });
+            } catch(e) {}
+        });
+    }
+
+    // Ubah SVG menjadi Image agar tercetak di PDF/Kertas
+    setTimeout(() => {
+        const svgs = containerTemp.querySelectorAll('svg');
+        svgs.forEach(svg => {
+            const serializer = new XMLSerializer();
+            let source = serializer.serializeToString(svg);
+            if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+                source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+            source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+            const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+            const img = document.createElement('img');
+            img.src = url;
+            svg.parentNode.replaceChild(img, svg);
+        });
+
+        cetakElemenHTML(containerTemp.innerHTML, 'portrait');
+        containerTemp.remove();
+    }, 600);
+}
 
 function hapusSantriWali(idSantri) {
     if (!confirm("Hapus santri ini dari sistem secara permanen?")) return;
