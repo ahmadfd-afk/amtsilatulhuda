@@ -4922,7 +4922,10 @@ async function sinkronisasiKeCloud() {
                 
                 if (typeof renderTabelSantri === 'function') renderTabelSantri();
                 if (typeof renderTabelDaftarKelas === 'function') renderTabelDaftarKelas();
+                if (typeof renderMasterMapel === 'function') renderMasterMapel();
+                if (typeof renderJamKustom === 'function') renderJamKustom();
                 
+            
             } else if (response.status === 404 || patchResult.length === 0) {
                 if (!cloudUpdatedAt) {
                     await fetch(`${supabaseConfig.url}/rest/v1/backup_lms`, {
