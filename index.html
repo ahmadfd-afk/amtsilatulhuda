@@ -472,15 +472,15 @@
                     </div>
                     <div class="dropdown-item" onclick="triggerSyncCloudQuick()">
                         <i class="fa-solid fa-cloud-arrow-up" style="color:var(--info);"></i>
-                        <span>Kirim Data Cloud</span>
+                        <span>Kirim ke Cloud</span>
                     </div>
                     <div class="dropdown-item" onclick="triggerPullCloudQuick()">
                         <i class="fa-solid fa-cloud-arrow-down" style="color:var(--warning);"></i>
-                        <span>Tarik Data Cloud</span>
+                        <span>Tarik dari Cloud</span>
                     </div>
                      <div class="dropdown-item" onclick="bersihkanCacheApp()">
                         <i class="fa-solid fa-arrows-rotate" style="color:var(--primary);"></i>
-                        <span>Perbarui Sistem (Hapus Cache)</span>
+                        <span>Perbarui Sistem</span>
                     </div>
                     <div class="dropdown-item" onclick="prosesLogout()" style="color:var(--danger);">
                         <i class="fa-solid fa-right-from-bracket"></i>
@@ -527,7 +527,7 @@
                 
                 <div style="display:flex; justify-content:center; margin-top: 5px;">
                     <button class="btn-outline" style="background: transparent; color: rgba(255,255,255,0.7); border: none; margin-top: 0px; justify-content: center; font-size:0.7rem; padding: 4px; width:auto; text-decoration: underline;" onclick="bukaScannerLoginTarikData()">
-                        <i class="fa-solid fa-qrcode"></i> QR Tarik Data Cloud
+                        <i class="fa-solid fa-qrcode"></i> QR Tarik dari Cloud
                     </button>
                 </div>
             </div>
@@ -574,7 +574,7 @@
                 </div>
 
                 <div class="card card-premium" id="card-registrasi-santri">
-                    <h3 id="form-santri-title" style="margin-bottom: 14px; color: var(--primary);">Registrasi Santri Baru</h3>
+                    <h3 id="form-santri-title" style="margin-bottom: 14px; color: var(--primary);">Tambah Santri</h3>
                     <input type="hidden" id="edit-id-santri" value="">
                     
                     <label id="label-foto-santri">Foto Santri</label>
@@ -617,38 +617,35 @@
                 
                 <div class="card">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h3 id="title-db-santri" style="color: var(--primary); margin: 0;">Database Santri Aktif</h3>
+    <h3 id="title-db-santri" style="color: var(--primary); margin: 0;">Data Santri</h3>
     <button type="button" id="btn-toggle-tabel-santri" class="btn-outline" onclick="toggleTampilanTabelSantri()" style="width:auto; padding:6px 12px; margin:0; font-size:0.75rem; border-color:var(--primary);">
         <i class="fa-solid fa-eye" id="icon-toggle-tabel"></i> Tampilkan Daftar
     </button>
 </div>
 <!-- ... tombol cetak dsb ... -->
-<!-- WADAH SCROLL DITAMBAHKAN CLASS 'hidden' -->
-<div id="wadah-scroll-santri" class="wadah-scroll-santri hidden">
-    <table>
-
-                                                <div style="display:flex; gap:8px;">
-                            <div style="display: flex; gap: 4px; flex: 1; flex-wrap: wrap;">
-    <button class="btn-primary" onclick="cetakKolektifF4Gabung('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.72rem; background: var(--info); flex: 1; min-width:100px;">
-        <i class="fa-solid fa-id-badge"></i> Cetak Depan
-    </button>
-    <button class="btn-primary" onclick="cetakKolektifF4Belakang('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.72rem; background: #8E44AD; flex: 1; min-width:100px;">
-        <i class="fa-solid fa-qrcode"></i> Cetak Belakang
+<!-- Tombol Aksi Cetak & Rekap (Sudah dikeluarkan dari tag table yang salah) -->
+<div style="display:flex; gap:8px; margin-bottom: 15px; margin-top: 10px;">
+    <div style="display: flex; gap: 4px; flex: 1; flex-wrap: wrap;">
+        <button class="btn-primary" onclick="cetakKolektifF4Gabung('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.72rem; background: var(--info); flex: 1; min-width:100px;">
+            <i class="fa-solid fa-id-badge"></i> Cetak Depan
+        </button>
+        <button class="btn-primary" onclick="cetakKolektifF4Belakang('portrait')" style="margin: 0; padding: 12px 6px; font-size: 0.72rem; background: #8E44AD; flex: 1; min-width:100px;">
+            <i class="fa-solid fa-qrcode"></i> Cetak Belakang
+        </button>
+    </div>
+    <button class="btn-outline" onclick="cetakRekapSantriPDF()" style="justify-content: center; font-size: 0.72rem; background: #fff3cd; border-color: var(--warning); flex: 1; margin: 0; min-width:90px;">
+        <i class="fa-solid fa-file-pdf"></i> Rekap PDF
     </button>
 </div>
-                            <button class="btn-outline" onclick="cetakRekapSantriPDF()" style="justify-content: center; font-size: 0.72rem; background: #fff3cd; border-color: var(--warning); flex: 1; margin: 0; min-width:90px;">
-                                <i class="fa-solid fa-file-pdf"></i> Rekap PDF
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- WADAH SCROLL TERBATAS (TAMPIL 10-15 BARIS) -->
-                    <div id="wadah-scroll-santri" class="wadah-scroll-santri">
-                        <table>
-                            <thead><tr><th id="th-kamar-nis">NIS / Kamar</th><th>Nama Lengkap</th><th>Aksi</th></tr></thead>
-                            <tbody id="tabel-santri-body"></tbody>
-                        </table>
-                    </div>
+
+<!-- WADAH SCROLL TERBATAS (TAMPIL 10-15 BARIS) -->
+<div id="wadah-scroll-santri" class="wadah-scroll-santri">
+    <table>
+        <thead><tr><th id="th-kamar-nis">NIS / Kamar</th><th>Nama Lengkap</th><th>Aksi</th></tr></thead>
+        <tbody id="tabel-santri-body"></tbody>
+    </table>
+</div>
+
                 </div>
             </div>
 
@@ -657,7 +654,7 @@
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
                 
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-star"></i> Input Evaluasi Nilai</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-star"></i> Evaluasi Nilai</h3>
                     <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:14px;">Masukkan nilai ujian dan keaktifan (akhlak, semangat) sebagai syarat generate sertifikat.</p>
                     
                     <label>Pilih Kelas / Kelompok</label>
@@ -671,11 +668,11 @@
             <div id="view-izin" class="hidden page-view">
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 8px; color: var(--primary);"><i class="fa-solid fa-file-signature"></i> Surat Izin & Validasi Balik</h3>
+                    <h3 style="margin-bottom: 8px; color: var(--primary);"><i class="fa-solid fa-file-signature"></i> Surat Izin</h3>
                     <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:14px;">Scan QR Santri untuk membuat Surat Izin Keluar atau Validasi Kembali.</p>
                     <div style="display: flex; gap: 8px; margin-bottom: 14px;">
-                        <button class="btn-primary" onclick="startScannerIzin('keluar')" style="flex:1; font-size:0.78rem;"><i class="fa-solid fa-share-from-square"></i> Buat Surat Izin</button>
-                        <button class="btn-primary" onclick="startScannerIzin('balik')" style="flex:1; background:var(--success); font-size:0.78rem;"><i class="fa-solid fa-right-to-bracket"></i> Validasi Balik</button>
+                        <button class="btn-primary" onclick="startScannerIzin('keluar')" style="flex:1; font-size:0.78rem;"><i class="fa-solid fa-share-from-square"></i> Surat Izin</button>
+                        <button class="btn-primary" onclick="startScannerIzin('balik')" style="flex:1; background:var(--success); font-size:0.78rem;"><i class="fa-solid fa-right-to-bracket"></i> Validasi Kembali</button>
                     </div>
                     <button class="btn-outline" onclick="stopScannerIzin()" id="btn-stop-camera-izin" style="justify-content:center; display:none; margin-bottom:14px; border-color:var(--danger); color:var(--danger);"><i class="fa-solid fa-stop"></i> Tutup Kamera</button>
                     <div id="qr-reader-izin" style="width:100%; display:none; margin-bottom:14px;"></div>
@@ -685,7 +682,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-clock-rotate-left"></i> Santri Sedang Izin</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-clock-rotate-left"></i> Sedang Izin</h3>
                     <div style="overflow-x:auto;"><table><thead><tr><th>Identitas</th><th>Tgl Wajib Balik</th><th>Aksi</th></tr></thead><tbody id="tabel-izin-aktif-body"></tbody></table></div>
                 </div>
             </div>
@@ -693,7 +690,7 @@
             <div id="view-rekap" class="hidden page-view">
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);">Laporan Rekapitulasi (PDF)</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Rekap Laporan (PDF)</h3>
                     <label>Pilih Bulan Laporan</label><input type="month" id="filter-bulan-rekap" style="background:#fff;">
                     <label>Pilih Spesifik Kelas</label><select id="filter-kelas-rekap"></select>
                     <button class="btn-primary" onclick="cetakLaporanPDF()" style="margin-top:18px;"><i class="fa-solid fa-file-pdf"></i> UNDUH REKAPITULASI (PDF)</button>
@@ -707,7 +704,7 @@
                 <div class="card card-premium" style="border-left-color: var(--info);">
                     
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-                        <h3 style="color: var(--info); margin:0;"><i class="fa-solid fa-book"></i> Buat Master Mata Pelajaran</h3>
+                        <h3 style="color: var(--info); margin:0;"><i class="fa-solid fa-book"></i> Mata Pelajaran</h3>
                         <button type="button" class="btn-outline" style="width:auto; padding:6px 12px; margin:0; font-size:0.72rem; border-color:var(--info); color:var(--info);" onclick="aktifkanNotifikasiJadwal()">
                             <i class="fa-solid fa-bell"></i> Izin Layar PWA Notif
                         </button>
@@ -791,19 +788,24 @@
 
                                         <button class="btn-primary" style="background: var(--info); border: none; box-shadow: none;" onclick="simpanMapel()">SIMPAN MATA PELAJARAN</button>
                     
-                    <div style="margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 10px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-    <h4 style="font-size:0.8rem; color:var(--primary); margin:0;">Daftar Mata Pelajaran & Kelas Peserta:</h4>
-    <button class="btn-print" style="width:auto; padding:6px 12px; margin:0; font-size:0.75rem;" onclick="cetakSemuaJadwalPDF()"><i class="fa-solid fa-print"></i> Download Semua Jadwal</button>
+                   <div style="margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 10px;">
+    <!-- Tambahkan event onclick dan kursor pointer pada header -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px; cursor:pointer;" onclick="document.getElementById('wadah-tabel-jadwal').classList.toggle('hidden')">
+        <h4 style="font-size:0.8rem; color:var(--primary); margin:0;">
+            <i class="fa-solid fa-chevron-down"></i> Daftar Mata Pelajaran & Kelas Peserta
+        </h4>
+        <button class="btn-print" style="width:auto; padding:6px 12px; margin:0; font-size:0.75rem;" onclick="cetakSemuaJadwalPDF(); event.stopPropagation();"><i class="fa-solid fa-print"></i> Download Semua Jadwal</button>
+    </div>
+    <!-- Bungkus tabel dengan div yang memiliki class hidden -->
+    <div id="wadah-tabel-jadwal" class="hidden" style="overflow-x:auto;">
+        <table><thead><tr><th>Mata Pelajaran</th><th>Ustadz PJ</th><th>Kelas & Jadwal</th><th>Aksi</th></tr></thead><tbody id="tabel-mapel-body"></tbody></table>
+    </div>
 </div>
-                        <div style="overflow-x:auto;"><table><thead><tr><th>Mata Pelajaran</th><th>Ustadz PJ</th><th>Kelas & Jadwal</th><th>Aksi</th></tr></thead><tbody id="tabel-mapel-body"></tbody></table></div>
-                    </div>
-                </div>
-
+</div>
                                 <!-- ⬇️ SETTING LOGIKA JAM (DIBUAT BISA DIKLIK/DITUTUP AGAR RAPI) ⬇️ -->
                 <div class="card card-premium" style="border-left-color: var(--warning);">
                     <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="document.getElementById('area-setting-jam-singkatan').classList.toggle('hidden')">
-                        <h3 style="margin: 0; color: var(--warning);"><i class="fa-solid fa-clock"></i> Setting Logika Jam Singkatan</h3>
+                        <h3 style="margin: 0; color: var(--warning);"><i class="fa-solid fa-clock"></i> Pengaturan Jam</h3>
                         <i class="fa-solid fa-chevron-down" style="color:var(--warning);"></i>
                     </div>
                     
@@ -826,7 +828,7 @@
 
 
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-layer-group"></i> Buat Kelas / Forum Baru</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-layer-group"></i> Buat Kelas Baru</h3>
 
                     <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Buat kelas baru terlebih dahulu, lalu Anda dapat mengaturnya di pembuatan mata pelajaran di atas atau klik Edit Plotting di tabel bawah.</p>
                                         <label>Nama Kelas / Forum</label><input type="text" id="input-nama-kelas" placeholder="Cth: Kelas 1-A / Takhassus">
@@ -843,7 +845,7 @@
                <!-- KODE SESUDAHNYA -->
                 <div class="card">
                     <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="document.getElementById('wadah-tabel-kelas').classList.toggle('hidden')">
-                        <h3 style="margin: 0; color: var(--primary);">Daftar Kelas Aktif & Plotting Santri</h3>
+                        <h3 style="margin: 0; color: var(--primary);">Daftar Kelas</h3>
                         <i class="fa-solid fa-chevron-down" style="color:var(--primary);"></i>
                     </div>
                     <div id="wadah-tabel-kelas" class="hidden" style="margin-top:14px; overflow-x:auto;">
@@ -862,7 +864,7 @@
                 </button>
 
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-camera"></i> Modul Absensi (100% Manual Lokal)</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-camera"></i> Absensi</h3>
                     <div id="gps-status-box" style="padding: 12px; border-radius: 10px; font-weight: bold; margin-bottom: 14px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-spinner fa-spin"></i> Mengecek GPS & Jarak Radius...</div>
 
                     <div id="absen-form-container" class="hidden">
@@ -870,11 +872,11 @@
                         <select id="pilih-mapel-absen" onchange="renderAbsenSantriByMapel()"></select>
                         
                                                 <button class="btn-primary" onclick="startScanner()" style="width:100%; padding: 14px; font-size:1rem; margin-bottom:14px; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
-                            <i class="fa-solid fa-qrcode"></i> BUKA KAMERA SCANNER
+                            <i class="fa-solid fa-qrcode"></i> BUKA KAMERA
                         </button>
 
                                                 <div id="student-list" style="margin-top: 10px;"></div>
-                        <button class="btn-primary" onclick="kirimDataAbsen()" style="margin-top: 18px;"><i class="fa-solid fa-save"></i> SIMPAN ABSENSI LOKAL (MANUAL SYNC)</button>
+                        <button class="btn-primary" onclick="kirimDataAbsen()" style="margin-top: 18px;"><i class="fa-solid fa-save"></i> SIMPAN ABSENSI</button>
                     </div>
                 </div>
             </div>
@@ -883,7 +885,7 @@
             <div id="view-scanner-wireless" class="hidden page-view">
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
                 <div class="card card-premium" style="border-left-color: #007AFF;">
-                    <h3 style="margin-bottom: 14px; color: #007AFF;"><i class="fa-brands fa-bluetooth"></i> Binding Scanner Bluetooth</h3>
+                    <h3 style="margin-bottom: 14px; color: #007AFF;"><i class="fa-brands fa-bluetooth"></i> Koneksi Scanner Bluetooth</h3>
                     <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:14px;">Fitur ini menggunakan <strong>Web Bluetooth API</strong> untuk mencari dan mengikat (binding) mesin Scanner ke dalam sistem.</p>
                     
                     <div style="background: rgba(0, 122, 255, 0.08); padding: 25px 20px; border-radius: 12px; text-align: center; border: 2px dashed #007AFF; margin-bottom: 15px;">
@@ -915,7 +917,7 @@
 
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
                 <div class="card card-premium" style="border-left-color: var(--warning);">
-                    <h3 style="margin-bottom: 14px; color: var(--warning);"><i class="fa-solid fa-scale-balanced"></i> Pengaturan Sanksi & Denda</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--warning);"><i class="fa-solid fa-scale-balanced"></i> Aturan Denda</h3>
                     <label>Nominal Denda per Alpa (Rp)</label><input type="number" id="setting-nominal-alpa">
                     <label>Batas Maksimal Alpa</label><input type="number" id="setting-limit-alpa">
                     <label>Denda Keterlambatan Balik Izin (Rp/Hari)</label>
@@ -924,7 +926,7 @@
                     <button class="btn-warning" onclick="simpanSettingKeuangan()">SIMPAN ATURAN DENDA</button>
                 </div>
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);">Laporan Denda Belum Lunas</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Denda Belum Lunas</h3>
                     <table><thead><tr><th>Identitas Tagihan</th><th>Keterangan</th><th>Nominal</th><th>Aksi</th></tr></thead><tbody id="tabel-keuangan-body"></tbody></table>
                     <div style="text-align: right; font-weight: 800; color: var(--danger); font-size: 1.05rem; border-top: 1px solid #eee; padding-top: 10px;">Total Piutang Denda: Rp <span id="total-denda">0</span></div>
                 </div>
@@ -958,7 +960,7 @@
                     </select>
                 </div>
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);">Identitas Instansi & Pimpinan</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Identitas Instansi</h3>
                     <label id="label-nama-pondok">Nama Instansi</label><input type="text" id="input-nama-pondok-edit">
                     <label>Nama Yayasan/Naungan</label><input type="text" id="input-yayasan-edit">
                     <label id="label-mudir-edit">Pimpinan / Mudir / Kepala Sekolah</label><input type="text" id="input-mudir-edit">
@@ -991,7 +993,7 @@
                 <!-- KARTU TAMBAHAN: SLIDESHOW WALLPAPER UNTUK WALI SANTRI -->
 
 <div class="card card-premium" style="border-left-color: #27AE60;">
-    <h3 style="margin-bottom: 10px; color: #27AE60;"><i class="fa-solid fa-images"></i> Wallpaper Slideshow Portal Wali Santri</h3>
+    <h3 style="margin-bottom: 10px; color: #27AE60;"><i class="fa-solid fa-images"></i> Slideshow Wali Santri</h3>
     <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Unggah foto-foto kegiatan/prestasi sekolah di sini. Foto ini akan diputar sebagai bingkai digital (slideshow) otomatis saat orang tua membuka aplikasi Wali Santri.</p>
     
     <label>Unggah Foto Slideshow Baru</label>
@@ -1002,11 +1004,11 @@
 </div>
 
                 <div class="card card-premium" style="border-left-color: #8E44AD;">
-                    <h3 style="margin-bottom: 10px; color: #8E44AD;"><i class="fa-solid fa-list-check"></i> Tata Tertib Kartu Belakang</h3>
+                    <h3 style="margin-bottom: 10px; color: #8E44AD;"><i class="fa-solid fa-list-check"></i> Tata Tertib Kartu</h3>
                     <textarea id="setting-tata-tertib" rows="4"></textarea>
                 </div>
                 <div class="card card-premium" style="border-left-color: var(--info);">
-                    <h3 style="margin-bottom: 10px; color: var(--info);"><i class="fa-solid fa-volume-high"></i> Pengaturan Suara Sapaan</h3>
+                    <h3 style="margin-bottom: 10px; color: var(--info);"><i class="fa-solid fa-volume-high"></i> Suara Sapaan</h3>
                     <label>Status Suara Sapaan</label>
                     <select id="setting-voice-aktif">
                         <option value="1">Aktif</option>
@@ -1019,12 +1021,12 @@
                 <label style="color: var(--info);"><i class="fa-solid fa-bullhorn"></i> Teks Berita / Running Text (Tampil di Wali)</label>
 <input type="text" id="setting-teks-berita" placeholder="Cth: Info Libur Semester Ganjil mulai tanggal...">
                 <div class="card card-premium" style="border-left-color: #E67E22;">
-                    <h3 style="margin-bottom: 10px; color: #E67E22;"><i class="fa-solid fa-envelope-open-text"></i> Template Surat Izin & Kembali</h3>
+                    <h3 style="margin-bottom: 10px; color: #E67E22;"><i class="fa-solid fa-envelope-open-text"></i> Template Surat Izin</h3>
                     <label>Judul Surat Izin Keluar</label><input type="text" id="setting-izin-judul">
                     <label>Catatan / Validasi Sekretariat</label><textarea id="setting-izin-catatan" rows="2"></textarea>
                 </div>
                 <div class="card card-premium" style="border-left-color: var(--info);">
-                    <h3 style="margin-bottom: 14px; color: var(--info);">Kustomisasi Layout ID Card & Sertifikat</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--info);">Layout Kartu & Sertifikat</h3>
 <label>Teks Footer Kartu Depan</label><input type="text" id="setting-footer-text" placeholder="Cth: KARTU IDENTITAS AKTIF">
 
 <!-- TAMBAHAN KONTROL DINAMIS -->
@@ -1060,7 +1062,7 @@
             <div id="view-lokasi" class="hidden page-view">
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Konfigurasi Area GPS & Radius</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Pengaturan GPS</h3>
                     
                     <label style="color:var(--info);">Status Fitur GPS / Geofencing</label>
                     <select id="setting-gps-aktif" onchange="toggleTampilanFormGPS()">
@@ -1085,7 +1087,7 @@
             <div id="view-hak-akses" class="hidden page-view">
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 10px; color: var(--primary);"><i class="fa-solid fa-shield-halved"></i> Pengaturan Hak Akses</h3>
+                    <h3 style="margin-bottom: 10px; color: var(--primary);"><i class="fa-solid fa-shield-halved"></i> Hak Akses</h3>
                     <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Pilih role lalu centang modul fitur apa saja yang boleh diakses.</p>
                     <label>Pilih Tipe Pengguna</label>
                     <select id="select-role-akses" onchange="renderCheckboxHakAkses()">
@@ -1123,7 +1125,7 @@
                     <button class="btn-outline hidden" id="btn-batal-edit-pengguna" onclick="batalEditPengguna()" style="border-color: var(--danger); color: var(--danger);">BATAL EDIT</button>
                 </div>
                 <div class="card">
-                    <h3 style="margin-bottom: 14px; color: var(--primary);">Daftar Akun Pegawai</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--primary);">Daftar Akun</h3>
                     <div style="overflow-x:auto;"><table><thead><tr><th>Akun</th><th>Aksi</th></tr></thead><tbody id="tabel-pengguna-body"></tbody></table></div>
                 </div>
             </div>
@@ -1132,7 +1134,7 @@
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali</div>
                 
                 <div class="card card-premium" id="pengaturan-supabase-card" style="border-left-color: var(--info); display: none;">
-                    <h3 style="margin-bottom: 5px; color: var(--info);"><i class="fa-solid fa-server"></i> Konfigurasi Server Supabase</h3>
+                    <h3 style="margin-bottom: 5px; color: var(--info);"><i class="fa-solid fa-server"></i> Server Database</h3>
                     <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 14px;">Atur API Key untuk sinkronisasi cloud masing-masing Instansi.</p>
                     <label>Supabase URL</label><input type="text" id="setting-supabase-url" placeholder="https://xxxx.supabase.co">
                     <label>Supabase Anon Key</label><input type="password" id="setting-supabase-key" placeholder="eyJhbGciOi...">
@@ -1140,7 +1142,7 @@
                 </div>
 
                 <div class="card card-premium">
-                    <h3 style="margin-bottom: 14px; color: var(--danger);"><i class="fa-solid fa-shield-heart"></i> Backup & Sync Manual</h3>
+                    <h3 style="margin-bottom: 14px; color: var(--danger);"><i class="fa-solid fa-shield-heart"></i> Backup & Sinkronisasi</h3>
                     <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Semua data absensi dan santri tersimpan lokal secara manual. Tekan tombol Kirim Cloud di bawah apabila ingin memperbarui server.</p>
                     <label style="color: var(--primary-light);">1. Ekspor Data Lokal</label>
                     <button class="btn-outline" onclick="exportDataLokal()"><i class="fa-solid fa-download"></i> Unduh File JSON Database</button>
@@ -1150,14 +1152,14 @@
                     <button class="btn-outline" onclick="tampilkanQRTarikData()" style="border-color: var(--info); color: var(--info);"><i class="fa-solid fa-qrcode"></i> Tampilkan Barcode Tarik Data</button>
 
                     <div style="margin-top: 22px; border-top: 1px dashed rgba(0,0,0,0.15); padding-top: 18px;">
-                        <button class="btn-primary" onclick="sinkronisasiKeCloud()" id="btn-sync-cloud"><i class="fa-solid fa-cloud-arrow-up"></i> KIRIM DATA KE CLOUD (SYNC MANUAL)</button>
-                        <button class="btn-outline" onclick="tarikDataDariSupabase()" id="btn-pull-cloud" style="margin-top: 14px; background: #ffebee; border-color: var(--danger); color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> TARIK DATA DARI CLOUD (TIMPA DATA LOKAL)</button>
+                        <button class="btn-primary" onclick="sinkronisasiKeCloud()" id="btn-sync-cloud"><i class="fa-solid fa-cloud-arrow-up"></i> KIRIM KE CLOUD</button>
+                        <button class="btn-outline" onclick="tarikDataDariSupabase()" id="btn-pull-cloud" style="margin-top: 14px; background: #ffebee; border-color: var(--danger); color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> TARIK DARI CLOUD</button>
                     </div>
                     
                     <div id="zona-berbahaya-reset" style="margin-top: 30px; border-top: 3px solid #ffcccc; padding-top: 18px; background: #fff0f0; padding: 14px; border-radius: 12px; display: none;">
-                        <label style="color: var(--danger);"><i class="fa-solid fa-skull"></i> ZONA BERBAHAYA (RESET MODULAR)</label>
+                        <label style="color: var(--danger);"><i class="fa-solid fa-skull"></i> RESET DATA</label>
                         <p style="font-size:0.75rem; color:#555; margin-bottom:10px;">Pilih opsi pembersihan data sesuai kebutuhan tanpa harus kehilangan konfigurasi server Supabase.</p>
-                        <button class="btn-warning" style="width: 100%; padding: 10px; font-size: 0.85rem; margin-bottom:8px;" onclick="bukaModalResetOpsi()">BUKA MENU RESET BERPILIHAN</button>
+                        <button class="btn-warning" style="width: 100%; padding: 10px; font-size: 0.85rem; margin-bottom:8px;" onclick="bukaModalResetOpsi()">BUKA MENU RESET</button>
                     </div>
                 </div>
             </div>
@@ -1207,7 +1209,7 @@
             <div id="view-paguyuban" class="hidden page-view">
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
                 <div class="card card-premium" style="border-left-color: #E67E22;">
-                    <h3 style="margin-bottom: 14px; color: #E67E22;"><i class="fa-solid fa-store"></i> Kasir Paguyuban</h3>
+                    <h3 style="margin-bottom: 14px; color: #E67E22;"><i class="fa-solid fa-store"></i> Kasir</h3>
                     
                     <div style="display: flex; gap: 8px; margin-bottom: 14px;">
                         <button class="btn-primary" onclick="startScannerPaguyuban()" style="flex:1;"><i class="fa-solid fa-qrcode"></i> Scan Kartu Santri</button>
@@ -1235,7 +1237,7 @@
     <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
     
     <div class="card card-premium" style="border-left-color: var(--success);">
-        <h3 style="margin-bottom: 14px; color: var(--success);"><i class="fa-solid fa-chalkboard-user"></i> Panel Kelola Kelas</h3>
+        <h3 style="margin-bottom: 14px; color: var(--success);"><i class="fa-solid fa-chalkboard-user"></i> Kelola Kelas</h3>
         <label>Pilih Kelas Anda</label>
         <select id="walikelas-pilih-kelas" onchange="renderTabelSantriWali()" style="margin-bottom:15px;"></select>
 
@@ -1274,7 +1276,7 @@
 <!-- MODAL SCANNER ABSENSI (POP-UP KAKU) -->
 <div id="modal-scanner-absen" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 99999; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 15px; touch-action: none; overscroll-behavior: none;">
     <div class="glass-panel" style="padding: 24px; border-radius: 28px; text-align:center; width: 100%; max-width: 420px; background: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-        <h3 style="color:var(--primary); margin-bottom:15px; font-size:1.15rem; font-weight: 800;"><i class="fa-solid fa-camera"></i> Kamera Absensi</h3>
+        <h3 style="color:var(--primary); margin-bottom:15px; font-size:1.15rem; font-weight: 800;"><i class="fa-solid fa-camera"></i> Absensi</h3>
         
         <!-- Area Kamera -->
         <div id="qr-reader" style="width:100%; display:none; border-radius: 16px; overflow: hidden; border: 4px solid var(--primary); margin-bottom: 15px; background: #000; min-height: 250px;"></div>
@@ -1675,9 +1677,35 @@
         pelatihan: { santri: "Peserta", ustadz: "Tutor / Instruktur", asrama: "Jenis Kelamin", kamar: "Batch / Gelombang", mudir: "Pimpinan Lembaga", instansi: "Lembaga Pelatihan", labelAsramaOpsi: ["Laki-laki", "Perempuan"] }
     };
 
-    function getTerm(key) { return termDict[appMode][key]; }
-    function getDB(key, fallback = null) { try { let data = localStorage.getItem(key); return data ? JSON.parse(data) : fallback; } catch (e) { return fallback; } }
+   function getTerm(key) { return termDict[appMode][key]; }
 
+// 1. Buat wadah penyimpanan sementara (Cache) di RAM
+window.dbCache = {}; 
+
+// 2. Fungsi getDB sekarang mengambil data super cepat langsung dari RAM
+function getDB(key, fallback = null) { 
+    if (window.dbCache[key] !== undefined && window.dbCache[key] !== null) {
+        return window.dbCache[key];
+    }
+    return fallback; 
+}
+
+// 3. Fungsi BARU untuk menyimpan data (Menggantikan localStorage.setItem)
+// 🟢 PERBAIKAN: Tambahkan kata kunci 'async' dan 'await' agar fungsi mengembalikan Promise
+async function setDB(key, dataObj) {
+    window.dbCache[key] = dataObj; 
+    return await localforage.setItem(key, dataObj).catch(err => console.error("Gagal simpan ke IndexedDB:", err)); 
+}
+
+async function removeDB(key) {
+    delete window.dbCache[key];
+    return await localforage.removeItem(key);
+}
+
+async function clearDB() {
+    window.dbCache = {};
+    return await localforage.clear();
+}
     let supabaseConfig = getDB('pondok_supabase_config', { url: '', key: '' });
 
         function muatScriptEksternal() {
@@ -1700,22 +1728,22 @@ const defaultAkses = {
 };
 
 const menuMaster = [ 
-    { id: 'view-walikelas', nama: 'Kelas Saya (Wali Kelas)', icon: 'fa-chalkboard-user' },
-    { id: 'view-paguyuban', nama: 'Kasir Paguyuban (Belanja)', icon: 'fa-store' },
+    { id: 'view-walikelas', nama: 'Kelas Saya', icon: 'fa-chalkboard-user' },
+    { id: 'view-paguyuban', nama: 'Kasir (Belanja)', icon: 'fa-store' },
     { id: 'view-santri', icon: 'fa-id-card' }, 
-    { id: 'view-evaluasi', nama: 'Evaluasi & Kelulusan', icon: 'fa-star' }, 
-    { id: 'view-izin', nama: 'Surat Izin Santri & Validasi Balik', icon: 'fa-file-signature' }, 
-    { id: 'view-rekap', nama: 'Laporan Rekap Absen', icon: 'fa-file-pdf' }, 
-    { id: 'view-kelas', nama: 'Plotting Kelas & Mapel', icon: 'fa-calendar-alt' }, 
-    { id: 'view-absen', nama: 'Absensi Kamera Scanner', icon: 'fa-camera' },
-    { id: 'view-scanner-wireless', nama: 'Mode Scanner Wireless / USB', icon: 'fa-barcode' },
-    { id: 'view-keuangan', nama: 'Laporan Denda Keuangan', icon: 'fa-wallet' }, 
-    { id: 'view-tabungan', nama: 'Tabungan Santri', icon: 'fa-piggy-bank' }, 
-    { id: 'view-yayasan', nama: 'Identitas, Suara & Tata Tertib', icon: 'fa-building' }, 
-    { id: 'view-lokasi', nama: 'Area Geofencing', icon: 'fa-map-location-dot' }, 
-    { id: 'view-hak-akses', nama: 'Hak Akses Role', icon: 'fa-shield-halved' }, 
-    { id: 'view-pengguna', nama: 'Akun Pegawai', icon: 'fa-users-gear' }, 
-    { id: 'view-database', nama: 'Database & Sync', icon: 'fa-cloud-arrow-up' } 
+    { id: 'view-evaluasi', nama: 'Evaluasi', icon: 'fa-star' }, 
+    { id: 'view-izin', nama: 'Surat Izin Santri & Validasi Kembali', icon: 'fa-file-signature' }, 
+    { id: 'view-rekap', nama: 'Rekap Absensi', icon: 'fa-file-pdf' }, 
+    { id: 'view-kelas', nama: 'Mapel & Kelas', icon: 'fa-calendar-alt' }, 
+    { id: 'view-absen', nama: 'Absensi', icon: 'fa-camera' },
+    { id: 'view-scanner-wireless', nama: 'Scanner Wireless', icon: 'fa-barcode' },
+    { id: 'view-keuangan', nama: 'Denda & Keuangan', icon: 'fa-wallet' }, 
+    { id: 'view-tabungan', nama: 'Tabungan', icon: 'fa-piggy-bank' }, 
+    { id: 'view-yayasan', nama: 'Pengaturan Instansi', icon: 'fa-building' }, 
+    { id: 'view-lokasi', nama: 'Lokasi (GPS)', icon: 'fa-map-location-dot' }, 
+    { id: 'view-hak-akses', nama: 'Hak Akses', icon: 'fa-shield-halved' }, 
+    { id: 'view-pengguna', nama: 'Pegawai', icon: 'fa-users-gear' }, 
+    { id: 'view-database', nama: 'Database', icon: 'fa-cloud-arrow-up' } 
 ];
 
               
@@ -2430,7 +2458,7 @@ function cetakLaporanPDF() {
         if(document.getElementById('label-foto-santri')) document.getElementById('label-foto-santri').innerText = `Foto ${t.santri}`;
         if(document.getElementById('label-asrama-input')) document.getElementById('label-asrama-input').innerText = t.asrama;
         if(document.getElementById('label-kamar-input')) document.getElementById('label-kamar-input').innerText = t.kamar;
-        if(document.getElementById('title-db-santri')) document.getElementById('title-db-santri').innerText = `Database ${t.santri} Aktif`;
+        if(document.getElementById('title-db-santri')) document.getElementById('title-db-santri').innerText = `Data ${t.santri}`;
         if(document.getElementById('th-kamar-nis')) document.getElementById('th-kamar-nis').innerText = `NIS / ${t.kamar}`;
         if(document.getElementById('label-mudir-edit')) document.getElementById('label-mudir-edit').innerText = t.mudir;
         if(document.getElementById('label-asrama')) document.getElementById('label-asrama').innerText = t.asrama + ":";
@@ -2491,8 +2519,8 @@ function cetakLaporanPDF() {
             if(tempSelfFotoBase64 !== "") users[idx].foto = tempSelfFotoBase64;
 
             currentUser = users[idx];
-            localStorage.setItem('pondok_users', JSON.stringify(users));
-            localStorage.setItem('pondok_active_user', JSON.stringify(currentUser));
+           setDB('pondok_users', users);
+setDB('pondok_active_user', currentUser);
 
             document.getElementById('header-user-name').innerText = currentUser.nama;
             document.getElementById('header-user-photo').src = currentUser.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
@@ -2546,8 +2574,8 @@ function cetakLaporanPDF() {
         let matchedUser = users.find(u => u.pin_login && u.pin_login === pinVal);
         if (matchedUser) {
             currentUser = matchedUser;
-            localStorage.setItem('pondok_active_user', JSON.stringify(currentUser));
-            localStorage.setItem('pondok_active_tab', 'view-dashboard');
+           setDB('pondok_active_user', currentUser); 
+setDB('pondok_active_tab', 'view-dashboard');
             document.getElementById('login-error').classList.add('hidden');
             masukKeSistemSetelahLogin();
         } else { document.getElementById('login-error').classList.remove('hidden'); document.getElementById('login-pin-input').value = ""; }
@@ -2580,106 +2608,69 @@ function cetakLaporanPDF() {
     }
 
     /* KODE SESUDAHNYA */
-    function initApp() {
-        setTimeout(() => {
-            const splash = document.getElementById('splash-screen');
-            if(splash) {
-                splash.style.opacity = '0';
-                setTimeout(() => splash.style.display = 'none', 600);
-            }
-        }, 1500);
-        muatScriptEksternal(); registerServiceWorker();
+   async function initApp() {
+    const splashTitle = document.getElementById('splash-title');
+    if(splashTitle) splashTitle.innerText = "Memuat Database...";
 
-        
-        // ⬇️ TAMBAHKAN INISIALISASI INI DI SINI ⬇️
-        if (!localStorage.getItem('pondok_jam_kustom')) {
-            localStorage.setItem('pondok_jam_kustom', JSON.stringify([
-                { kode: "BS", mulai: "05:00", selesai: "06:30" },
-                { kode: "BM", mulai: "18:30", selesai: "19:30" }
-            ]));
+    // [WAJIB] Tarik semua data dari IndexedDB ke RAM sebelum aplikasi jalan
+    try {
+        const keys = await localforage.keys();
+        for (let key of keys) {
+            window.dbCache[key] = await localforage.getItem(key);
         }
+
+        supabaseConfig = getDB('pondok_supabase_config', { url: '', key: '' });
+
+    } catch (err) {
+        console.error("Gagal load dari IndexedDB:", err);
+    }
+
+    setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+
+        if(splash) {
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.display = 'none', 600);
+        }
+    }, 500); // Waktu splash screen dipercepat karena loading DB di atas butuh waktu
+
+    muatScriptEksternal(); registerServiceWorker();
+
+    // PERUBAHAN: Ganti localStorage.getItem dengan window.dbCache, dan setItem dengan setDB
+    if (!window.dbCache['pondok_jam_kustom']) {
+        setDB('pondok_jam_kustom', [
+            { kode: "BS", mulai: "05:00", selesai: "06:30" },
+            { kode: "BM", mulai: "18:30", selesai: "19:30" }
+        ]);
+    }
+    
+    if (!window.dbCache['pondok_users']) { 
+        setDB('pondok_users', [ 
+            { id: 1, nama: "Super Admin Mutlak", username: "admin", password: "admin123", pin_login: "123456", role: "superadmin", foto: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }, 
+            // ... (lanjutkan data dummy mu di sini)
+        ]); 
+    }
+
+    if (!window.dbCache['pondok_absensi']) setDB('pondok_absensi', []);
+    if (!window.dbCache['pondok_evaluasi']) setDB('pondok_evaluasi', []);
+    if (!window.dbCache['pondok_tabungan']) setDB('pondok_tabungan', []);
+    
+    // ... [Lakukan hal yang sama untuk inisialisasi default lainnya sampai akhir fungsi initApp] ...
+    
+    loadIdentitasApp();
+
+    const savedSession = getDB('pondok_active_user', null);
+    if (savedSession && savedSession.role) { 
+        currentUser = savedSession; 
+        masukKeSistemSetelahLogin(false); 
+    }
+    mulaiWatchdogJadwal();
+}
+               
         // ⬆️ SAMPAI SINI ⬆️
-        if (!localStorage.getItem('pondok_users')) { localStorage.setItem('pondok_users', JSON.stringify([ { id: 1, nama: "Super Admin Mutlak", username: "admin", password: "admin123", pin_login: "123456", role: "superadmin", foto: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }, { id: 2, nama: "Admin Tata Usaha", username: "tu", password: "tu123", pin_login: "112233", role: "admin", foto: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }, { id: 3, nama: "Guru / Ustadz", username: "ustadz", password: "ustadz123", pin_login: "1234", role: "ustadz", foto: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }, { id: 4, nama: "Kasir Keuangan", username: "keuangan", password: "keuangan123", pin_login: "998877", role: "accounting", foto: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' } ])); }
+        
         let cekAkses = getDB('pondok_akses', defaultAkses); localStorage.setItem('pondok_akses', JSON.stringify(cekAkses));
-        if (!localStorage.getItem('pondok_absensi')) localStorage.setItem('pondok_absensi', JSON.stringify([]));
-        if (!localStorage.getItem('pondok_evaluasi')) localStorage.setItem('pondok_evaluasi', JSON.stringify([]));
-        if (!localStorage.getItem('pondok_tabungan')) localStorage.setItem('pondok_tabungan', JSON.stringify([]));
-         // PERBAIKAN: Inisialisasi Bank Mapel Otomatis
-        if (!localStorage.getItem('pondok_bank_mapel')) {
-            let listM = getDB('pondok_master_mapel', []);
-            let unikMapel = [...new Set(listM.map(m => m.nama_mapel))];
-            if (unikMapel.length === 0) unikMapel = ["Fiqih Shalat", "Tahfidz Al-Qur'an", "Bahasa Arab", "Aqidah Akhlak"];
-            localStorage.setItem('pondok_bank_mapel', JSON.stringify(unikMapel));
-        }
-        if (!localStorage.getItem('pondok_master_mapel')) {
-            localStorage.setItem('pondok_master_mapel', JSON.stringify([
-                { id: 101, nama_mapel: "Fiqih Shalat & Thaharah", ustadz_ids: ["ustadz"], ustadz_nama: "Guru / Ustadz", kelas_ids: [201], jadwal_aktif: true, hari: "Senin", jam_mulai: "08:00", jam_selesai: "09:30" },
-                { id: 102, nama_mapel: "Tahfidz & Tahsin Al-Qur'an", ustadz_ids: ["ustadz"], ustadz_nama: "Guru / Ustadz", kelas_ids: [201], jadwal_aktif: false, hari: null, jam_mulai: "", jam_selesai: "" }
-            ]));
-        } else {
-            let listM = getDB('pondok_master_mapel', []);
-            let modified = false;
-            listM.forEach(m => {
-                if (!m.kelas_ids) { m.kelas_ids = []; modified = true; }
-                if (!m.ustadz_ids && m.ustadz_id) { m.ustadz_ids = [m.ustadz_id]; modified = true; }
-                if (!m.ustadz_ids) { m.ustadz_ids = []; modified = true; }
-            });
-            if (modified) localStorage.setItem('pondok_master_mapel', JSON.stringify(listM));
-        }
-
-                if (!localStorage.getItem('pondok_kelas')) {
-            localStorage.setItem('pondok_kelas', JSON.stringify([
-                { id: 201, nama: "Kelas 1-A / Reguler", mapel_ids: [101, 102], santri_ids: [], wali_kelas: "" }
-            ]));
-        } else {
-            let listK = getDB('pondok_kelas', []);
-            let modified = false;
-            listK.forEach(k => {
-                if (!k.mapel_ids) { k.mapel_ids = []; modified = true; }
-                if (!k.santri_ids) { k.santri_ids = []; modified = true; }
-                if (typeof k.wali_kelas === 'undefined') { k.wali_kelas = ""; modified = true; }
-            });
-            if (modified) localStorage.setItem('pondok_kelas', JSON.stringify(listK));
-        }
-
         
-        if (!localStorage.getItem('pondok_gps')) {
-            localStorage.setItem('pondok_gps', JSON.stringify({
-                aktif: true,
-                titik: [
-                    { label: "Pusat Instansi", lat: -8.58333, lng: 116.11667, radius: 250 }
-                ]
-            }));
-        }
-
-        if (!localStorage.getItem('pondok_yayasan')) { 
-            localStorage.setItem('pondok_yayasan', JSON.stringify({ 
-                mode: 'pondok', 
-                pondok: "sistem monitoring santri", 
-                yayasan: "Yayasan Amtsilatul Huda Mesaleng", 
-                blur_login: "4", 
-                logo: "https://cdn-icons-png.flaticon.com/512/3592/3592078.png", 
-                bg_login: "https://images.unsplash.com/photo-1519817650390-28a59b20892c?q=80&w=1000&auto=format&fit=crop", 
-                bg_idcard: "", 
-                mudir: "DR. TGH. Zarkasi Efendi, M. Pd. I", 
-                ttd_mudir: "", 
-                alamat: "Dusun Mesaleng Desa Bagu Kec pringgarata kabupaten Lombok Tengah NTB 83562", 
-                teks_footer: "", 
-                teks_lulus: "Telah mengikuti seluruh program pembelajaran dengan baik dan dinyatakan:", 
-                voice_aktif: "1", 
-                voice_teks: "Assalamualaikum, selamat datang di sistem monitoring santri", 
-                tata_tertib: "1. Wajib menjaga nama baik instansi.\n2. Kartu wajib dibawa setiap saat.", 
-                izin_judul: "SURAT IZIN KELUAR / PULANG SANTRI", 
-                izin_catatan: "Surat wajib divalidasi dan dicap di sekretariat pondok.",
-                pwa_notif_aktif: "1",
-                pwa_notif_teks: "Waktunya mengajar mata pelajaran {mapel} di kelas {kelas}."
-            })); 
-        }
-        
-        if (!localStorage.getItem('pondok_setting_keuangan')) { localStorage.setItem('pondok_setting_keuangan', JSON.stringify({ nominal_alpa: 10000, limit_alpa: 3, sanksi_ekstra: "Pemanggilan Orang Tua / SP1", denda_terlambat_izin: 20000 })); }
-        if (!localStorage.getItem('pondok_izin_aktif')) localStorage.setItem('pondok_izin_aktif', JSON.stringify([]));
-        if (!localStorage.getItem('pondok_history_izin')) localStorage.setItem('pondok_history_izin', JSON.stringify([]));
-
         loadIdentitasApp();
 
         const savedSession = localStorage.getItem('pondok_active_user');
@@ -2687,7 +2678,7 @@ function cetakLaporanPDF() {
         
         // Mulai PWA Watchdog untuk mendeteksi jadwal & pengingat secara permanen
         mulaiWatchdogJadwal();
-    }
+    
 
     // ═══ PWA WATCHDOG ENGINE (PERMANEN MUTLAK) ═══
     function mulaiWatchdogJadwal() {
@@ -2786,7 +2777,7 @@ function cetakLaporanPDF() {
         }, 2000); // Diberi jeda 2 detik agar sistem selesai memuat halaman
         // --------------------------------------------------------------------------
 
-        const lastTab = localStorage.getItem('pondok_active_tab') || 'view-dashboard';
+        const lastTab = getDB('pondok_active_tab', 'view-dashboard');
 
         document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
         if (lastTab === 'view-dashboard' || lastTab === 'view-login') document.getElementById('view-dashboard').classList.remove('hidden');
@@ -2883,19 +2874,28 @@ document.getElementById('setting-font-sertifikat').value = data.font_sertifikat 
     function prosesLogin() { 
         const usernameInput = document.getElementById('login-username').value; const passwordInput = document.getElementById('login-password').value; 
         let users = getDB('pondok_users', []); currentUser = users.find(user => user.username === usernameInput && user.password === passwordInput); 
-        if (currentUser) { localStorage.setItem('pondok_active_user', JSON.stringify(currentUser)); localStorage.setItem('pondok_active_tab', 'view-dashboard'); document.getElementById('login-error').classList.add('hidden'); masukKeSistemSetelahLogin(); } else { document.getElementById('login-error').classList.remove('hidden'); } 
+        if (currentUser) { setDB('pondok_active_user', currentUser); 
+        
+        setDB('pondok_active_tab', 'view-dashboard'); 
+        document.getElementById('login-error').classList.add('hidden'); 
+        masukKeSistemSetelahLogin(); 
+    } else { document.getElementById('login-error').classList.remove('hidden'); } 
     }
     
-    function prosesLogout() { localStorage.removeItem('pondok_active_user'); localStorage.removeItem('pondok_active_tab'); location.reload(); }
-    function switchTab(viewId) { document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden')); document.getElementById(viewId).classList.remove('hidden'); localStorage.setItem('pondok_active_tab', viewId); bukaFungsiTabSesuaiTujuan(viewId); }
+    function prosesLogout() { 
+    removeDB('pondok_active_user'); 
+    removeDB('pondok_active_tab'); 
+    location.reload(); 
+}
+    function switchTab(viewId) { document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden')); document.getElementById(viewId).classList.remove('hidden'); setDB('pondok_active_tab', viewId); bukaFungsiTabSesuaiTujuan(viewId); }
     function openSubMenu(id) { switchTab(id); } function closeSubMenu() { if(html5QrcodeScanner) html5QrcodeScanner.stop(); if(scannerIzin) scannerIzin.stop(); switchTab('view-dashboard'); }
     
     function renderMenuBerdasarkanAkses() { 
     const containerMenu = document.getElementById('render-menu-buttons'); containerMenu.innerHTML = ''; 
     const seluruhAkses = getDB('pondok_akses', defaultAkses); const aksesSaya = seluruhAkses[currentUser.role] || []; 
     const dynMenuMaster = menuMaster.map(item => {
-        if(item.id === 'view-santri') return { ...item, nama: `Database ${getTerm('santri')} & Ruang Alumni` };
-        if(item.id === 'view-izin') return { ...item, nama: `Surat Izin ${getTerm('santri')} & Validasi Balik` };
+        if(item.id === 'view-santri') return { ...item, nama: `Data ${getTerm('santri')} & Alumni` };
+        if(item.id === 'view-izin') return { ...item, nama: `Surat Izin ${getTerm('santri')} & Validasi Kembali` };
         return item;
     });
 
@@ -2951,7 +2951,7 @@ document.getElementById('setting-font-sertifikat').value = data.font_sertifikat 
             btnAlumni.className = 'btn-primary';
             if (cardReg) cardReg.style.display = 'none';
             if (thKamarNis) thKamarNis.innerText = 'NIS / Tahun Lulus';
-            if (titleDB) titleDB.innerText = 'Ruang Alumni (Daftar Kelulusan)';
+            if (titleDB) titleDB.innerText = 'Alumni';
         }
         renderTabelSantri();
     }
@@ -3020,7 +3020,7 @@ document.getElementById('setting-font-sertifikat').value = data.font_sertifikat 
             alert(`Registrasi Berhasil!\nNIS Terbentuk: ${nisTerbentuk}`); 
         } 
 
-        localStorage.setItem('pondok_santri', JSON.stringify(databaseSantri)); 
+        setDB('pondok_santri', databaseSantri); 
 
         if (idKelasTerpilih && targetIdSantri) {
             let dbKelas = getDB('pondok_kelas', []);
@@ -3028,7 +3028,7 @@ document.getElementById('setting-font-sertifikat').value = data.font_sertifikat 
             if (klsIndex > -1) {
                 if (!dbKelas[klsIndex].santri_ids.includes(targetIdSantri)) {
                     dbKelas[klsIndex].santri_ids.push(targetIdSantri);
-                    localStorage.setItem('pondok_kelas', JSON.stringify(dbKelas));
+                    setDB('pondok_santri', databaseSantri);
                 }
             }
         }
@@ -3075,23 +3075,30 @@ document.getElementById('setting-font-sertifikat').value = data.font_sertifikat 
     }
 
     function hapusSantri(idSantri) {
-        let dbSantri = getDB('pondok_santri', []);
-        let target = dbSantri.find(s => s.id == idSantri);
-        if (!target) return;
-        if (!confirm(`Yakin ingin menghapus data "${target.nama}" (${target.nis})?\n\nData akan dibersihkan dari seluruh daftar kelas secara otomatis.`)) return;
-        
-        let sisaSantri = dbSantri.filter(s => s.id != idSantri);
-        localStorage.setItem('pondok_santri', JSON.stringify(sisaSantri));
-        
-        let dbKelas = getDB('pondok_kelas', []);
-        dbKelas.forEach(kls => {
-            kls.santri_ids = (kls.santri_ids || []).filter(sid => sid != idSantri);
-        });
-        localStorage.setItem('pondok_kelas', JSON.stringify(dbKelas));
-        
-        renderTabelSantri();
-        alert(`Data "${target.nama}" berhasil dihapus.`);
-    }
+    let dbSantri = getDB('pondok_santri', []);
+    let target = dbSantri.find(s => s.id == idSantri);
+    if (!target) return;
+    if (!confirm(`Yakin ingin menghapus data "${target.nama}" (${target.nis})?\n\nData akan dibersihkan dari seluruh daftar kelas secara otomatis.`)) return;
+    
+    // 1. Hapus dari array lokal
+    let sisaSantri = dbSantri.filter(s => s.id != idSantri);
+    setDB('pondok_santri', sisaSantri);
+    
+    // 2. CATAT ID KE DALAM "TOMBSTONE" (Batu Nisan)
+    let tombstones = getDB('pondok_tombstone_santri', []);
+    tombstones.push(idSantri);
+    setDB('pondok_tombstone_santri', tombstones);
+    
+    // 3. Bersihkan dari kelas
+    let dbKelas = getDB('pondok_kelas', []);
+    dbKelas.forEach(kls => {
+        kls.santri_ids = (kls.santri_ids || []).filter(sid => sid != idSantri);
+    });
+    setDB('pondok_kelas', dbKelas);
+    
+    renderTabelSantri();
+    alert(`Data "${target.nama}" berhasil dihapus.`);
+}
 
     function renderTabelSantri() { 
         let databaseSantri = getDB('pondok_santri', []);
@@ -3593,7 +3600,11 @@ const lebar1D = parseFloat(yayasan.lebar_barcode1d) || 2.2;
 
     function buatSuratIzinKeluarProfesional(dataIzin, santri, statistik) { const yayasan = getDB('pondok_yayasan', {}); const tglKeluarID = new Date(dataIzin.tgl_keluar).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); const tglBalikID = new Date(dataIzin.tgl_balik).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); const jamSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }); const blnRomawi = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date().getMonth()]; const noSurat = `No: ${String(statistik.total_kali).padStart(3, '0')}/IZIN-LMS/${blnRomawi}/${new Date().getFullYear()}`; let ttdMudirHTML = (yayasan.ttd_mudir) ? `<img src="${yayasan.ttd_mudir}" style="max-height:35px; display:block; margin:4px auto;">` : '<div style="height:35px;"></div>'; const htmlSurat = `<div class="surat-header"><img src="${yayasan.logo || 'https://cdn-icons-png.flaticon.com/512/3592/3592078.png'}"><div class="surat-header-text"><h3>${yayasan.pondok || 'NAMA INSTANSI PENDIDIKAN'}</h3><p><strong>${yayasan.yayasan || 'Sistem Manajemen'}</strong><br>${yayasan.alamat || 'Indonesia'}</p></div></div><div class="surat-no">${noSurat}</div><p>Diberikan surat izin keluar / pulang resmi kepada santri dengan identitas di bawah ini:</p><table style="margin:10px 0; border:none;"><tr style="border:none;"><td style="width:120px; border:none; padding:4px;"><strong>Nama Lengkap</strong></td><td style="border:none; padding:4px;">: ${santri.nama}</td></tr><tr style="border:none;"><td style="width:120px; border:none; padding:4px;"><strong>NIS</strong></td><td style="border:none; padding:4px;">: <strong>${santri.nis}</strong></td></tr><tr style="border:none;"><td style="width:120px; border:none; padding:4px;"><strong>${getTerm('asrama')} / ${getTerm('kamar')}</strong></td><td style="border:none; padding:4px;">: ${santri.asrama} (${santri.kamar})</td></tr><tr style="border:none;"><td style="width:120px; border:none; padding:4px; color:var(--primary);"><strong>Perihal / Keperluan</strong></td><td style="border:none; padding:4px; font-weight:bold;">: ${dataIzin.keperluan}</td></tr><tr style="border:none;"><td style="width:120px; border:none; padding:4px;"><strong>Tanggal Keluar</strong></td><td style="border:none; padding:4px;">: ${tglKeluarID} (${jamSekarang} WITA)</td></tr><tr style="border:none;"><td style="width:120px; border:none; padding:4px; color:red;"><strong>Batas Wajib Balik</strong></td><td style="border:none; padding:4px; color:red; font-weight:bold;">: ${tglBalikID}</td></tr></table><div class="evaluasi-izin-box"><strong style="color:var(--primary);"><i class="fa-solid fa-chart-line"></i> Catatan Evaluasi Kedisiplinan Izin Santri:</strong><br>Berdasarkan rekam jejak sistem, santri bersangkutan telah mendapatkan izin sebanyak <strong>${statistik.total_kali} Kali</strong> dengan total akumulasi durasi selama <strong>${statistik.total_hari} Hari</strong>.</div><p style="font-size:11px; font-style:italic; background:#fff3cd; padding:8px; border-left:3px solid #F39C12; color:#721c24; margin-top:10px;"><strong>Perhatian:</strong> Santri wajib kembali ke asrama sebelum batas waktu.</p><div class="surat-ttd-grid"><div><span>Sekretariat / Pengasuh,</span><div style="height:40px; border-bottom:1px dashed #999; margin-top:15px;"></div><span>( Cap & Validasi )</span></div><div><span>Menyetujui Pimpinan,</span>${ttdMudirHTML}<span><strong>${yayasan.mudir || 'Pimpinan / Mudir'}</strong></span></div></div>`; document.getElementById('surat-izin-konten').innerHTML = htmlSurat; document.getElementById('area-cetak-surat-izin').classList.remove('hidden'); }
 
-    function validasiSantriBalikIzin(nisSantri) { let izinAktifDB = getDB('pondok_izin_aktif', []); const targetIzin = izinAktifDB.find(x => x.nis === nisSantri); if (!targetIzin) return alert(`NIS [${nisSantri}] TIDAK tercatat sedang izin keluar!`); const tglHariIni = new Date().toISOString().split('T')[0]; const tglBalikWajib = targetIzin.tgl_balik; const santriDB = getDB('pondok_santri', []); const santri = santriDB.find(s => s.nis === nisSantri) || { nama: targetIzin.nama, nis: targetIzin.nis, asrama: targetIzin.asrama, kamar: targetIzin.kamar }; let statusKembaliText = "Tepat Waktu / Lolos Sanksi"; if (tglHariIni > tglBalikWajib) { const hariTerlambat = Math.ceil((new Date(tglHariIni) - new Date(tglBalikWajib)) / (1000 * 60 * 60 * 24)); const configKeuangan = getDB('pondok_setting_keuangan', { denda_terlambat_izin: 20000 }); const totalDenda = hariTerlambat * (parseInt(configKeuangan.denda_terlambat_izin) || 20000); let tagihanDB = getDB('pondok_tagihan_denda', []); tagihanDB.push({ id_tagihan: Date.now(), nis: targetIzin.nis, nama: targetIzin.nama, keterangan: `Terlambat Balik Izin (${hariTerlambat} Hari)`, nominal: totalDenda }); localStorage.setItem('pondok_tagihan_denda', JSON.stringify(tagihanDB)); statusKembaliText = `TERLAMBAT ${hariTerlambat} HARI`; } izinAktifDB = izinAktifDB.filter(x => x.nis !== nisSantri); localStorage.setItem('pondok_izin_aktif', JSON.stringify(izinAktifDB)); let histDB = getDB('pondok_history_izin', []); let idxHist = histDB.findIndex(h => h.id === targetIzin.id); if(idxHist > -1) { histDB[idxHist].status = 'Kembali'; histDB[idxHist].tgl_aktual_balik = tglHariIni; localStorage.setItem('pondok_history_izin', JSON.stringify(histDB)); } alert(`Sukses: Santri [${targetIzin.nama}] telah kembali.`); renderTabelIzinAktif(); buatSuratKembaliProfesional(targetIzin, santri, statusKembaliText); }
+    function validasiSantriBalikIzin(nisSantri) { let izinAktifDB = getDB('pondok_izin_aktif', []); const targetIzin = izinAktifDB.find(x => x.nis === nisSantri); if (!targetIzin) return alert(`NIS [${nisSantri}] TIDAK tercatat sedang izin keluar!`); const tglHariIni = new Date().toISOString().split('T')[0]; const tglBalikWajib = targetIzin.tgl_balik; const santriDB = getDB('pondok_santri', []); const santri = santriDB.find(s => s.nis === nisSantri) || { nama: targetIzin.nama, nis: targetIzin.nis, asrama: targetIzin.asrama, kamar: targetIzin.kamar }; let statusKembaliText = "Tepat Waktu / Lolos Sanksi"; if (tglHariIni > tglBalikWajib) { const hariTerlambat = Math.ceil((new Date(tglHariIni) - new Date(tglBalikWajib)) / (1000 * 60 * 60 * 24)); const configKeuangan = getDB('pondok_setting_keuangan', { denda_terlambat_izin: 20000 }); const totalDenda = hariTerlambat * (parseInt(configKeuangan.denda_terlambat_izin) || 20000); let tagihanDB = getDB('pondok_tagihan_denda', []); tagihanDB.push({ id_tagihan: Date.now(), nis: targetIzin.nis, nama: targetIzin.nama, keterangan: `Terlambat Balik Izin (${hariTerlambat} Hari)`, nominal: totalDenda }); localStorage.setItem('pondok_tagihan_denda', JSON.stringify(tagihanDB)); statusKembaliText = `TERLAMBAT ${hariTerlambat} HARI`; } let tbIzin = getDB('pondok_tombstone_izin_aktif', []);
+if(!tbIzin.includes(targetIzin.id)) { tbIzin.push(targetIzin.id); setDB('pondok_tombstone_izin_aktif', tbIzin); }
+izinAktifDB = izinAktifDB.filter(x => x.nis !== nisSantri);
+setDB('pondok_izin_aktif', izinAktifDB);
+ let histDB = getDB('pondok_history_izin', []); let idxHist = histDB.findIndex(h => h.id === targetIzin.id); if(idxHist > -1) { histDB[idxHist].status = 'Kembali'; histDB[idxHist].tgl_aktual_balik = tglHariIni; localStorage.setItem('pondok_history_izin', JSON.stringify(histDB)); } alert(`Sukses: Santri [${targetIzin.nama}] telah kembali.`); renderTabelIzinAktif(); buatSuratKembaliProfesional(targetIzin, santri, statusKembaliText); }
 
     function buatSuratKembaliProfesional(targetIzin, santri, statusKembaliText) { const yayasan = getDB('pondok_yayasan', {}); const tglBalikID = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); const jamSekarang = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }); const blnRomawi = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date().getMonth()]; const noSurat = `No: 015/KEMBALI-LMS/${blnRomawi}/${new Date().getFullYear()}`; let ttdMudirHTML = (yayasan.ttd_mudir) ? `<img src="${yayasan.ttd_mudir}" style="max-height:35px; display:block; margin:4px auto;">` : '<div style="height:35px;"></div>'; const htmlSurat = `<div class="surat-header"><img src="${yayasan.logo || 'https://cdn-icons-png.flaticon.com/512/3592/3592078.png'}"><div class="surat-header-text"><h3>${yayasan.pondok || 'NAMA INSTANSI PENDIDIKAN'}</h3><p><strong>${yayasan.yayasan || 'Sistem Manajemen'}</strong><br>${yayasan.alamat || 'Indonesia'}</p></div></div><div class="surat-no">${noSurat}</div><p>Menerangkan bahwa santri bersangkutan di bawah ini <strong>TELAH KEMBALI</strong> ke asrama dari masa izin keluar/pulang:</p><table style="margin:10px 0; border:none;"><tr style="border:none;"><td style="width:130px; border:none; padding:4px;"><strong>Nama Lengkap</strong></td><td style="border:none; padding:4px;">: ${santri.nama}</td></tr><tr style="border:none;"><td style="width:130px; border:none; padding:4px;"><strong>NIS</strong></td><td style="border:none; padding:4px;">: <strong>${santri.nis}</strong></td></tr><tr style="border:none;"><td style="width:130px; border:none; padding:4px;"><strong>Asrama / Kamar</strong></td><td style="border:none; padding:4px;">: ${santri.asrama} (${santri.kamar})</td></tr><tr style="border:none;"><td style="width:130px; border:none; padding:4px;"><strong>Keperluan Izin</strong></td><td style="border:none; padding:4px;">: ${targetIzin.keperluan}</td></tr><tr style="border:none;"><td style="width:130px; border:none; padding:4px;"><strong>Tanggal Lapor Balik</strong></td><td style="border:none; padding:4px;">: ${tglBalikID} (${jamSekarang} WITA)</td></tr><tr style="border:none;"><td style="width:130px; border:none; padding:4px;"><strong>Status Keterlambatan</strong></td><td style="border:none; padding:4px; font-weight:bold; color:${statusKembaliText.includes('TERLAMBAT') ? 'red' : 'green'};">: ${statusKembaliText}</td></tr></table><div class="surat-ttd-grid"><div><span>Santri Yang Melapor,</span><div style="height:40px; border-bottom:1px solid #111; margin-top:15px; width:120px; margin-left:auto; margin-right:auto;"></div><span>( ${santri.nama} )</span></div><div><span>Mengetahui Pimpinan,</span>${ttdMudirHTML}<span><strong>${yayasan.mudir || 'Pimpinan / Mudir'}</strong></span></div></div>`; document.getElementById('surat-izin-konten').innerHTML = htmlSurat; document.getElementById('area-cetak-surat-izin').classList.remove('hidden'); }
 
@@ -3660,13 +3671,15 @@ const lebar1D = parseFloat(yayasan.lebar_barcode1d) || 2.2;
         renderMasterMapel();
     }
 
-    function hapusBankMapel(nama) {
-        if (!confirm(`Hapus "${nama}" dari Bank Mapel?\n(Mata pelajaran yang sudah diatur jadwalnya di tabel bawah tidak akan hilang).`)) return;
-        let bank = getDB('pondok_bank_mapel', []);
-        bank = bank.filter(m => m !== nama);
-        localStorage.setItem('pondok_bank_mapel', JSON.stringify(bank));
-        renderMasterMapel();
-    }
+   function hapusBankMapel(nama) {
+    if (!confirm(`Hapus "${nama}" dari Bank Mapel?\n(Mata pelajaran yang sudah diatur jadwalnya di tabel bawah tidak akan hilang).`)) return;
+    let tbBank = getDB('pondok_tombstone_bank_mapel', []);
+    if(!tbBank.includes(nama)) { tbBank.push(nama); setDB('pondok_tombstone_bank_mapel', tbBank); }
+    
+    let bank = getDB('pondok_bank_mapel', []);
+    setDB('pondok_bank_mapel', bank.filter(m => m !== nama));
+    renderMasterMapel();
+}
 
         function renderMasterMapel() {
         // --- REPLACE BAGIAN WADAH BANK MAPEL ---
@@ -3834,8 +3847,8 @@ if (wadahUstadz) {
         });
 
         // 5. Simpan ke LocalStorage
-        localStorage.setItem('pondok_master_mapel', JSON.stringify(listMapel));
-        localStorage.setItem('pondok_kelas', JSON.stringify(listKelas));
+        setDB('pondok_master_mapel', listMapel);
+    setDB('pondok_kelas', listKelas);
 
         // 6. Reset Form
         document.querySelectorAll('.cb-bank-mapel').forEach(cb => cb.checked = false);
@@ -3850,19 +3863,32 @@ if (wadahUstadz) {
 
 
     function hapusMasterMapel(idMapel) {
-        if (!confirm("Yakin hapus mata pelajaran ini?")) return;
-        let listMapel = getDB('pondok_master_mapel', []).filter(m => m.id !== idMapel);
-        localStorage.setItem('pondok_master_mapel', JSON.stringify(listMapel));
-        
-        let listKelas = getDB('pondok_kelas', []);
-        listKelas.forEach(k => {
-            k.mapel_ids = (k.mapel_ids || []).filter(id => id !== idMapel);
-        });
-        localStorage.setItem('pondok_kelas', JSON.stringify(listKelas));
-        
-        renderMasterMapel();
-        renderTabelDaftarKelas();
+    if (!confirm("Yakin hapus mata pelajaran ini?")) return;
+    
+    // 1. Hapus dari daftar lokal
+    let listMapel = getDB('pondok_master_mapel', []).filter(m => m.id !== idMapel);
+    setDB('pondok_master_mapel', listMapel);
+    
+    // 2. Bersihkan ID Mapel dari daftar Kelas
+    let listKelas = getDB('pondok_kelas', []);
+    listKelas.forEach(k => {
+        k.mapel_ids = (k.mapel_ids || []).filter(id => id !== idMapel);
+    });
+    setDB('pondok_kelas', listKelas);
+    
+    // 3. TAMBAHAN: Catat ID Mapel ke Tombstone (Batu Nisan) agar tidak diambil lagi dari Supabase
+    let tombstoneMapel = getDB('pondok_tombstone_mapel', []);
+    if (!tombstoneMapel.includes(idMapel)) {
+        tombstoneMapel.push(idMapel);
+        setDB('pondok_tombstone_mapel', tombstoneMapel);
     }
+    
+    renderMasterMapel();
+    renderTabelDaftarKelas();
+    alert("Jadwal berhasil dihapus secara lokal. Silakan kirim data ke Cloud untuk memperbarui server.");
+}
+
+
 
    function simpanKelasBaru() {
         const namaKelas = document.getElementById('input-nama-kelas').value.trim();
@@ -4021,12 +4047,17 @@ if (wadahUstadz) {
     }
 
     function hapusKelasPermanen(idKelas) {
-        if (!confirm("Yakin ingin menghapus kelas ini?")) return;
-        let dbKelas = getDB('pondok_kelas', []);
-        localStorage.setItem('pondok_kelas', JSON.stringify(dbKelas.filter(k => k.id !== idKelas)));
-        renderMasterMapel();
-        renderTabelDaftarKelas();
-    }
+    if (!confirm("Yakin ingin menghapus kelas ini?")) return;
+    let tbKelas = getDB('pondok_tombstone_kelas', []);
+    if(!tbKelas.includes(idKelas)) { tbKelas.push(idKelas); setDB('pondok_tombstone_kelas', tbKelas); }
+    
+    let dbKelas = getDB('pondok_kelas', []);
+    setDB('pondok_kelas', dbKelas.filter(k => k.id !== idKelas));
+    renderMasterMapel();
+    renderTabelDaftarKelas();
+}
+
+
 
     function loadDropdownRekapKelas() { 
         const drop = document.getElementById('filter-kelas-rekap'); 
@@ -4037,9 +4068,17 @@ if (wadahUstadz) {
     }
 
     function renderDataKeuanganPanel() { const config = getDB('pondok_setting_keuangan', null); if(config) { document.getElementById('setting-nominal-alpa').value = config.nominal_alpa; document.getElementById('setting-limit-alpa').value = config.limit_alpa; document.getElementById('setting-sanksi-ekstra').value = config.sanksi_ekstra; document.getElementById('setting-denda-terlambat').value = config.denda_terlambat_izin || 20000; } renderTabelKeuanganDenda(); }
-    function simpanSettingKeuangan() { localStorage.setItem('pondok_setting_keuangan', JSON.stringify({ nominal_alpa: document.getElementById('setting-nominal-alpa').value, limit_alpa: document.getElementById('setting-limit-alpa').value, sanksi_ekstra: document.getElementById('setting-sanksi-ekstra').value, denda_terlambat_izin: document.getElementById('setting-denda-terlambat').value })); alert("Aturan Denda Disimpan!"); }
+    function simpanSettingKeuangan() { setDB('pondok_santri', databaseSantri); alert("Aturan Denda Disimpan!"); }
     function renderTabelKeuanganDenda() { const wadahTbodyKeuangan = document.getElementById('tabel-keuangan-body'); let akumulasiTotalUang = 0; wadahTbodyKeuangan.innerHTML = ''; const databaseKeuanganTagihan = getDB('pondok_tagihan_denda', []); if(databaseKeuanganTagihan.length === 0) { document.getElementById('total-denda').innerText = "0"; return wadahTbodyKeuangan.innerHTML = '<tr><td colspan="4" align="center">Tidak ada tagihan hutang denda.</td></tr>'; } databaseKeuanganTagihan.forEach(barisTagihan => { akumulasiTotalUang += parseInt(barisTagihan.nominal); wadahTbodyKeuangan.innerHTML += `<tr><td><strong>${barisTagihan.nama}</strong><br><span style="font-size:0.7rem; color:var(--text-muted);">NIS: ${barisTagihan.nis}</span></td><td>${barisTagihan.keterangan}</td><td style="color:var(--danger); font-weight:600;">Rp ${parseInt(barisTagihan.nominal).toLocaleString('id-ID')}</td><td><button class="btn-success" onclick="tandaiLunas(${barisTagihan.id_tagihan})"><i class="fa-solid fa-check"></i> Lunas</button></td></tr>`; }); document.getElementById('total-denda').innerText = akumulasiTotalUang.toLocaleString('id-ID'); }
-    function tandaiLunas(id_tagihan) { if(!confirm("Tandai lunas?")) return; let dbKeuangan = getDB('pondok_tagihan_denda', []); localStorage.setItem('pondok_tagihan_denda', JSON.stringify(dbKeuangan.filter(d => d.id_tagihan !== id_tagihan))); renderTabelKeuanganDenda(); }
+    function tandaiLunas(id_tagihan) {
+    if(!confirm("Tandai lunas?")) return;
+    let tbTagihan = getDB('pondok_tombstone_tagihan', []);
+    if(!tbTagihan.includes(id_tagihan)) { tbTagihan.push(id_tagihan); setDB('pondok_tombstone_tagihan', tbTagihan); }
+    
+    let dbKeuangan = getDB('pondok_tagihan_denda', []);
+    setDB('pondok_tagihan_denda', dbKeuangan.filter(d => d.id_tagihan !== id_tagihan));
+    renderTabelKeuanganDenda();
+}
 
     function hitungJarakMeter(lat1, lon1, lat2, lon2) { const R = 6371e3; const φ1 = lat1 * Math.PI/180; const φ2 = lat2 * Math.PI/180; const Δφ = (lat2-lat1) * Math.PI/180; const Δλ = (lon2-lon1) * Math.PI/180; const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) * Math.sin(Δλ/2); const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); return R * c; }
 
@@ -4126,62 +4165,119 @@ if (wadahUstadz) {
     }
 
         function loadSemuaMapelAbsenForPilihan() { 
-        const dropdown = document.getElementById('pilih-mapel-absen'); 
-        if (!dropdown) return;
-        
-        // Reset isi dropdown
-        dropdown.innerHTML = '<option value="">-- Pilih Mata Pelajaran Saat Ini --</option>'; 
-        
-        const masterMapel = getDB('pondok_master_mapel', []);
-        
-        // Dapatkan Hari dan Waktu Sekarang secara Real-Time
-        const namaHariIni = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][new Date().getDay()];
-        const sekarang = new Date();
-        const jamSekarang = String(sekarang.getHours()).padStart(2, '0') + ':' + String(sekarang.getMinutes()).padStart(2, '0');
+    const dropdown = document.getElementById('pilih-mapel-absen'); 
+    if (!dropdown) return;
+    
+    // Reset isi dropdown
+    dropdown.innerHTML = '<option value="">-- Pilih Mata Pelajaran --</option>'; 
+    
+    const masterMapel = getDB('pondok_master_mapel', []);
+    
+    // Dapatkan Hari dan Waktu Sekarang secara Real-Time
+    const namaHariIni = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][new Date().getDay()];
+    const sekarang = new Date();
+    
+    let htmlSedangBerlangsung = '';
+    let htmlJadwalHariIniLainnya = '';
+    let htmlFleksibel = '';
+    let htmlJadwalLain = '';
 
-        let htmlJadwalSaya = '';
-        let htmlJadwalLain = '';
+    masterMapel.forEach(m => {
+        let masukHariIni = false;
+        let sedangBerlangsung = false;
+        let isFleksibel = false;
 
-        masterMapel.forEach(m => {
-            let tampilkan = false;
+        // 1. Cek apakah Mapel punya jadwal aktif atau fleksibel
+        if (m.jadwal_aktif) {
+            // Cek apakah Mapel ini dijadwalkan pada hari ini
+            if (m.hari && m.hari.includes(namaHariIni)) {
+                masukHariIni = true; 
+                
+                // Normalisasi jam mulai dan selesai
+                let mulai = (m.jam_mulai && m.jam_mulai.trim() !== "") ? m.jam_mulai.trim().replace('.', ':') : "00:00";
+                let selesai = (m.jam_selesai && m.jam_selesai.trim() !== "") ? m.jam_selesai.trim().replace('.', ':') : "23:59";
+                
+                const jamKustom = getDB('pondok_jam_kustom', []);
+                let cekMulai = jamKustom.find(j => j.kode === mulai.toUpperCase());
+                if (cekMulai) mulai = cekMulai.mulai;
 
-                        // 1. Filter HANYA berdasarkan Hari dan Jam
-            if (m.jadwal_aktif) {
-                if (m.hari && m.hari.includes(namaHariIni) && jamSekarang >= (m.jam_mulai || "00:00") && jamSekarang <= (m.jam_selesai || "23:59")) {
-                    tampilkan = true;
+                let cekSelesai = jamKustom.find(j => j.kode === selesai.toUpperCase());
+                if (cekSelesai) selesai = cekSelesai.selesai;
+
+                if (mulai.length === 4 && mulai.includes(':')) mulai = "0" + mulai;
+                if (selesai.length === 4 && selesai.includes(':')) selesai = "0" + selesai;
+
+                // Konversi jam ke menit untuk kalkulasi toleransi keterlambatan absen
+                const menitSekarang = (sekarang.getHours() * 60) + sekarang.getMinutes();
+                const menitMulai = (parseInt(mulai.split(':')[0]) * 60) + parseInt(mulai.split(':')[1]);
+                const menitSelesai = (parseInt(selesai.split(':')[0]) * 60) + parseInt(selesai.split(':')[1]);
+
+                // Toleransi: Anggap "Sedang Berlangsung" dari 30 menit sebelum kelas mulai hingga 90 menit setelah kelas selesai
+                if (menitMulai <= menitSelesai) {
+                    if (menitSekarang >= (menitMulai - 30) && menitSekarang <= (menitSelesai + 90)) {
+                        sedangBerlangsung = true;
+                    }
+                } else {
+                    // Logika untuk jadwal yang lewat tengah malam (lintas hari)
+                    if (menitSekarang >= (menitMulai - 30) || menitSekarang <= (menitSelesai + 90)) {
+                        sedangBerlangsung = true;
+                    }
+                }
+            }
+        } else {
+            // Jadwal fleksibel (tidak diatur jamnya)
+            isFleksibel = true;
+        }
+
+                // 2. Jika Mapel masuk kriteria tampil, susun ke dalam dropdown
+        // Kita wajib memfilter agar jadwal yang muncul HANYA HARI INI atau FLEKSIBEL
+        if (masukHariIni || isFleksibel) {
+            const isMilikSendiri = (m.ustadz_ids || []).includes(currentUser.username) || (m.ustadz_id === currentUser.username) || currentUser.role === 'superadmin';
+            
+            // TEKS DIRAPIKAN AGAR TIDAK BERANTAKAN DI LAYAR HP
+            const labelJam = m.jadwal_aktif ? `(${m.jam_mulai}-${m.jam_selesai})` : '';
+            
+            // Opsi untuk jadwal milik sendiri
+            const tagOption = `<option value="${m.id}">${m.nama_mapel} ${labelJam}</option>`;
+            // Opsi untuk ustaz aktual (pengganti)
+            const tagOptionLain = `<option value="${m.id}">[GANTI] ${m.nama_mapel} ${labelJam}</option>`;
+
+            if (isMilikSendiri) {
+                if (sedangBerlangsung) {
+                    htmlSedangBerlangsung += tagOption;
+                } else if (masukHariIni) {
+                    htmlJadwalHariIniLainnya += tagOption;
+                } else if (isFleksibel) {
+                    htmlFleksibel += tagOption;
                 }
             } else {
-
-                // Jadwal fleksibel
-                tampilkan = true;
-            }
-
-            // 2. Jika waktunya cocok, pisahkan antara jadwal sendiri dan jadwal orang lain
-            if (tampilkan) {
-                const isMilikSendiri = (m.ustadz_ids || []).includes(currentUser.username) || (m.ustadz_id === currentUser.username) || currentUser.role === 'superadmin';
-                
-                if (isMilikSendiri) {
-                    htmlJadwalSaya += `<option value="${m.id}">${m.nama_mapel} - ${(m.kelas_ids || []).length} Kelas</option>`;
-                } else {
-                    htmlJadwalLain += `<option value="${m.id}">${m.nama_mapel} - ${(m.kelas_ids || []).length} Kelas (Ustadz: ${m.ustadz_nama})</option>`;
+                // LOGIKA BARU: Ustaz aktual (jadwal ustaz lain) HANYA MUNCUL JIKA SEDANG BERLANGSUNG DI JAM TERSEBUT
+                if (sedangBerlangsung) {
+                    htmlJadwalLain += tagOptionLain;
                 }
             }
-        });
+        }
+});
 
-        // 3. Masukkan ke dalam dropdown dengan pengelompokan yang rapi
-        if (htmlJadwalSaya !== '') {
-            dropdown.innerHTML += `<optgroup label="📌 JADWAL SAYA JAM INI">${htmlJadwalSaya}</optgroup>`;
-        }
-        
-        if (htmlJadwalLain !== '') {
-            dropdown.innerHTML += `<optgroup label="🔄 JADWAL USTADZ LAIN (Untuk Pengganti)">${htmlJadwalLain}</optgroup>`;
-        }
-
-        // 4. Feedback jika benar-benar kosong
-        if (htmlJadwalSaya === '' && htmlJadwalLain === '') {
-            dropdown.innerHTML = '<option value="">-- Tidak ada jadwal pelajaran di jam ini --</option>';
-        }
+    // 3. Masukkan ke dalam dropdown dengan pengelompokan yang rapi
+    if (htmlSedangBerlangsung !== '') {
+        dropdown.innerHTML += `<optgroup label="🟢 SEDANG BERLANGSUNG">${htmlSedangBerlangsung}</optgroup>`;
     }
+    if (htmlJadwalHariIniLainnya !== '') {
+        dropdown.innerHTML += `<optgroup label="📅 JADWAL HARI INI LAINNYA">${htmlJadwalHariIniLainnya}</optgroup>`;
+    }
+    if (htmlFleksibel !== '') {
+        dropdown.innerHTML += `<optgroup label="🕒 MAPEL FLEKSIBEL">${htmlFleksibel}</optgroup>`;
+    }
+    if (htmlJadwalLain !== '') {
+        dropdown.innerHTML += `<optgroup label="🔄 JADWAL USTADZ LAIN">${htmlJadwalLain}</optgroup>`;
+    }
+
+    // 4. Feedback jika benar-benar kosong
+    if (htmlSedangBerlangsung === '' && htmlJadwalHariIniLainnya === '' && htmlFleksibel === '' && htmlJadwalLain === '') {
+        dropdown.innerHTML = '<option value="">-- Tidak ada jadwal hari ini --</option>';
+    }
+}
 
 
     function renderAbsenSantriByMapel() { 
@@ -4555,7 +4651,7 @@ font_sertifikat: document.getElementById('setting-font-sertifikat').value,
             return alert("Harap isi koordinat Latitude & Longitude minimal satu titik!");
         }
 
-        localStorage.setItem('pondok_gps', JSON.stringify({ aktif: aktif, titik: daftarTitik }));
+        setDB('pondok_gps', { aktif: aktif, titik: daftarTitik });
         alert("Konfigurasi geofencing GPS berhasil disimpan!");
     }
 
@@ -4581,7 +4677,7 @@ font_sertifikat: document.getElementById('setting-font-sertifikat').value,
         container.innerHTML += '</div>';
     }
 
-    function simpanHakAkses() {
+        function simpanHakAkses() {
         const selectRole = document.getElementById('select-role-akses');
         const targetRole = selectRole.value;
         let selectedMenu = [];
@@ -4589,7 +4685,12 @@ font_sertifikat: document.getElementById('setting-font-sertifikat').value,
 
         let seluruhAkses = getDB('pondok_akses', defaultAkses);
         seluruhAkses[targetRole] = selectedMenu;
-        localStorage.setItem('pondok_akses', JSON.stringify(seluruhAkses));
+        
+        // HAPUS ATAU GANTI BARIS INI:
+        // localStorage.setItem('pondok_akses', JSON.stringify(seluruhAkses));
+
+        // GANTI MENJADI KODE INI:
+        setDB('pondok_akses', seluruhAkses);
 
         alert(`Hak akses untuk peran [${targetRole.toUpperCase()}] berhasil diperbarui!`);
         renderMenuBerdasarkanAkses();
@@ -4685,35 +4786,40 @@ font_sertifikat: document.getElementById('setting-font-sertifikat').value,
     }
 
     function hapusPengguna(id) {
-        if (!confirm("Yakin hapus akun pegawai ini?")) return;
-        let users = getDB('pondok_users', []).filter(u => u.id != id);
-        localStorage.setItem('pondok_users', JSON.stringify(users));
-        renderTabelPegawai();
-        renderMasterMapel();
-    }
+    if (!confirm("Yakin hapus akun pegawai ini?")) return;
+    let users = getDB('pondok_users', []).filter(u => u.id != id);
+    
+    // PERBAIKAN: Gunakan setDB agar cache RAM dan UI ikut ter-update
+    setDB('pondok_users', users); 
+    
+    renderTabelPegawai();
+    renderMasterMapel();
+}
+
 
     function simpanKonfigurasiSupabase() {
         const url = document.getElementById('setting-supabase-url').value.trim();
         const key = document.getElementById('setting-supabase-key').value.trim();
         supabaseConfig = { url: url, key: key };
-        localStorage.setItem('pondok_supabase_config', JSON.stringify(supabaseConfig));
+        setDB('pondok_supabase_config', supabaseConfig);
         alert("Konfigurasi server Supabase berhasil disimpan!");
     }
 
     function exportDataLokal() {
-        const semuaKey = [
-            'pondok_users', 'pondok_akses', 'pondok_santri', 'pondok_evaluasi',
-            'pondok_master_mapel', 'pondok_kelas', 'pondok_gps', 'pondok_yayasan',
-            'pondok_setting_keuangan', 'pondok_absensi', 'pondok_tagihan_denda',
-            'pondok_izin_aktif', 'pondok_history_izin', 'pondok_supabase_config'
-        ];
-        let backup = {};
-        semuaKey.forEach(k => {
-            const val = localStorage.getItem(k);
-            if (val) backup[k] = JSON.parse(val);
-        });
+    const semuaKey = [
+        'pondok_users', 'pondok_akses', 'pondok_santri', 'pondok_evaluasi',
+        'pondok_master_mapel', 'pondok_kelas', 'pondok_gps', 'pondok_yayasan',
+        'pondok_setting_keuangan', 'pondok_absensi', 'pondok_tagihan_denda',
+        'pondok_izin_aktif', 'pondok_history_izin', 'pondok_supabase_config'
+    ];
+    let backup = {};
+    semuaKey.forEach(k => {
+        // PERBAIKAN: Gunakan getDB alih-alih localStorage
+        const val = getDB(k, null);
+        if (val) backup[k] = val; // Tidak perlu JSON.parse lagi
+    });
 
-        const stringData = JSON.stringify(backup, null, 2);
+    const stringData = JSON.stringify(backup, null, 2);
         const blob = new Blob([stringData], { type: 'application/json' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
@@ -4728,11 +4834,11 @@ font_sertifikat: document.getElementById('setting-font-sertifikat').value,
         reader.onload = function(evt) {
             try {
                 const data = JSON.parse(evt.target.result);
-                for (const k in data) {
-                    if (k.startsWith('pondok_')) {
-                        localStorage.setItem(k, JSON.stringify(data[k]));
-                    }
-                }
+               for (const k in data) {
+    if (k.startsWith('pondok_')) {
+        setDB(k, data[k]); // Langsung oper data object-nya
+    }
+}
                 alert("Restore data berhasil! Sistem akan dimuat ulang.");
                 location.reload();
             } catch(err) {
@@ -4765,7 +4871,8 @@ font_sertifikat: document.getElementById('setting-font-sertifikat').value,
                     const obj = JSON.parse(res);
                     if (obj.code === KODE_RAHASIA_SYNC) {
                         supabaseConfig = { url: obj.url, key: obj.key };
-                        localStorage.setItem('pondok_supabase_config', JSON.stringify(supabaseConfig));
+                        // 🟢 PERBAIKAN: Gunakan setDB agar tersimpan aman di IndexedDB (localforage)
+                        setDB('pondok_supabase_config', supabaseConfig);
                         tutupScannerLoginTarikData();
                         alert("Berhasil menghubungkan server! Menyiapkan sinkronisasi cloud...");
                         tarikDataDariSupabase();
@@ -4853,28 +4960,49 @@ async function sinkronisasiKeCloud() {
             }
 
             // LANGKAH B: Gabungkan data Lokal dengan data Cloud
+            
+                           // 1. Persiapkan daftar catatan "Batu Nisan"
+            const t_santri = [...new Set([...getDB('pondok_tombstone_santri', []), ...(dataCloud.tombstone_santri || [])])];
+            const t_mapel = [...new Set([...getDB('pondok_tombstone_mapel', []), ...(dataCloud.tombstone_mapel || [])])];
+            const t_kelas = [...new Set([...getDB('pondok_tombstone_kelas', []), ...(dataCloud.tombstone_kelas || [])])];
+            const t_users = [...new Set([...getDB('pondok_tombstone_users', []), ...(dataCloud.tombstone_users || [])])];
+            const t_tagihan = [...new Set([...getDB('pondok_tombstone_tagihan', []), ...(dataCloud.tombstone_tagihan || [])])];
+            const t_izin = [...new Set([...getDB('pondok_tombstone_izin_aktif', []), ...(dataCloud.tombstone_izin_aktif || [])])];
+            const t_bank = [...new Set([...getDB('pondok_tombstone_bank_mapel', []), ...(dataCloud.tombstone_bank_mapel || [])])];
+            const t_jam = [...new Set([...getDB('pondok_tombstone_jam_kustom', []), ...(dataCloud.tombstone_jam_kustom || [])])];
+
+            // 2. Gabungkan data sekaligus buang semua data yang ID-nya terdaftar di Batu Nisan
             const payloadMerged = {
-                santri: gabungDataArray(getDB('pondok_santri', []), dataCloud.santri, 'id'),
+                santri: gabungDataArray(getDB('pondok_santri', []), dataCloud.santri, 'id').filter(x => !t_santri.includes(x.id)),
+                mapel: gabungDataArray(getDB('pondok_master_mapel', []), dataCloud.mapel, 'id').filter(x => !t_mapel.includes(x.id)),
+                kelas: gabungDataArray(getDB('pondok_kelas', []), dataCloud.kelas, 'id').filter(x => !t_kelas.includes(x.id)),
+                users: gabungDataArray(getDB('pondok_users', []).filter(u => u.role !== 'superadmin'), dataCloud.users, 'username').filter(x => !t_users.includes(x.username)),
+                tagihan: gabungDataArray(getDB('pondok_tagihan_denda', []), dataCloud.tagihan, 'id_tagihan').filter(x => !t_tagihan.includes(x.id_tagihan)),
+                izin_aktif: gabungDataArray(getDB('pondok_izin_aktif', []), dataCloud.izin_aktif, 'id').filter(x => !t_izin.includes(x.id)),
+                jam_kustom: gabungDataArray(getDB('pondok_jam_kustom', []), dataCloud.jam_kustom, 'kode').filter(x => !t_jam.includes(x.kode)),
+                bank_mapel: [...new Set([...getDB('pondok_bank_mapel', []), ...(dataCloud.bank_mapel || [])])].filter(x => !t_bank.includes(x)),
+
+                // Data berikut biasanya hanya bertambah (Append-only)
                 absensi: gabungDataArray(getDB('pondok_absensi', []), dataCloud.absensi, 'id_sesi'),
-                kelas: gabungDataArray(getDB('pondok_kelas', []), dataCloud.kelas, 'id'),
-                mapel: gabungDataArray(getDB('pondok_master_mapel', []), dataCloud.mapel, 'id'),
                 evaluasi: gabungDataArray(getDB('pondok_evaluasi', []), dataCloud.evaluasi, 'nis'),
-                tagihan: gabungDataArray(getDB('pondok_tagihan_denda', []), dataCloud.tagihan, 'id_tagihan'),
                 tabungan: gabungDataArray(getDB('pondok_tabungan', []), dataCloud.tabungan, 'id'),
-                izin_aktif: gabungDataArray(getDB('pondok_izin_aktif', []), dataCloud.izin_aktif, 'id'),
                 history_izin: gabungDataArray(getDB('pondok_history_izin', []), dataCloud.history_izin, 'id'),
-                users: gabungDataArray(getDB('pondok_users', []).filter(u => u.role !== 'superadmin'), dataCloud.users, 'username'),
-                
-                // --- PENAMBAHAN DATA BARU DARI FILE TERBARU ---
-                jam_kustom: gabungDataArray(getDB('pondok_jam_kustom', []), dataCloud.jam_kustom, 'kode'),
-                // Karena bank_mapel hanya kumpulan teks string biasa, gabungkan memakai Set agar tidak ganda:
-                bank_mapel: [...new Set([...getDB('pondok_bank_mapel', []), ...(dataCloud.bank_mapel || [])])], 
-                
                 yayasan: getDB('pondok_yayasan', {}),
                 akses: getDB('pondok_akses', {}),
                 gps: getDB('pondok_gps', {}),
-                setting_keuangan: getDB('pondok_setting_keuangan', {})
+                setting_keuangan: getDB('pondok_setting_keuangan', {}),
+
+                // 3. Sertakan catatan "Batu Nisan" ke Cloud agar HP/Device lain tahu data ini sudah musnah
+                tombstone_santri: t_santri,
+                tombstone_mapel: t_mapel,
+                tombstone_kelas: t_kelas,
+                tombstone_users: t_users,
+                tombstone_tagihan: t_tagihan,
+                tombstone_izin_aktif: t_izin,
+                tombstone_bank_mapel: t_bank,
+                tombstone_jam_kustom: t_jam
             };
+
 
             const waktuKirim = new Date().toISOString();
 
@@ -4903,23 +5031,32 @@ async function sinkronisasiKeCloud() {
                 syncSuccess = true;
                 
                 // --- SIMPAN KEMBALI KE PENYIMPANAN LOKAL HP ---
-                localStorage.setItem('pondok_santri', JSON.stringify(payloadMerged.santri));
-                localStorage.setItem('pondok_absensi', JSON.stringify(payloadMerged.absensi));
-                localStorage.setItem('pondok_kelas', JSON.stringify(payloadMerged.kelas));
-                localStorage.setItem('pondok_master_mapel', JSON.stringify(payloadMerged.mapel));
-                localStorage.setItem('pondok_evaluasi', JSON.stringify(payloadMerged.evaluasi));
-                localStorage.setItem('pondok_tagihan_denda', JSON.stringify(payloadMerged.tagihan));
-                localStorage.setItem('pondok_tabungan', JSON.stringify(payloadMerged.tabungan));
-                localStorage.setItem('pondok_izin_aktif', JSON.stringify(payloadMerged.izin_aktif));
-                localStorage.setItem('pondok_history_izin', JSON.stringify(payloadMerged.history_izin));
-                
-                // Simpan fitur baru
-                localStorage.setItem('pondok_jam_kustom', JSON.stringify(payloadMerged.jam_kustom));
-                localStorage.setItem('pondok_bank_mapel', JSON.stringify(payloadMerged.bank_mapel));
-                
-                let lokalSuperAdmin = getDB('pondok_users', []).filter(u => u.role === 'superadmin');
-                let finalUsers = [...payloadMerged.users, ...lokalSuperAdmin];
-                localStorage.setItem('pondok_users', JSON.stringify(finalUsers));
+               // KODE SESUDAH (GUNAKAN INI)
+setDB('pondok_santri', payloadMerged.santri);
+setDB('pondok_tombstone_santri', payloadMerged.tombstone_santri);
+setDB('pondok_absensi', payloadMerged.absensi);
+setDB('pondok_kelas', payloadMerged.kelas);
+setDB('pondok_master_mapel', payloadMerged.mapel);
+setDB('pondok_tombstone_mapel', payloadMerged.tombstone_mapel);
+setDB('pondok_evaluasi', payloadMerged.evaluasi);
+setDB('pondok_tagihan_denda', payloadMerged.tagihan);
+setDB('pondok_tabungan', payloadMerged.tabungan);
+setDB('pondok_izin_aktif', payloadMerged.izin_aktif);
+setDB('pondok_history_izin', payloadMerged.history_izin);
+
+setDB('pondok_jam_kustom', payloadMerged.jam_kustom);
+setDB('pondok_bank_mapel', payloadMerged.bank_mapel);
+setDB('pondok_tombstone_kelas', payloadMerged.tombstone_kelas);
+setDB('pondok_tombstone_users', payloadMerged.tombstone_users);
+setDB('pondok_tombstone_tagihan', payloadMerged.tombstone_tagihan);
+setDB('pondok_tombstone_izin_aktif', payloadMerged.tombstone_izin_aktif);
+setDB('pondok_tombstone_bank_mapel', payloadMerged.tombstone_bank_mapel);
+setDB('pondok_tombstone_jam_kustom', payloadMerged.tombstone_jam_kustom);
+
+
+let lokalSuperAdmin = getDB('pondok_users', []).filter(u => u.role === 'superadmin');
+let finalUsers = [...payloadMerged.users, ...lokalSuperAdmin];
+setDB('pondok_users', finalUsers);
                 
                 alert("Data berhasil terakumulasi & sinkronisasi dengan Cloud!");
                 
@@ -4956,7 +5093,7 @@ async function sinkronisasiKeCloud() {
         }
     }
     
-    if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> KIRIM DATA KE CLOUD (SYNC MANUAL)';
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> KIRIM KE CLOUD';
 }
 
 async function tarikDataDariSupabase() {
@@ -4977,47 +5114,54 @@ async function tarikDataDariSupabase() {
         });
 
         const rows = await response.json();
-        if (rows && rows.length > 0 && rows[0].data_json) {
+       if (rows && rows.length > 0 && rows[0].data_json) {
             const data = rows[0].data_json;
             
-            // RESTORE DATA UTAMA
-            if (data.santri) localStorage.setItem('pondok_santri', JSON.stringify(data.santri));
-            if (data.absensi) localStorage.setItem('pondok_absensi', JSON.stringify(data.absensi));
-            if (data.kelas) localStorage.setItem('pondok_kelas', JSON.stringify(data.kelas));
-            if (data.mapel) localStorage.setItem('pondok_master_mapel', JSON.stringify(data.mapel));
-            if (data.evaluasi) localStorage.setItem('pondok_evaluasi', JSON.stringify(data.evaluasi));
-            if (data.tagihan) localStorage.setItem('pondok_tagihan_denda', JSON.stringify(data.tagihan));
-            if (data.tabungan) localStorage.setItem('pondok_tabungan', JSON.stringify(data.tabungan)); 
-            if (data.izin_aktif) localStorage.setItem('pondok_izin_aktif', JSON.stringify(data.izin_aktif));
-            if (data.history_izin) localStorage.setItem('pondok_history_izin', JSON.stringify(data.history_izin));
-            
-            // --- RESTORE FITUR DATA BARU ---
-            if (data.jam_kustom) localStorage.setItem('pondok_jam_kustom', JSON.stringify(data.jam_kustom));
-            if (data.bank_mapel) localStorage.setItem('pondok_bank_mapel', JSON.stringify(data.bank_mapel));
+            // 🟢 PERBAIKAN: Kumpulkan semua proses simpan ke dalam array Promises
+            let operasiSimpan = [];
 
-            // RESTORE DATA PENGATURAN & AKUN (FULL BACKUP)
-            if (data.yayasan) localStorage.setItem('pondok_yayasan', JSON.stringify(data.yayasan));
-            
+            if (data.santri) operasiSimpan.push(setDB('pondok_santri', data.santri));
+if (data.tombstone_santri) operasiSimpan.push(setDB('pondok_tombstone_santri', data.tombstone_santri));
+            if (data.absensi) operasiSimpan.push(setDB('pondok_absensi', data.absensi));
+            if (data.kelas) operasiSimpan.push(setDB('pondok_kelas', data.kelas));
+            if (data.mapel) operasiSimpan.push(setDB('pondok_master_mapel', data.mapel));
+            if (data.evaluasi) operasiSimpan.push(setDB('pondok_evaluasi', data.evaluasi));
+            if (data.tagihan) operasiSimpan.push(setDB('pondok_tagihan_denda', data.tagihan));
+            if (data.tabungan) operasiSimpan.push(setDB('pondok_tabungan', data.tabungan)); 
+            if (data.izin_aktif) operasiSimpan.push(setDB('pondok_izin_aktif', data.izin_aktif));
+            if (data.history_izin) operasiSimpan.push(setDB('pondok_history_izin', data.history_izin));
+            if (data.jam_kustom) operasiSimpan.push(setDB('pondok_jam_kustom', data.jam_kustom));
+            if (data.bank_mapel) operasiSimpan.push(setDB('pondok_bank_mapel', data.bank_mapel));
+            if (data.yayasan) operasiSimpan.push(setDB('pondok_yayasan', data.yayasan));
+            if (data.akses) operasiSimpan.push(setDB('pondok_akses', data.akses));
+            if (data.gps) operasiSimpan.push(setDB('pondok_gps', data.gps));
+            if (data.setting_keuangan) operasiSimpan.push(setDB('pondok_setting_keuangan', data.setting_keuangan));
+if (data.tombstone_kelas) operasiSimpan.push(setDB('pondok_tombstone_kelas', data.tombstone_kelas));
+if (data.tombstone_users) operasiSimpan.push(setDB('pondok_tombstone_users', data.tombstone_users));
+if (data.tombstone_tagihan) operasiSimpan.push(setDB('pondok_tombstone_tagihan', data.tombstone_tagihan));
+if (data.tombstone_izin_aktif) operasiSimpan.push(setDB('pondok_tombstone_izin_aktif', data.tombstone_izin_aktif));
+if (data.tombstone_bank_mapel) operasiSimpan.push(setDB('pondok_tombstone_bank_mapel', data.tombstone_bank_mapel));
+if (data.tombstone_jam_kustom) operasiSimpan.push(setDB('pondok_tombstone_jam_kustom', data.tombstone_jam_kustom));
+
             if (data.users) {
                 let cloudUsersBersih = data.users.filter(u => u.role !== 'superadmin');
                 let lokalSuperAdmin = getDB('pondok_users', []).filter(u => u.role === 'superadmin');
                 let finalPulledUsers = [...cloudUsersBersih, ...lokalSuperAdmin];
-                localStorage.setItem('pondok_users', JSON.stringify(finalPulledUsers));
+                operasiSimpan.push(setDB('pondok_users', finalPulledUsers));
             }
 
-            if (data.akses) localStorage.setItem('pondok_akses', JSON.stringify(data.akses));
-            if (data.gps) localStorage.setItem('pondok_gps', JSON.stringify(data.gps));
-            if (data.setting_keuangan) localStorage.setItem('pondok_setting_keuangan', JSON.stringify(data.setting_keuangan));
+            // 🟢 PERBAIKAN: Paksa sistem menunggu hingga seluruh data 100% selesai ditulis ke IndexedDB
+            await Promise.all(operasiSimpan);
 
             alert("Berhasil menarik SELURUH data terbaru dari Cloud! Sistem akan dimuat ulang.");
-            location.reload();
+            location.reload(); // ✅ Sekarang aman untuk di-reload karena data sudah tersimpan penuh
         } else {
             alert("Belum ada data cadangan tersimpan di server Supabase kamu.");
         }
     } catch (err) {
         alert("Gagal menarik data dari server Cloud.");
     } finally {
-        if (btn) btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> TARIK DATA DARI CLOUD (TIMPA DATA LOKAL)';
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> TARIK DARI CLOUD';
     }
 }
 
@@ -5029,25 +5173,25 @@ async function tarikDataDariSupabase() {
     function eksekusiResetOpsi(pilihan) {
         if (pilihan === 1) {
             if (!confirm("Kosongkan semua data Santri & Kelas?")) return;
-            localStorage.setItem('pondok_santri', JSON.stringify([]));
-            localStorage.setItem('pondok_kelas', JSON.stringify([]));
+           setDB('pondok_santri', []);
+    setDB('pondok_kelas', []);
             alert("Data Santri & Kelas berhasil dikosongkan.");
         } else if (pilihan === 2) {
             if (!confirm("Kosongkan semua data Absensi & Denda?")) return;
-            localStorage.setItem('pondok_absensi', JSON.stringify([]));
-            localStorage.setItem('pondok_tagihan_denda', JSON.stringify([]));
+           setDB('pondok_absensi', []);
+    setDB('pondok_tagihan_denda', []);
             alert("Data Absensi & Denda berhasil dikosongkan.");
         } else if (pilihan === 3) {
             if (!confirm("Reset Total lokal tanpa menghapus konfigurasi Supabase?")) return;
-            const configSave = localStorage.getItem('pondok_supabase_config');
-            localStorage.clear();
-            if (configSave) localStorage.setItem('pondok_supabase_config', configSave);
+            const configSave = getDB('pondok_supabase_config'); // Ambil config dari RAM
+clearDB(); // Hapus semua data dari RAM dan IndexedDB
+if (configSave) setDB('pondok_supabase_config', configSave);
             alert("Reset total berhasil! Sistem akan dimuat ulang.");
             location.reload();
             return;
         } else if (pilihan === 4) {
             if (!confirm("PERINGATAN KERAS: Hapus SEGALANYA termasuk konfigurasi Supabase?")) return;
-            localStorage.clear();
+            clearDB();
             alert("Seluruh data dihabiskan bersih. Sistem akan dimuat ulang.");
             location.reload();
             return;
@@ -5732,10 +5876,15 @@ function tambahJamKustom() {
 function hapusJamKustom(idx) {
     if (!confirm("Hapus logika jam ini?")) return;
     let dataJam = getDB('pondok_jam_kustom', []);
+    if (dataJam[idx]) {
+        let tbJam = getDB('pondok_tombstone_jam_kustom', []);
+        if (!tbJam.includes(dataJam[idx].kode)) { tbJam.push(dataJam[idx].kode); setDB('pondok_tombstone_jam_kustom', tbJam); }
+    }
     dataJam.splice(idx, 1);
-    localStorage.setItem('pondok_jam_kustom', JSON.stringify(dataJam));
+    setDB('pondok_jam_kustom', dataJam);
     renderJamKustom();
 }
+
 // ==========================================
 // KODE SLIDESHOW WALLPAPER WALI SANTRI (APP 2)
 // ==========================================
@@ -6384,20 +6533,23 @@ function hapusSantriWali(idSantri) {
     
     // Hapus dari tabel santri
     let dbSantri = getDB('pondok_santri', []).filter(s => s.id !== idSantri);
-    localStorage.setItem('pondok_santri', JSON.stringify(dbSantri));
+    setDB('pondok_santri', dbSantri); // PERBAIKAN
 
     // Bersihkan id santri dari array kelas (Plotting)
     let dbKelas = getDB('pondok_kelas', []);
     dbKelas.forEach(k => {
         k.santri_ids = (k.santri_ids || []).filter(sid => sid !== idSantri);
     });
-    localStorage.setItem('pondok_kelas', JSON.stringify(dbKelas));
+    setDB('pondok_kelas', dbKelas); // PERBAIKAN
 
     renderTabelSantriWali();
 }
 
+
     window.onload = initApp;
 </script>
+    <!-- Panggil library LocalForage untuk IndexedDB -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 <!-- Script Firebase (Modular) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -6405,12 +6557,12 @@ function hapusSantriWali(idSantri) {
 
     // Ganti dengan firebaseConfig dari Langkah 1
     const firebaseConfig = {
-  apiKey: "AIzaSyBajz9-X3RlIXphaH0a--OSvQM6_nhV6pE",
-  authDomain: "sms-digi.firebaseapp.com",
-  projectId: "sms-digi",
-  storageBucket: "sms-digi.firebasestorage.app",
-  messagingSenderId: "477801725664",
-  appId: "1:477801725664:web:0a1fc140d6ec907e1c9a85"
+  apiKey: "AIzaSyB5MMnqL8RAidNzgrzXX3u6dep_wBW-Goo",
+  authDomain: "lms-instansi.firebaseapp.com",
+  projectId: "lms-instansi",
+  storageBucket: "lms-instansi.firebasestorage.app",
+  messagingSenderId: "337951611123",
+  appId: "1:337951611123:web:eaefe19b03d27eb01b3f86"
 };
 
     // Inisialisasi Firebase
