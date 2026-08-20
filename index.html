@@ -2610,7 +2610,8 @@ setDB('pondok_active_tab', 'view-dashboard');
         let userIdx = users.findIndex(u => u.username === currentUser.username);
         if (userIdx > -1) {
             users[userIdx].pin_login = pinVal; currentUser.pin_login = pinVal;
-            localStorage.setItem('pondok_users', JSON.stringify(users)); localStorage.setItem('pondok_active_user', JSON.stringify(currentUser));
+            setDB('pondok_users', users);
+             setDB('pondok_active_user', currentUser);
             alert("PIN Login berhasil diset!"); document.getElementById('input-new-pin').value = '';
         }
     }
@@ -4148,7 +4149,23 @@ if (wadahUstadz) {
     }
 
     function renderDataKeuanganPanel() { const config = getDB('pondok_setting_keuangan', null); if(config) { document.getElementById('setting-nominal-alpa').value = config.nominal_alpa; document.getElementById('setting-limit-alpa').value = config.limit_alpa; document.getElementById('setting-sanksi-ekstra').value = config.sanksi_ekstra; document.getElementById('setting-denda-terlambat').value = config.denda_terlambat_izin || 20000; } renderTabelKeuanganDenda(); }
-    function simpanSettingKeuangan() { setDB('pondok_santri', databaseSantri); alert("Aturan Denda Disimpan!"); }
+    function simpanSettingKeuangan() {
+    const nominal_alpa = document.getElementById('setting-nominal-alpa').value;
+    const limit_alpa = document.getElementById('setting-limit-alpa').value;
+    const denda_terlambat = document.getElementById('setting-denda-terlambat').value;
+    const sanksi_ekstra = document.getElementById('setting-sanksi-ekstra').value;
+
+    const configKeuangan = {
+        nominal_alpa: nominal_alpa,
+        limit_alpa: limit_alpa,
+        denda_terlambat_izin: denda_terlambat,
+        sanksi_ekstra: sanksi_ekstra
+    };
+
+    setDB('pondok_setting_keuangan', configKeuangan);
+    alert("Aturan Denda Berhasil Disimpan!");
+}
+
     function renderTabelKeuanganDenda() { const wadahTbodyKeuangan = document.getElementById('tabel-keuangan-body'); let akumulasiTotalUang = 0; wadahTbodyKeuangan.innerHTML = ''; const databaseKeuanganTagihan = getDB('pondok_tagihan_denda', []); if(databaseKeuanganTagihan.length === 0) { document.getElementById('total-denda').innerText = "0"; return wadahTbodyKeuangan.innerHTML = '<tr><td colspan="4" align="center">Tidak ada tagihan hutang denda.</td></tr>'; } databaseKeuanganTagihan.forEach(barisTagihan => { akumulasiTotalUang += parseInt(barisTagihan.nominal); wadahTbodyKeuangan.innerHTML += `<tr><td><strong>${barisTagihan.nama}</strong><br><span style="font-size:0.7rem; color:var(--text-muted);">NIS: ${barisTagihan.nis}</span></td><td>${barisTagihan.keterangan}</td><td style="color:var(--danger); font-weight:600;">Rp ${parseInt(barisTagihan.nominal).toLocaleString('id-ID')}</td><td><button class="btn-success" onclick="tandaiLunas(${barisTagihan.id_tagihan})"><i class="fa-solid fa-check"></i> Lunas</button></td></tr>`; }); document.getElementById('total-denda').innerText = akumulasiTotalUang.toLocaleString('id-ID'); }
     function tandaiLunas(id_tagihan) {
     if(!confirm("Tandai lunas?")) return;
@@ -4868,14 +4885,27 @@ font_sertifikat: document.getElementById('setting-font-sertifikat').value,
 
     function hapusPengguna(id) {
     if (!confirm("Yakin hapus akun pegawai ini?")) return;
-    let users = getDB('pondok_users', []).filter(u => u.id != id);
     
-    // PERBAIKAN: Gunakan setDB agar cache RAM dan UI ikut ter-update
-    setDB('pondok_users', users); 
+    let usersLama = getDB('pondok_users', []);
+    let userDihapus = usersLama.find(u => u.id == id);
+    let usersBaru = usersLama.filter(u => u.id != id);
+    
+    // Simpan ke database lokal
+    setDB('pondok_users', usersBaru); 
+    
+    // Catat ke Batu Nisan (Tombstone) agar tidak balik lagi saat ditarik dari Cloud
+    if (userDihapus) {
+        let tbUsers = getDB('pondok_tombstone_users', []);
+        if(!tbUsers.includes(userDihapus.username)) { 
+            tbUsers.push(userDihapus.username); 
+            setDB('pondok_tombstone_users', tbUsers); 
+        }
+    }
     
     renderTabelPegawai();
     renderMasterMapel();
 }
+
 
 
     function simpanKonfigurasiSupabase() {
@@ -6627,33 +6657,55 @@ function hapusSantriWali(idSantri) {
 }
 
 
-    window.onload = initApp;
+  initApp;
 </script>
-    <!-- Panggil library LocalForage untuk IndexedDB -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 <!-- Script Firebase (Modular) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
 
-    // Ganti dengan firebaseConfig dari Langkah 1
-    const firebaseConfig = {
-  apiKey: "AIzaSyB5MMnqL8RAidNzgrzXX3u6dep_wBW-Goo",
-  authDomain: "lms-instansi.firebaseapp.com",
-  projectId: "lms-instansi",
-  storageBucket: "lms-instansi.firebasestorage.app",
-  messagingSenderId: "337951611123",
-  appId: "1:337951611123:web:eaefe19b03d27eb01b3f86"
-};
+    // ... (konfigurasi firebase kamu) ...
 
-    // Inisialisasi Firebase
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
 
-    // Jadikan 'messaging' & 'getToken' sebagai variabel global agar bisa dipakai di fungsi lain
     window.fcmMessaging = messaging;
     window.fcmGetToken = getToken;
     window.fcmOnMessage = onMessage;
+
+    // LANGSUNG JALANKAN TIMEOUT (Tanpa window.onload dan initApp)
+    setTimeout(() => {
+        if (window.fcmOnMessage) {
+            window.fcmOnMessage(window.fcmMessaging, (payload) => {
+                console.log('Pesan FCM masuk di Foreground:', payload);
+                
+                const judul = payload.notification.title;
+                const pesan = payload.notification.body;
+                
+                kirimNotifikasiLokal(judul, pesan);
+
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    let hitungan = 0;
+                    
+                    function bicara() {
+                        if (hitungan < 10) {
+                            let utterance = new SpeechSynthesisUtterance(pesan);
+                            utterance.lang = 'id-ID';
+                            utterance.rate = 0.9;
+                            utterance.onend = function() {
+                                hitungan++;
+                                setTimeout(bicara, 1500); 
+                            };
+                            window.speechSynthesis.speak(utterance);
+                        }
+                    }
+                    bicara();
+                }
+            });
+        }
+    }, 2000); 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
