@@ -2176,7 +2176,7 @@ const menuMaster = [
                         <div class="id-back-title" style="font-size:0.75rem; font-weight:bold; color:var(--primary); border-bottom:1px solid #ccc; padding-bottom:2px; margin-bottom:4px; text-align:center; width:100%; line-height:1;">${yayasan.pondok || 'INSTANSI'}</div>
                         <div class="id-back-rules" style="font-size:0.52rem; line-height:1.3; color:#222; width:100%; text-align:justify; flex:1;">${formatTertib}</div>
                         <div class="id-back-ttd-wrapper" style="width:100%; display:flex; flex-direction:column; align-items:center; margin-top:auto;">
-                            // Kode Sesudah
+                           
 <div class="id-back-ttd" style="text-align:center; font-size:0.55rem; color:var(--primary); font-weight:bold; width:100%; position:relative;">
     ${yayasan.stempel_mudir ? `<img src="${yayasan.stempel_mudir}" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); max-height:40px; opacity:0.85; z-index:1;">` : ''}
     <div style="position:relative; z-index:2;">Mengetahui, Pimpinan</div>
@@ -2728,7 +2728,7 @@ function initSupabaseRealtimeListener() {
     if (savedSession && savedSession.role) { 
         currentUser = savedSession; 
         masukKeSistemSetelahLogin(false); 
-    // Kode Sesudah
+    
 mulaiWatchdogJadwal();
 initSupabaseRealtimeListener();
 }
@@ -2810,7 +2810,7 @@ initSupabaseRealtimeListener();
         }
     });
 
-    // Kode Sesudah
+   
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js')
@@ -4646,10 +4646,11 @@ font_sertifikat: document.getElementById('setting-font-sertifikat').value,
             pwa_notif_teks: document.getElementById('setting-pwa-notif-teks').value
         };
 
-        localStorage.setItem('pondok_yayasan', JSON.stringify(newConfig));
-        loadIdentitasApp();
-        alert("Konfigurasi instansi berhasil disimpan!");
-    }
+          
+    setDB('pondok_yayasan', newConfig);
+    loadIdentitasApp();
+    alert("Konfigurasi instansi berhasil disimpan!");
+}
 
     function previewGambarApp(event, idPreview, propertyName) {
         const file = event.target.files[0];
@@ -5111,7 +5112,7 @@ async function sinkronisasiKeCloud() {
                 syncSuccess = true;
                 
                 // --- SIMPAN KEMBALI KE PENYIMPANAN LOKAL HP ---
-               // KODE SESUDAH (GUNAKAN INI)
+               
 setDB('pondok_santri', payloadMerged.santri);
 setDB('pondok_tombstone_santri', payloadMerged.tombstone_santri);
 setDB('pondok_absensi', payloadMerged.absensi);
