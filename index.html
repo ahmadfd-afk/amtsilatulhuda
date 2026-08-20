@@ -86,7 +86,8 @@
 
         main { flex: 1; position: relative; z-index: 20; width: 100%; }
         #dashboard-wrapper { padding: 16px 15px 105px 15px; width: 100%; }
-        .card { background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.85); border-radius: var(--radius-md); padding: 20px 16px; box-shadow: var(--glass-shadow); margin-bottom: 18px; width: 100%; overflow: hidden; transition: 0.3s all ease; }
+        .card { background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.85); border-radius: var(--radius-md); padding: 20px 16px; box-shadow: var(--glass-shadow); margin-bottom: 18px; width: 100%; transition: 0.3s all ease; overflow: visible; }
+
         .card-premium { border-left: 5px solid var(--accent); }
         label { font-size: 0.84rem; font-weight: 600; color: var(--primary); margin-bottom: 6px; display: block; margin-top: 10px; }
         select, input, textarea { width: 100%; padding: 13px 15px; border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.12); margin-bottom: 10px; font-size: 0.95rem; outline: none; background: rgba(255,255,255,0.92); transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03); }
@@ -266,7 +267,9 @@
         .id-back-ttd { text-align: center; font-size: 0.55rem; font-weight: bold; color: var(--primary); z-index: 2; position: relative;}
         .id-back-ttd img { max-height: 30px; display: block; margin: 2px auto; }
         .stempel-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.85; max-height: 50px; z-index: 1; pointer-events: none; }
-        .id-qr-back { width: 60px; height: 60px; border: 2px solid var(--primary); padding: 2px; background: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin: 0 auto; z-index: 3;}
+        /* Kode Sesudah (Hapus paksaan width & height) */
+.id-qr-back { border: 2px solid var(--primary); padding: 2px; background: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin: 0 auto; z-index: 3;}
+
 
         /* OVERRIDE PORTRAIT: Tata tertib rata kiri-kanan & numbung */
         .id-card-wrapper.portrait .id-back-content { flex-direction: column; text-align: center; }
@@ -435,6 +438,22 @@
 </head>
 <!-- KODE SESUDAHNYA -->
 <body>
+<!-- BUBBLE NOTIFIKASI SYSTEM -->
+<div id="system-notif-banner" style="position: fixed; top: -100px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--accent); border-radius: 20px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.25); z-index: 999999; transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);">
+    <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+        <div id="system-notif-icon" style="background: var(--warning); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+        </div>
+        <div>
+            <h4 id="system-notif-title" style="margin: 0; font-size: 0.85rem; color: var(--primary);">Data Baru Tersedia</h4>
+            <p id="system-notif-desc" style="margin: 0; font-size: 0.7rem; color: var(--text-muted);">Ada sinkronisasi dari perangkat lain.</p>
+        </div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <button id="system-notif-btn" class="btn-primary" style="margin: 0; padding: 8px 12px; font-size: 0.7rem; width: auto; border-radius: 12px; box-shadow: none;">Tarik Data</button>
+        <button onclick="document.getElementById('system-notif-banner').style.top = '-100px';" style="background: transparent; border: none; color: var(--danger); font-size: 1.2rem; padding: 5px; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+</div>
 
 <div id="splash-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); backdrop-filter:blur(20px); z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 0.6s ease, visibility 0.6s ease;">
     <img id="splash-logo" src="icon-512.png" style="width:110px; height:110px; border-radius:24px; box-shadow:0 15px 35px rgba(0,0,0,0.2); animation: pulse 1.5s infinite alternate;">
@@ -539,9 +558,7 @@
                     <h3 style="font-size: 0.95rem; color: var(--primary); margin-bottom: 5px;">
                         <i class="fa-solid fa-key"></i> Pengaturan PIN Login Cepat
                     </h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;">
-                        Set PIN angka Anda (0–9) untuk login cepat tanpa mengetik username & password di halaman utama.
-                    </p>
+                    
                     <div style="display:flex; gap:8px;">
                         <input type="password" inputmode="numeric" pattern="[0-9]*" id="input-new-pin" maxlength="6" placeholder="4–6 Angka PIN..." style="margin:0; text-align:center; font-weight:bold; letter-spacing:3px;">
                         <button class="btn-primary" style="margin:0; width:auto; padding:0 18px; font-size:0.82rem;" onclick="simpanPINUser()">SIMPAN</button>
@@ -550,7 +567,7 @@
 
                 <div class="card card-premium">
                     <h3 style="font-size: 1.08rem; color: var(--primary);">Dashboard Utama</h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Pilih menu sesuai hak akses yang diberikan.</p>
+                    
                 </div>
                 <div class="card" id="dynamic-menu-container">
                     <h3 style="margin-bottom: 14px; font-size: 0.95rem; color: var(--primary); border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 10px;">
@@ -566,10 +583,10 @@
                 
                 <div style="display: flex; gap: 8px; margin-bottom: 14px;">
                     <button type="button" id="btn-tab-santri-aktif" class="btn-primary" style="flex: 1; margin: 0; padding: 12px; font-size: 0.8rem;" onclick="switchTabSantri('aktif')">
-                        <i class="fa-solid fa-user-graduate"></i> Santri Aktif (<span id="count-santri-aktif">0</span>)
+                        <i class="fa-solid fa-user-graduate"></i> Santri (<span id="count-santri-aktif">0</span>)
                     </button>
                     <button type="button" id="btn-tab-santri-alumni" class="btn-outline" style="flex: 1; margin: 0; padding: 12px; font-size: 0.8rem; justify-content: center;" onclick="switchTabSantri('alumni')">
-                        <i class="fa-solid fa-award"></i> Ruang Alumni (<span id="count-santri-alumni">0</span>)
+                        <i class="fa-solid fa-award"></i> Alumni (<span id="count-santri-alumni">0</span>)
                     </button>
                 </div>
 
@@ -577,7 +594,7 @@
                     <h3 id="form-santri-title" style="margin-bottom: 14px; color: var(--primary);">Tambah Santri</h3>
                     <input type="hidden" id="edit-id-santri" value="">
                     
-                    <label id="label-foto-santri">Foto Santri</label>
+                    <label id="label-foto-santri">Foto</label>
                     <div style="display: flex; gap: 8px; margin-bottom: 10px;">
                         <button type="button" class="btn-outline" style="flex: 1; justify-content: center; margin: 0; padding: 10px;" onclick="document.getElementById('input-foto-kamera').click()">
                             <i class="fa-solid fa-camera"></i> Kamera
@@ -592,7 +609,7 @@
 
                     <img id="preview-foto-santri-ui" src="" style="max-width: 90px; display: none; border-radius: 10px; border: 2px solid var(--accent); margin-bottom: 10px;">
                     
-                    <label>NIK (Nomor Induk Kependudukan)</label><input type="number" id="input-nik-santri" placeholder="16 Digit NIK...">
+                    <label>NIK</label><input type="number" id="input-nik-santri" placeholder="16 Digit NIK...">
                     <label>Nama Lengkap</label><input type="text" id="input-nama-santri" placeholder="Nama lengkap sesuai KK...">
                     <label>Alamat Asal</label><textarea id="input-alamat-santri" rows="2"></textarea>
                     
@@ -606,7 +623,7 @@
                         </div>
                     </div>
 
-                    <label style="color: var(--info);"><i class="fa-solid fa-layer-group"></i> Pilih Kelas / Forum (Opsional)</label>
+                    <label style="color: var(--info);"><i class="fa-solid fa-layer-group"></i> Pilih Kelas / Forum</label>
                     <select id="input-kelas-santri" style="margin-bottom: 14px;">
                         <option value="">-- Tanpa Kelas / Pilih Nanti --</option>
                     </select>
@@ -655,7 +672,7 @@
                 
                 <div class="card card-premium">
                     <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-star"></i> Evaluasi Nilai</h3>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:14px;">Masukkan nilai ujian dan keaktifan (akhlak, semangat) sebagai syarat generate sertifikat.</p>
+                    
                     
                     <label>Pilih Kelas / Kelompok</label>
                     <select id="pilih-kelas-evaluasi" onchange="renderFormEvaluasi()"></select>
@@ -669,7 +686,7 @@
                 <div class="back-nav" onclick="closeSubMenu()"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</div>
                 <div class="card card-premium">
                     <h3 style="margin-bottom: 8px; color: var(--primary);"><i class="fa-solid fa-file-signature"></i> Surat Izin</h3>
-                    <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:14px;">Scan QR Santri untuk membuat Surat Izin Keluar atau Validasi Kembali.</p>
+                    
                     <div style="display: flex; gap: 8px; margin-bottom: 14px;">
                         <button class="btn-primary" onclick="startScannerIzin('keluar')" style="flex:1; font-size:0.78rem;"><i class="fa-solid fa-share-from-square"></i> Surat Izin</button>
                         <button class="btn-primary" onclick="startScannerIzin('balik')" style="flex:1; background:var(--success); font-size:0.78rem;"><i class="fa-solid fa-right-to-bracket"></i> Validasi Kembali</button>
@@ -709,10 +726,10 @@
                             <i class="fa-solid fa-bell"></i> Izin Layar PWA Notif
                         </button>
                     </div>
-                                        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Buat mata pelajaran dan tentukan ustadz/guru penanggung jawabnya (bisa lebih dari satu), lalu centang kelas mana saja yang mempelajarinya.</p>
+                                        
                     
                                         <!-- PERBAIKAN: BANK MATA PELAJARAN MULTIPLE CHECKBOX -->
-                    <label style="color:var(--primary); margin-top:10px;"><i class="fa-solid fa-layer-group"></i> 1. Pilih Mata Pelajaran (Bank Mapel):</label>
+                    <label style="color:var(--primary); margin-top:10px;"><i class="fa-solid fa-layer-group"></i> 1. Mata Pelajaran:</label>
                     
                     <div class="custom-select-wrapper">
                         <div class="custom-select-btn" onclick="document.getElementById('wadah-bank-mapel').classList.toggle('show')">
@@ -733,12 +750,12 @@
                     
                    <label style="cursor:pointer; display:flex; align-items:center; gap:8px; color:var(--primary); margin-top:14px;">
     <input type="checkbox" id="input-opsi-jadwal" onchange="toggleFormJadwalMapel()" style="width:18px; height:18px; margin:0;">
-    <span>Atur Jadwal Hari & Jam (Opsional)</span>
+    <span>Hari & Jam</span>
 </label>
 
 <!-- PERBAIKAN: Tombol Hari & Input Teks Jam Fleksibel -->
 <div id="wadah-input-jadwal" class="hidden" style="margin-top:10px; background:rgba(4,67,42,0.05); padding:12px; border-radius:12px; border:1px solid rgba(0,0,0,0.08);">
-    <label style="margin-top:0; margin-bottom:8px;">Hari Pelaksanaan (Bisa Centang Ganda)</label>
+    <label style="margin-top:0; margin-bottom:8px;">Hari Pelaksanaan</label>
     <div class="hari-grid" id="container-hari-checkbox" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; background:#fff; padding:10px; border-radius:8px; border:1px solid #ccc;">
         <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Senin" class="cb-hari-mapel"> Senin</label>
         <label style="font-size:0.8rem; display:flex; align-items:center; gap:6px;"><input type="checkbox" value="Selasa" class="cb-hari-mapel"> Selasa</label>
@@ -752,7 +769,7 @@
         <!-- PERBAIKAN: Dropdown Pilihan Cepat dari Logika Jam Singkatan -->
     <div style="margin-top:12px;">
         <label style="color:var(--warning); margin-bottom:4px;">
-            <i class="fa-solid fa-clock"></i> Pilih Preset Jam Singkatan (BA, BS, BM, dll):
+            <i class="fa-solid fa-clock"></i> Jam:
         </label>
         <select id="select-jam-preset" onchange="pilihPresetJam(this.value)" style="margin-bottom:8px; border-color:var(--warning);">
             <option value="">-- Pilih dari Setting Jam Singkatan / Isi Manual --</option>
@@ -767,7 +784,7 @@
 
 
 <!-- PERBAIKAN: Dropdown Ustadz -->
-<label style="color:var(--primary); margin-top:14px;"><i class="fa-solid fa-users"></i> Pilih Ustadz / Guru Pengajar (Bisa Lebih dari 1):</label>
+<label style="color:var(--primary); margin-top:14px;"><i class="fa-solid fa-users"></i> Ustadz / Guru Pengajar:</label>
 <div class="custom-select-wrapper">
     <div class="custom-select-btn" onclick="document.getElementById('input-ustadz-mapel-container').classList.toggle('show')">
         Klik untuk Pilih Ustadz... <i class="fa-solid fa-chevron-down"></i>
@@ -777,7 +794,7 @@
 </div>
 
 <!-- PERBAIKAN: Dropdown Kelas -->
-<label style="color:var(--primary); margin-top:14px;"><i class="fa-solid fa-layer-group"></i> Pilih Kelas Yang Mempelajari Mapel Ini:</label>
+<label style="color:var(--primary); margin-top:14px;"><i class="fa-solid fa-layer-group"></i> Kelas:</label>
 <div class="custom-select-wrapper">
     <div class="custom-select-btn" onclick="document.getElementById('input-kelas-mapel-container').classList.toggle('show')">
         Klik untuk Pilih Kelas... <i class="fa-solid fa-chevron-down"></i>
@@ -830,7 +847,7 @@
                 <div class="card card-premium">
                     <h3 style="margin-bottom: 14px; color: var(--primary);"><i class="fa-solid fa-layer-group"></i> Buat Kelas Baru</h3>
 
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Buat kelas baru terlebih dahulu, lalu Anda dapat mengaturnya di pembuatan mata pelajaran di atas atau klik Edit Plotting di tabel bawah.</p>
+                    
                                         <label>Nama Kelas / Forum</label><input type="text" id="input-nama-kelas" placeholder="Cth: Kelas 1-A / Takhassus">
                     
                     <label style="color: var(--primary); margin-top: 10px;"><i class="fa-solid fa-user-tie"></i> Pilih Wali Kelas (Opsional)</label>
@@ -938,7 +955,7 @@
                 <!-- PENGATURAN PWA NOTIFIKASI MUTLAK SUPER ADMIN -->
                 <div class="card card-premium" style="border-left-color: var(--danger);">
                     <h3 style="margin-bottom: 10px; color: var(--danger);"><i class="fa-solid fa-bell"></i> Status PWA Notif & Suara Pengingat (Super Admin)</h3>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Aktifkan saklar mutlak agar pengingat jadwal berbunyi otomatis di akun semua Ustadz/Guru sesuai hari & jam mengajar tanpa bisa dimatikan oleh guru.</p>
+                    
                     <label>Status PWA Notification (Mutlak)</label>
                     <select id="setting-pwa-notif-aktif">
                         <option value="1">Aktif Mutlak (Semua Guru & Ustadz)</option>
@@ -1143,7 +1160,7 @@
 
                 <div class="card card-premium">
                     <h3 style="margin-bottom: 14px; color: var(--danger);"><i class="fa-solid fa-shield-heart"></i> Backup & Sinkronisasi</h3>
-                    <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Semua data absensi dan santri tersimpan lokal secara manual. Tekan tombol Kirim Cloud di bawah apabila ingin memperbarui server.</p>
+                    
                     <label style="color: var(--primary-light);">1. Ekspor Data Lokal</label>
                     <button class="btn-outline" onclick="exportDataLokal()"><i class="fa-solid fa-download"></i> Unduh File JSON Database</button>
                     <label style="margin-top:18px; color: var(--primary-light);">2. Restore Data</label>
@@ -1158,7 +1175,7 @@
                     
                     <div id="zona-berbahaya-reset" style="margin-top: 30px; border-top: 3px solid #ffcccc; padding-top: 18px; background: #fff0f0; padding: 14px; border-radius: 12px; display: none;">
                         <label style="color: var(--danger);"><i class="fa-solid fa-skull"></i> RESET DATA</label>
-                        <p style="font-size:0.75rem; color:#555; margin-bottom:10px;">Pilih opsi pembersihan data sesuai kebutuhan tanpa harus kehilangan konfigurasi server Supabase.</p>
+                       
                         <button class="btn-warning" style="width: 100%; padding: 10px; font-size: 0.85rem; margin-bottom:8px;" onclick="bukaModalResetOpsi()">BUKA MENU RESET</button>
                     </div>
                 </div>
@@ -1503,7 +1520,9 @@
                     </div>
                                         <!-- Barcode 1D NIS di Depan -->
                     <div class="id-qr-depan" style="border:none; padding:0; background:transparent; box-shadow:none; width:auto; height:auto; overflow:hidden;">
-                        <svg id="card-barcode" style="width: 100%; max-width: 80px;"></svg>
+                        <!-- Kode Sesudah -->
+<svg id="card-barcode" style="width: 100%;"></svg>
+
                     </div>
                 </div>
                 <div class="id-footer-custom hidden" id="card-footer-custom"></div>
@@ -1729,7 +1748,7 @@ const defaultAkses = {
 
 const menuMaster = [ 
     { id: 'view-walikelas', nama: 'Kelas Saya', icon: 'fa-chalkboard-user' },
-    { id: 'view-paguyuban', nama: 'Kasir (Belanja)', icon: 'fa-store' },
+    { id: 'view-paguyuban', nama: 'Kasir', icon: 'fa-store' },
     { id: 'view-santri', icon: 'fa-id-card' }, 
     { id: 'view-evaluasi', nama: 'Evaluasi', icon: 'fa-star' }, 
     { id: 'view-izin', nama: 'Surat Izin Santri & Validasi Kembali', icon: 'fa-file-signature' }, 
@@ -2157,11 +2176,14 @@ const menuMaster = [
                         <div class="id-back-title" style="font-size:0.75rem; font-weight:bold; color:var(--primary); border-bottom:1px solid #ccc; padding-bottom:2px; margin-bottom:4px; text-align:center; width:100%; line-height:1;">${yayasan.pondok || 'INSTANSI'}</div>
                         <div class="id-back-rules" style="font-size:0.52rem; line-height:1.3; color:#222; width:100%; text-align:justify; flex:1;">${formatTertib}</div>
                         <div class="id-back-ttd-wrapper" style="width:100%; display:flex; flex-direction:column; align-items:center; margin-top:auto;">
-                            <div class="id-back-ttd" style="text-align:center; font-size:0.55rem; color:var(--primary); font-weight:bold; width:100%;">
-                                <div>Mengetahui, Pimpinan</div>
-                                ${yayasan.ttd_mudir ? `<img src="${yayasan.ttd_mudir}" style="height:25px; margin:2px auto; display:block;">` : '<div style="height:25px;"></div>'}
-                                <div>${yayasan.mudir || 'Mudir Instansi'}</div>
-                            </div>
+                            // Kode Sesudah
+<div class="id-back-ttd" style="text-align:center; font-size:0.55rem; color:var(--primary); font-weight:bold; width:100%; position:relative;">
+    ${yayasan.stempel_mudir ? `<img src="${yayasan.stempel_mudir}" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); max-height:40px; opacity:0.85; z-index:1;">` : ''}
+    <div style="position:relative; z-index:2;">Mengetahui, Pimpinan</div>
+    ${yayasan.ttd_mudir ? `<img src="${yayasan.ttd_mudir}" style="height:25px; margin:2px auto; display:block; position:relative; z-index:2;">` : '<div style="height:25px;"></div>'}
+    <div style="position:relative; z-index:2;">${yayasan.mudir || 'Mudir Instansi'}</div>
+</div>
+
                             
                             <!-- PERBAIKAN: Inline style sekarang menyesuaikan settingan sizeQRPrint -->
                             <div class="id-qr-back" id="qr-back-${santri.nis}" data-payload='${qrPayload}' style="width:${sizeQRPrint}px; height:${sizeQRPrint}px; min-width:${sizeQRPrint}px; padding:2px; border:2px solid var(--primary); background:#fff; border-radius:6px; display:flex; justify-content:center; align-items:center; margin: 4px auto;"></div>
@@ -2606,6 +2628,49 @@ setDB('pondok_active_tab', 'view-dashboard');
         const teks = document.getElementById('setting-voice-teks').value || "Assalamualaikum, selamat datang di sistem monitoring santri";
         window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(teks); utterance.lang = 'id-ID'; window.speechSynthesis.speak(utterance);
     }
+// Kontrol Animasi Banner Notifikasi
+function tampilkanSystemNotif(judul, deskripsi, ikon, warnaBg, teksTombol, fungsiTombol) {
+    document.getElementById('system-notif-title').innerText = judul;
+    document.getElementById('system-notif-desc').innerText = deskripsi;
+    document.getElementById('system-notif-icon').innerHTML = `<i class="fa-solid ${ikon}"></i>`;
+    document.getElementById('system-notif-icon').style.background = `var(--${warnaBg})`;
+    
+    const btn = document.getElementById('system-notif-btn');
+    btn.innerText = teksTombol;
+    btn.onclick = () => {
+        document.getElementById('system-notif-banner').style.top = "-100px";
+        fungsiTombol();
+    };
+
+    // Munculkan notifikasi dengan animasi memantul
+    document.getElementById('system-notif-banner').style.top = "20px";
+    playPremiumBeep(); // Bunyikan suara
+}
+
+let supabaseRealtimeClient = null;
+
+function initSupabaseRealtimeListener() {
+    const config = getDB('pondok_supabase_config', null);
+    if (!config || !config.url || !config.key || typeof supabase === 'undefined') return;
+
+    if (!supabaseRealtimeClient) {
+        supabaseRealtimeClient = supabase.createClient(config.url, config.key);
+    }
+
+    supabaseRealtimeClient
+        .channel('public:backup_lms')
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'backup_lms' }, (payload) => {
+            tampilkanSystemNotif(
+                "Data Cloud Diperbarui", 
+                "Ada sinkronisasi data dari perangkat lain.", 
+                "fa-cloud-arrow-down", 
+                "warning", 
+                "Tarik Data", 
+                tarikDataDariSupabase
+            );
+        })
+        .subscribe();
+}
 
     /* KODE SESUDAHNYA */
    async function initApp() {
@@ -2663,21 +2728,17 @@ setDB('pondok_active_tab', 'view-dashboard');
     if (savedSession && savedSession.role) { 
         currentUser = savedSession; 
         masukKeSistemSetelahLogin(false); 
-    }
-    mulaiWatchdogJadwal();
+    // Kode Sesudah
+mulaiWatchdogJadwal();
+initSupabaseRealtimeListener();
+}
 }
                
         // ⬆️ SAMPAI SINI ⬆️
         
         let cekAkses = getDB('pondok_akses', defaultAkses); localStorage.setItem('pondok_akses', JSON.stringify(cekAkses));
         
-        loadIdentitasApp();
-
-        const savedSession = localStorage.getItem('pondok_active_user');
-        if (savedSession) { currentUser = getDB('pondok_active_user', null); if(currentUser && currentUser.role) { masukKeSistemSetelahLogin(false); } }
         
-        // Mulai PWA Watchdog untuk mendeteksi jadwal & pengingat secara permanen
-        mulaiWatchdogJadwal();
     
 
     // ═══ PWA WATCHDOG ENGINE (PERMANEN MUTLAK) ═══
@@ -2749,15 +2810,34 @@ setDB('pondok_active_tab', 'view-dashboard');
         }
     });
 
-    function registerServiceWorker() {
+    // Kode Sesudah
+function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
-        // Langsung eksekusi registrasi, karena fungsi ini 
-        // sudah dipanggil setelah window.onload dari initApp
         navigator.serviceWorker.register('./sw.js')
-            .then((reg) => console.log('PWA Service Worker berhasil terdaftar:', reg.scope))
+            .then((reg) => {
+                console.log('PWA Service Worker berhasil terdaftar:', reg.scope);
+                
+                // DETEKSI PEMBARUAN KODE DARI GITHUB
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            tampilkanSystemNotif(
+                                "Pembaruan Aplikasi", 
+                                "Ada perbaikan kode sistem terbaru.", 
+                                "fa-screwdriver-wrench", 
+                                "info", 
+                                "Perbarui (Repair)", 
+                                bersihkanCacheApp
+                            );
+                        }
+                    });
+                });
+            })
             .catch((err) => console.error('Pendaftaran Service Worker gagal:', err));
     }
 }
+
 
         function masukKeSistemSetelahLogin(playSuara = true) {
         document.getElementById('header-user-name').innerText = currentUser.nama || "User";
@@ -4103,7 +4183,7 @@ if (wadahUstadz) {
         if (configGPS.aktif === false) {
             kotakStatusGPS.style.background = 'rgba(52, 199, 89, 0.15)';
             kotakStatusGPS.style.color = '#27ae60';
-            kotakStatusGPS.innerHTML = `<i class="fa-solid fa-circle-check"></i> Mode GPS Non-Aktif. Absensi dibuka tanpa batasan radius lokasi.`;
+            kotakStatusGPS.innerHTML = `<i class="fa-solid fa-circle-check"></i> Mode GPS Non-Aktif.`;
             formAbsensiArea.classList.remove('hidden');
             loadSemuaMapelAbsenForPilihan();
             return;
@@ -6574,6 +6654,7 @@ function hapusSantriWali(idSantri) {
     window.fcmGetToken = getToken;
     window.fcmOnMessage = onMessage;
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- Panggil file library langsung dari root folder -->
 <script src="qrcode.min.js"></script>
