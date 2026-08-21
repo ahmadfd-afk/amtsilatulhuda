@@ -492,34 +492,58 @@
 <div class="app-container" id="main-app-container">
 
     <header id="app-header" class="hidden">
-        <div class="header-top">
-                                    <!-- 👇 LOGO SAJA (Lebih Clean & Minimalis) 👇 -->
-            <div class="header-identity">
-                <!-- Ukuran logo sedikit saya besarkan (50px) agar seimbang dengan tombol profil di kanan -->
-                <img src="" id="header-logo" class="header-logo" alt="Logo" style="width: 50px; height: 50px; padding: 3px;">
-            </div>
-            <!-- 👆 SELESAI PENYESUAIAN 👆 -->
-            <!-- 👇 TAMBAHAN BARU: YAYASAN & WAKTU DI TENGAH 👇 -->
-            <div style="position: absolute; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; width: max-content;">
-                <!-- Nama Yayasan / Instansi -->
-                <h1 style="font-size: 0.95rem; margin: 0; color: #ffffff; font-weight: 600; letter-spacing: 0.5px;">YAYASAN PENDIDIKAN</h1>
+                  <!-- 👇 TAMBAHKAN CSS ANIMASI INI 👇 -->
+        <style>
+            .tempat-teks-berjalan {
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                box-sizing: border-box;
+            }
+            .teks-berjalan {
+                display: inline-block;
+                padding-left: 100%; /* Memaksa teks mulai dari ujung kanan */
+                /* Angka 15s adalah kecepatan. Makin besar angka (misal 20s), makin pelan jalannya */
+                animation: geserKiri 15s linear infinite; 
+            }
+            @keyframes geserKiri {
+                0% { transform: translate3d(0, 0, 0); }
+                100% { transform: translate3d(-100%, 0, 0); }
+            }
+        </style>
+
+        <div class="header-top" style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px;">
+            
+            <!-- 👇 KIRI: LOGO SAJA 👇 -->
+            <img src="" id="header-logo" class="header-logo" alt="Logo" style="width: 45px; height: 45px; padding: 3px; flex-shrink: 0;">
+            
+                        <!-- 👇 TENGAH: TEKS BERJALAN & WAKTU 👇 -->
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; overflow: hidden;">
                 
-                <!-- Tempat Waktu Berjalan -->
-                <div id="waktu-header" style="font-size: 0.7rem; color: #b3b3b3; font-family: monospace; letter-spacing: 0.5px; margin-top: 2px;">
+                <!-- 1. Nama Yayasan Berjalan (Otomatis dari Database) -->
+                <div class="tempat-teks-berjalan">
+                    <!-- Perhatikan tambahan id="yayasan-name-pondok" di bawah ini -->
+                    <h1 id="yayasan-name-pondok" class="teks-berjalan" style="font-size: 0.9rem; margin: 0; color: #ffffff; font-weight: 600;">
+                        Memuat data instansi...
+                    </h1>
+                </div>
+
+                <!-- 2. Jam & Tanggal -->
+                <div id="waktu-header" style="font-size: 0.65rem; color: #b3b3b3; font-family: monospace; margin-top: 2px;">
                     Memuat waktu...
                 </div>
-            </div>
-            <!-- 👆 SELESAI TAMBAHAN 👆 -->
 
-            
-            <!-- 👇 KODE BARU: Bungkus Lonceng & Profil Bersebelahan 👇 -->
-            <div style="display: flex; align-items: center; gap: 10px;">
+            </div>
+
+
+            <!-- 👇 KANAN: LONCENG & PROFIL (Tetap di Ujung) 👇 -->
+            <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                 
                 <!-- MENU NOTIFIKASI -->
                 <div style="position: relative;">
                     <div class="notif-wrapper" onclick="toggleNotifDropdown(event)" style="position: relative; cursor: pointer; background: rgba(255, 255, 255, 0.18); padding: 8px 10px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.35); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); transition: 0.25s all ease;">
                         <i class="fa-solid fa-bell" style="font-size: 1rem; color: #ffffff;"></i>
-                        <span class="notif-badge" id="angka-notif" style="position: absolute; top: -2px; right: -2px; background: var(--danger); color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; font-weight: bold;">0</span>
+                        <span class="notif-badge" id="angka-notif" style="position: absolute; top: -2px; right: -2px; background: var(--danger, #FF3B30); color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; font-weight: bold;">0</span>
                     </div>
 
                     <div id="notif-dropdown-menu" class="profile-dropdown-menu hidden" style="width: 260px; right: -10px; top: 52px; padding-bottom: 5px;">
@@ -536,7 +560,7 @@
                     </div>
                 </div>
 
-                <!-- MENU PROFIL (Asli Anda) -->
+                <!-- MENU PROFIL -->
                 <div style="position: relative;">
                     <div class="user-profile-btn" onclick="toggleProfileDropdown(event)">
                         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" id="header-user-photo" alt="Foto Profile">
@@ -545,33 +569,18 @@
                     </div>
 
                     <div id="profile-dropdown-menu" class="profile-dropdown-menu hidden">
-
-                    <div class="dropdown-header-info">
-                        Role Akses: <strong id="dropdown-user-role">SUPERADMIN</strong>
-                    </div>
-                    <div class="dropdown-item" onclick="bukaModalEditSelfProfile()">
-                        <i class="fa-solid fa-user-gear" style="color:var(--primary);"></i>
-                        <span>Edit Profil & Sandi</span>
-                    </div>
-                    <div class="dropdown-item" onclick="triggerSyncCloudQuick()">
-                        <i class="fa-solid fa-cloud-arrow-up" style="color:var(--info);"></i>
-                        <span>Kirim ke Cloud</span>
-                    </div>
-                    <div class="dropdown-item" onclick="triggerPullCloudQuick()">
-                        <i class="fa-solid fa-cloud-arrow-down" style="color:var(--warning);"></i>
-                        <span>Tarik dari Cloud</span>
-                    </div>
-                     <div class="dropdown-item" onclick="bersihkanCacheApp()">
-                        <i class="fa-solid fa-arrows-rotate" style="color:var(--primary);"></i>
-                        <span>Perbarui Sistem</span>
-                    </div>
-                    <div class="dropdown-item" onclick="prosesLogout()" style="color:var(--danger);">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Keluar Akun</span>
+                        <div class="dropdown-header-info">Role Akses: <strong id="dropdown-user-role">SUPERADMIN</strong></div>
+                        <div class="dropdown-item" onclick="bukaModalEditSelfProfile()"><i class="fa-solid fa-user-gear" style="color:var(--primary);"></i><span>Edit Profil & Sandi</span></div>
+                        <div class="dropdown-item" onclick="triggerSyncCloudQuick()"><i class="fa-solid fa-cloud-arrow-up" style="color:var(--info);"></i><span>Kirim ke Cloud</span></div>
+                        <div class="dropdown-item" onclick="triggerPullCloudQuick()"><i class="fa-solid fa-cloud-arrow-down" style="color:var(--warning);"></i><span>Tarik dari Cloud</span></div>
+                        <div class="dropdown-item" onclick="bersihkanCacheApp()"><i class="fa-solid fa-arrows-rotate" style="color:var(--primary);"></i><span>Perbarui Sistem</span></div>
+                        <div class="dropdown-item" onclick="prosesLogout()" style="color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i><span>Keluar Akun</span></div>
                     </div>
                 </div>
+
             </div>
         </div>
+
     </header>
 
     <main id="app-content">
