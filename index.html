@@ -499,6 +499,17 @@
                 <img src="" id="header-logo" class="header-logo" alt="Logo" style="width: 50px; height: 50px; padding: 3px;">
             </div>
             <!-- 👆 SELESAI PENYESUAIAN 👆 -->
+            <!-- 👇 TAMBAHAN BARU: YAYASAN & WAKTU DI TENGAH 👇 -->
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; width: max-content;">
+                <!-- Nama Yayasan / Instansi -->
+                <h1 style="font-size: 0.95rem; margin: 0; color: #ffffff; font-weight: 600; letter-spacing: 0.5px;">YAYASAN PENDIDIKAN</h1>
+                
+                <!-- Tempat Waktu Berjalan -->
+                <div id="waktu-header" style="font-size: 0.7rem; color: #b3b3b3; font-family: monospace; letter-spacing: 0.5px; margin-top: 2px;">
+                    Memuat waktu...
+                </div>
+            </div>
+            <!-- 👆 SELESAI TAMBAHAN 👆 -->
 
             
             <!-- 👇 KODE BARU: Bungkus Lonceng & Profil Bersebelahan 👇 -->
@@ -6844,6 +6855,34 @@ function cetakKolektifF4Gabung(orientasi = 'portrait') {
         containerTemp.remove();
     }, 600);
 }
+// ==========================================
+// FUNGSI JAM & TANGGAL REAL-TIME DI HEADER
+// ==========================================
+function jalankanWaktuHeader() {
+    const tempatWaktu = document.getElementById('waktu-header');
+    if (!tempatWaktu) return;
+
+    setInterval(function() {
+        const sekarang = new Date();
+        
+        // Mengatur format tanggal (Contoh: Jumat, 21 Agustus 2026)
+        const opsiTanggal = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        const tanggal = sekarang.toLocaleDateString('id-ID', opsiTanggal);
+        
+        // Mengatur format jam (Contoh: 09:25:01)
+        const jam = sekarang.getHours().toString().padStart(2, '0');
+        const menit = sekarang.getMinutes().toString().padStart(2, '0');
+        const detik = sekarang.getSeconds().toString().padStart(2, '0');
+        
+        // Gabungkan Tanggal dan Jam
+        tempatWaktu.innerHTML = `${tanggal} &bull; ${jam}:${menit}:${detik}`;
+    }, 1000); // Diperbarui setiap 1000 milidetik (1 detik)
+}
+
+// Jalankan fungsi saat aplikasi pertama kali dibuka
+document.addEventListener('DOMContentLoaded', function() {
+    jalankanWaktuHeader();
+});
 
 function hapusSantriWali(idSantri) {
     if (!confirm("Hapus santri ini dari sistem secara permanen?")) return;
