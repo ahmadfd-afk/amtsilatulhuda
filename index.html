@@ -304,7 +304,8 @@
 /* --- TAMBAHAN CSS DROPDOWN & HARI --- */
 .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 14px; }
 .custom-select-btn { display:flex; justify-content:space-between; align-items:center; width: 100%; padding: 13px 15px; border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.12); background: rgba(255,255,255,0.92); cursor: pointer; font-size: 0.95rem; font-weight: 600; color: #333; }
-.custom-select-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; max-height: 250px; overflow-y: auto; padding: 10px; margin-top: 5px; }
+.custom-select-content { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; max-height: 220px; overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y; padding: 10px; margin-top: 5px; }
+
 .custom-select-content.show { display: block; }
 
 .hari-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -549,8 +550,7 @@
                     <div id="notif-dropdown-menu" class="profile-dropdown-menu hidden" style="width: 260px; right: -10px; top: 52px; padding-bottom: 5px;">
                         <div class="dropdown-header-info" style="display: flex; justify-content: space-between; align-items: center; background: rgba(4, 67, 42, 0.08);">
                             <strong style="color: var(--primary); font-size: 0.85rem;">Notifikasi</strong>
-                            <span onclick="tandaiSemuaDibaca()" style="font-size: 0.65rem; color: var(--info); cursor: pointer; font-weight: bold;">Tandai dibaca</span>
-
+                            <span style="font-size: 0.65rem; color: var(--info); cursor: pointer; font-weight: bold;">Tandai dibaca</span>
                         </div>
                         <div id="notif-list-container" style="max-height: 250px; overflow-y: auto;">
                             <div style="padding: 25px 15px; text-align: center; color: var(--text-muted); font-size: 0.75rem;">
@@ -730,6 +730,13 @@
 </div>
 
 <!-- WADAH SCROLL TERBATAS (TAMPIL 10-15 BARIS) -->
+<!-- 👇 TAMBAHKAN KOTAK PENCARIAN DI SINI 👇 -->
+<div style="margin-bottom: 12px; position: relative;">
+    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #888;"></i>
+    <input type="text" id="input-search-santri" onkeyup="cariDataSantri()" placeholder="Ketik nama, NIS, atau kamar santri..." style="width: 100%; padding: 12px 15px 12px 38px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.15); font-size: 0.85rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+</div>
+<!-- 👆 SELESAI TAMBAH KOTAK PENCARIAN 👆 -->
+
 <div id="wadah-scroll-santri" class="wadah-scroll-santri">
     <table>
         <thead><tr><th id="th-kamar-nis">NIS / Kamar</th><th>Nama Lengkap</th><th>Aksi</th></tr></thead>
@@ -2801,18 +2808,22 @@ function initSupabaseRealtimeListener() {
     const splashTitle = document.getElementById('splash-title');
     if(splashTitle) splashTitle.innerText = "Memuat Database...";
 
-    // [WAJIB] Tarik semua data dari IndexedDB ke RAM sebelum aplikasi jalan
     try {
         const keys = await localforage.keys();
         for (let key of keys) {
             window.dbCache[key] = await localforage.getItem(key);
         }
-
         supabaseConfig = getDB('pondok_supabase_config', { url: '', key: '' });
+        
+        // 👇 TAMBAHKAN BARIS INI AGAR HAK AKSES AMAN SAAT REFRESH 👇
+        let cekAkses = getDB('pondok_akses', defaultAkses); 
+        setDB('pondok_akses', cekAkses);
 
     } catch (err) {
         console.error("Gagal load dari IndexedDB:", err);
     }
+    // ...
+
 
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
@@ -2964,7 +2975,13 @@ function registerServiceWorker() {
 
 
         function masukKeSistemSetelahLogin(playSuara = true) {
-        document.getElementById('header-user-name').innerText = currentUser.nama || "User";
+    document.getElementById('header-user-name').innerText = currentUser.nama || "User";
+    
+    // 👇 TAMBAHKAN BARIS INI 👇
+    renderNotifInternal();
+    // 👆 ------------------ 👆
+    // ...
+
         document.getElementById('header-user-photo').src = currentUser.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         document.getElementById('dropdown-user-role').innerText = currentUser.role.toUpperCase();
 
@@ -4732,9 +4749,20 @@ function kirimDataAbsen() {
         setDB('pondok_tagihan_denda', tagihanDB);
     }
 
-    alert("Data absensi berhasil disimpan secara lokal!");
+        // alert("Data absensi berhasil disimpan secara lokal!"); // <-- Ganti dengan sistem notifikasi
+    tambahNotifInternal(
+        'absen_unsynced', 
+        'Absen Belum Terkirim', 
+        'Data absen kelas ' + mObj.nama_mapel + ' belum sinkron ke Cloud.', 
+        'fa-cloud-arrow-up', 
+        'warning', 
+        'triggerSyncCloudQuick()'
+    );
+    tampilkanSystemNotif("Berhasil Disimpan", "Absensi tersimpan lokal. Jangan lupa kirim ke Cloud ya!", "fa-check", "success", "Kirim", triggerSyncCloudQuick);
+
     document.getElementById('pilih-mapel-absen').value = "";
     document.getElementById('student-list').innerHTML = "";
+
 }
 /* ========================================================================== */
 /* === AKHIR PERBAIKAN BLOK 3: SIMPAN DATA ABSEN BESERTA STATUS KELAS ASAL = */
@@ -5375,9 +5403,14 @@ let lokalSuperAdmin = getDB('pondok_users', []).filter(u => u.role === 'superadm
 let finalUsers = [...payloadMerged.users, ...lokalSuperAdmin];
 setDB('pondok_users', finalUsers);
                 
-                alert("Data berhasil terakumulasi & sinkronisasi dengan Cloud!");
+                                // alert("Data berhasil terakumulasi & sinkronisasi dengan Cloud!"); // <-- Ganti
+                hapusNotifInternal('absen_unsynced'); // Lonceng peringatan otomatis hilang
+                tambahNotifInternal('sync_sukses', 'Sinkronisasi Sukses', 'Semua data berhasil terkirim ke Cloud hari ini.', 'fa-check-double', 'success', '');
                 
+                tampilkanSystemNotif("Sinkronisasi Selesai", "Seluruh data berhasil dikirim dan digabungkan di Cloud!", "fa-cloud-arrow-up", "info", "Tutup", () => { document.getElementById('system-notif-banner').style.top = '-100px'; });
+
                 if (typeof renderTabelSantri === 'function') renderTabelSantri();
+
                 if (typeof renderTabelDaftarKelas === 'function') renderTabelDaftarKelas();
                 if (typeof renderMasterMapel === 'function') renderMasterMapel();
                 if (typeof renderJamKustom === 'function') renderJamKustom();
@@ -5470,8 +5503,13 @@ if (data.tombstone_jam_kustom) operasiSimpan.push(setDB('pondok_tombstone_jam_ku
             // 🟢 PERBAIKAN: Paksa sistem menunggu hingga seluruh data 100% selesai ditulis ke IndexedDB
             await Promise.all(operasiSimpan);
 
-            alert("Berhasil menarik SELURUH data terbaru dari Cloud! Sistem akan dimuat ulang.");
-            location.reload(); // ✅ Sekarang aman untuk di-reload karena data sudah tersimpan penuh
+                        // alert("Berhasil menarik SELURUH data terbaru dari Cloud..."); // <-- Ganti
+            tampilkanSystemNotif("Tarik Data Berhasil", "Sistem sedang memuat ulang data terbaru dari server...", "fa-cloud-arrow-down", "primary", "Memuat...", () => {});
+            
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+
         } else {
             alert("Belum ada data cadangan tersimpan di server Supabase kamu.");
         }
@@ -6888,105 +6926,84 @@ function jalankanWaktuHeader() {
         tempatWaktu.innerHTML = `${tanggal} &bull; ${jam}:${menit}:${detik}`;
     }, 1000); // Diperbarui setiap 1000 milidetik (1 detik)
 }
+// ==========================================
+// MESIN NOTIFIKASI INTERNAL (LONCENG)
+// ==========================================
+function tambahNotifInternal(id, judul, pesan, ikon, warna, aksiKlik) {
+    let listNotif = getDB('pondok_notifikasi', []);
+    listNotif = listNotif.filter(n => n.id !== id);
+    listNotif.unshift({ id, judul, pesan, ikon, warna, aksiKlik });
+    setDB('pondok_notifikasi', listNotif);
+    renderNotifInternal();
+}
+
+function hapusNotifInternal(id) {
+    let listNotif = getDB('pondok_notifikasi', []);
+    listNotif = listNotif.filter(n => n.id !== id);
+    setDB('pondok_notifikasi', listNotif);
+    renderNotifInternal();
+}
+
+function bersihkanNotifInternal() {
+    setDB('pondok_notifikasi', []);
+    renderNotifInternal();
+}
+
+function renderNotifInternal() {
+    let listNotif = getDB('pondok_notifikasi', []);
+    const container = document.getElementById('notif-list-container');
+    const badge = document.getElementById('angka-notif');
+    
+    if (!container || !badge) return;
+
+    if (listNotif.length === 0) {
+        container.innerHTML = `<div style="padding: 25px 15px; text-align: center; color: var(--text-muted); font-size: 0.75rem;">
+                                <i class="fa-solid fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; color: #ccc;"></i><br>
+                                Belum ada notifikasi baru
+                            </div>`;
+        badge.style.display = 'none';
+    } else {
+        badge.style.display = 'block';
+        badge.innerText = listNotif.length;
+        container.innerHTML = '';
+        listNotif.forEach(n => {
+            container.innerHTML += `
+                <div style="padding: 12px 14px; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; display: flex; gap: 10px; align-items: flex-start; transition: 0.2s;" onclick="${n.aksiKlik}">
+                    <div style="background: var(--${n.warna}); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; font-size: 0.8rem;">
+                        <i class="fa-solid ${n.ikon}"></i>
+                    </div>
+                    <div>
+                        <strong style="font-size: 0.8rem; color: var(--text-main); display: block; margin-bottom: 2px;">${n.judul}</strong>
+                        <span style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.2; display: block;">${n.pesan}</span>
+                    </div>
+                </div>
+            `;
+        });
+    }
+}
 
 // Jalankan fungsi saat aplikasi pertama kali dibuka
 document.addEventListener('DOMContentLoaded', function() {
     jalankanWaktuHeader();
 });
 // ==========================================
-// MESIN NOTIFIKASI OTOMATIS
+// FUNGSI PENCARIAN SANTRI (REAL-TIME)
 // ==========================================
-
-// 1. Fungsi Menampilkan Notifikasi ke Layar
-function renderNotifikasi() {
-    // Ambil data notifikasi dari database, jika kosong buat array []
-    let notifDB = typeof getDB === 'function' ? getDB('pondok_notifikasi', []) : [];
-    let container = document.getElementById('notif-list-container');
-    let badge = document.getElementById('angka-notif');
-    if(!container) return;
-
-    // Hitung yang belum dibaca
-    let unreadCount = notifDB.filter(n => n.dibaca === false).length;
-
-    // Update angka merah di lonceng
-    if(badge) {
-        badge.innerText = unreadCount;
-        badge.style.display = unreadCount > 0 ? 'flex' : 'none';
-    }
-
-    // Tampilan jika kosong
-    if(notifDB.length === 0) {
-        container.innerHTML = `
-            <div style="padding: 25px 15px; text-align: center; color: var(--text-muted); font-size: 0.75rem;">
-                <i class="fa-solid fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; color: #ccc;"></i><br>
-                Belum ada notifikasi baru
-            </div>`;
-        return;
-    }
-
-    // Tampilan jika ada notifikasi
-    let html = '';
-    notifDB.forEach(notif => {
-        let bgInfo = notif.dibaca ? 'transparent' : 'rgba(4, 67, 42, 0.08)'; // Background agak hijau jika belum dibaca
-        let icon = notif.tipe === 'keuangan' ? 'fa-money-bill-wave' : 'fa-bell';
-        let color = notif.tipe === 'keuangan' ? '#28a745' : 'var(--primary)';
-
-        html += `
-        <div style="padding: 12px 15px; border-bottom: 1px solid #eee; background: ${bgInfo}; cursor: pointer; transition: 0.2s;">
-            <div style="display: flex; gap: 12px; align-items: start;">
-                <div style="background: white; padding: 6px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                    <i class="fa-solid ${icon}" style="color: ${color}; font-size: 0.9rem;"></i>
-                </div>
-                <div style="flex: 1;">
-                    <strong style="display: block; font-size: 0.75rem; color: #333; margin-bottom: 2px;">${notif.judul}</strong>
-                    <span style="display: block; font-size: 0.7rem; color: #666; line-height: 1.3;">${notif.pesan}</span>
-                    <span style="display: block; font-size: 0.6rem; color: #999; margin-top: 5px;">
-                        <i class="fa-regular fa-clock"></i> ${notif.waktu}
-                    </span>
-                </div>
-            </div>
-        </div>`;
-    });
-    container.innerHTML = html;
-}
-
-// 2. Fungsi Menambah Notifikasi Baru (Bisa dipanggil dari mana saja)
-function tambahNotifikasi(judul, pesan, tipe = 'umum') {
-    let notifDB = typeof getDB === 'function' ? getDB('pondok_notifikasi', []) : [];
-    let sekarang = new Date();
-    let jam = sekarang.getHours().toString().padStart(2, '0') + ':' + sekarang.getMinutes().toString().padStart(2, '0');
-
-    // Masukkan data baru ke urutan paling atas (unshift)
-    notifDB.unshift({
-        id: Date.now(),
-        judul: judul,
-        pesan: pesan,
-        waktu: jam,
-        dibaca: false,
-        tipe: tipe // 'keuangan', 'sistem', 'absensi'
-    });
-
-    // Batasi maksimal 30 notifikasi saja agar tidak memberatkan HP
-    if(notifDB.length > 30) notifDB.pop();
-
-    if(typeof setDB === 'function') setDB('pondok_notifikasi', notifDB);
+function cariDataSantri() {
+    const kataKunci = document.getElementById("input-search-santri").value.toLowerCase();
+    const barisTabel = document.querySelectorAll("#tabel-santri-body tr");
     
-    renderNotifikasi(); // Refresh tampilan lonceng
-    if (typeof playPremiumBeep === 'function') playPremiumBeep(); // Bunyi ting!
-}
+    barisTabel.forEach(baris => {
+        const teksBaris = baris.innerText.toLowerCase();
+        if (teksBaris.includes("belum ada data")) return;
 
-// 3. Fungsi Menandai Semua Telah Dibaca
-function tandaiSemuaDibaca() {
-    let notifDB = typeof getDB === 'function' ? getDB('pondok_notifikasi', []) : [];
-    notifDB.forEach(n => n.dibaca = true);
-    if(typeof setDB === 'function') setDB('pondok_notifikasi', notifDB);
-    renderNotifikasi();
+        if (teksBaris.includes(kataKunci)) {
+            baris.style.display = "";
+        } else {
+            baris.style.display = "none";
+        }
+    });
 }
-
-// Jalankan saat aplikasi pertama dimuat
-document.addEventListener('DOMContentLoaded', function() {
-    renderNotifikasi();
-});
 
 function hapusSantriWali(idSantri) {
     if (!confirm("Hapus santri ini dari sistem secara permanen?")) return;
