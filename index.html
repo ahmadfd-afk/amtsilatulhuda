@@ -2571,17 +2571,122 @@ function cetakLaporanPDF() {
 
         // 👇 KODE BARU: Fungsi klik Notifikasi 👇
     function toggleNotifDropdown(e) {
-        e.stopPropagation();
-        if (typeof playPremiumBeep === 'function') playPremiumBeep();
+    e.stopPropagation();
+    if (typeof playPremiumBeep === 'function') playPremiumBeep();
+    
+    // Tutup profil jika sedang terbuka
+    const menuProfil = document.getElementById('profile-dropdown-menu');
+    if (menuProfil) menuProfil.classList.add('hidden');
+    
+    // Buka/Tutup Notifikasi
+    const menuNotif = document.getElementById('notif-dropdown-menu');
+    if (menuNotif) {
+        const isHidden = menuNotif.classList.contains('hidden');
+        menuNotif.classList.toggle('hidden');
         
-        // Tutup profil jika sedang terbuka
-        const menuProfil = document.getElementById('profile-dropdown-menu');
-        if (menuProfil) menuProfil.classList.add('hidden');
-        
-        // Buka/Tutup Notifikasi
-        const menuNotif = document.getElementById('notif-dropdown-menu');
-        if (menuNotif) menuNotif.classList.toggle('hidden');
+        // JIKA MENU DIBUKA, TANDAI SEMUA SEBAGAI DIBACA
+        if (isHidden) {
+            tandaiSemuaNotifDibaca();
+        }
     }
+}
+// --- SISTEM NOTIFIKASI INTERNAL LOKAL ---
+function tambahNotifInternal(id_notif, judul, pesan, ikon, warna, fungsiKlik) {
+    let listNotif = getDB('pondok_notifikasi', []);
+    
+    // Jika notif dengan ID sama (misal 'absen_unsynced') sudah ada, update pesannya saja
+    let index = listNotif.findIndex(n => n.id_notif === id_notif);
+    if (index > -1) {
+        listNotif[index].pesan = pesan;
+        listNotif[index].is_read = false; // Jadikan unread agar badge merah muncul lagi
+        listNotif[index].waktu = new Date().toISOString();
+    } else {
+        listNotif.push({
+            id_notif: id_notif,
+            judul: judul,
+            pesan: pesan,
+            ikon: ikon,
+            warna: warna,
+            fungsiKlik: fungsiKlik,
+            is_read: false,
+            waktu: new Date().toISOString()
+        });
+    }
+    
+    setDB('pondok_notifikasi', listNotif).then(() => {
+        renderNotifInternal();
+    });
+}
+
+function hapusNotifInternal(id_notif) {
+    let listNotif = getDB('pondok_notifikasi', []);
+    listNotif = listNotif.filter(n => n.id_notif !== id_notif);
+    setDB('pondok_notifikasi', listNotif).then(() => {
+        renderNotifInternal();
+    });
+}
+
+function tandaiSemuaNotifDibaca() {
+    let listNotif = getDB('pondok_notifikasi', []);
+    let adaUnread = false;
+    listNotif.forEach(n => {
+        if (!n.is_read) {
+            n.is_read = true;
+            adaUnread = true;
+        }
+    });
+    
+    if (adaUnread) {
+        setDB('pondok_notifikasi', listNotif).then(() => {
+            renderNotifInternal();
+        });
+    }
+}
+
+function renderNotifInternal() {
+    let listNotif = getDB('pondok_notifikasi', []);
+    const wadahList = document.getElementById('notif-list-container');
+    
+    // Hitung yang belum dibaca untuk memunculkan Badge Merah
+    let unreadCount = listNotif.filter(n => !n.is_read).length;
+    updateBadgeNotifikasi(unreadCount); 
+    
+    if (wadahList) {
+        wadahList.innerHTML = '';
+        if (listNotif.length === 0) {
+            wadahList.innerHTML = `
+                <div style="padding: 25px 15px; text-align: center; color: var(--text-muted); font-size: 0.75rem;">
+                    <i class="fa-solid fa-bell-slash" style="font-size: 2rem; margin-bottom: 10px; color: #ccc;"></i><br>
+                    Belum ada notifikasi
+                </div>`;
+            return;
+        }
+        
+        // Urutkan dari yang terbaru
+        listNotif.sort((a, b) => new Date(b.waktu) - new Date(a.waktu));
+        
+        listNotif.forEach(n => {
+            let bgOpacity = n.is_read ? '0.02' : '0.1';
+            let dotNew = n.is_read ? '' : '<div style="width:8px; height:8px; background:var(--danger); border-radius:50%; position:absolute; top:15px; right:15px;"></div>';
+            
+            wadahList.innerHTML += `
+                <div onclick="${n.fungsiKlik}; toggleNotifDropdown(event);" style="padding: 12px 15px; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; background: rgba(var(--${n.warna}-rgb, 0,0,0), ${bgOpacity}); position:relative; transition: 0.2s;">
+                    ${dotNew}
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <div style="background: var(--${n.warna}, #888); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; font-size:0.8rem;">
+                            <i class="fa-solid ${n.ikon}"></i>
+                        </div>
+                        <div>
+                            <strong style="display: block; font-size: 0.8rem; color: var(--text-main);">${n.judul}</strong>
+                            <span style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.2; display: block; margin-top:3px;">${n.pesan}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+}
+
 
     function toggleProfileDropdown(e) {
         e.stopPropagation();
