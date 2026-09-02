@@ -468,21 +468,6 @@
 <!-- KODE SESUDAHNYA -->
 <body>
 <!-- BUBBLE NOTIFIKASI SYSTEM -->
-<div id="system-notif-banner" style="position: fixed; top: -100px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--accent); border-radius: 20px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.25); z-index: 999999; transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);">
-    <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-        <div id="system-notif-icon" style="background: var(--warning); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
-            <i class="fa-solid fa-cloud-arrow-down"></i>
-        </div>
-        <div>
-            <h4 id="system-notif-title" style="margin: 0; font-size: 0.85rem; color: var(--primary);">Data Baru Tersedia</h4>
-            <p id="system-notif-desc" style="margin: 0; font-size: 0.7rem; color: var(--text-muted);">Ada sinkronisasi dari perangkat lain.</p>
-        </div>
-    </div>
-    <div style="display: flex; gap: 8px;">
-        <button id="system-notif-btn" class="btn-primary" style="margin: 0; padding: 8px 12px; font-size: 0.7rem; width: auto; border-radius: 12px; box-shadow: none;">Tarik Data</button>
-        <button onclick="document.getElementById('system-notif-banner').style.top = '-100px';" style="background: transparent; border: none; color: var(--danger); font-size: 1.2rem; padding: 5px; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-</div>
 
 <div id="splash-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); backdrop-filter:blur(20px); z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 0.6s ease, visibility 0.6s ease;">
     <img id="splash-logo" src="icon-512.png" style="width:110px; height:110px; border-radius:24px; box-shadow:0 15px 35px rgba(0,0,0,0.2); animation: pulse 1.5s infinite alternate;">
@@ -2865,23 +2850,6 @@ setDB('pondok_active_tab', 'view-dashboard');
         window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(teks); utterance.lang = 'id-ID'; window.speechSynthesis.speak(utterance);
     }
 // Kontrol Animasi Banner Notifikasi
-function tampilkanSystemNotif(judul, deskripsi, ikon, warnaBg, teksTombol, fungsiTombol) {
-    document.getElementById('system-notif-title').innerText = judul;
-    document.getElementById('system-notif-desc').innerText = deskripsi;
-    document.getElementById('system-notif-icon').innerHTML = `<i class="fa-solid ${ikon}"></i>`;
-    document.getElementById('system-notif-icon').style.background = `var(--${warnaBg})`;
-    
-    const btn = document.getElementById('system-notif-btn');
-    btn.innerText = teksTombol;
-    btn.onclick = () => {
-        document.getElementById('system-notif-banner').style.top = "-100px";
-        fungsiTombol();
-    };
-
-    // Munculkan notifikasi dengan animasi memantul
-    document.getElementById('system-notif-banner').style.top = "20px";
-    playPremiumBeep(); // Bunyikan suara
-}
 
 let supabaseRealtimeClient = null;
 
@@ -5398,15 +5366,27 @@ async function sinkronisasiKeCloud() {
             });
             const rows = await resCloud.json();
             
-            if (rows && rows.length > 0) {
-                if (rows[0].data_json) {
-                    dataCloud = rows[0].data_json;
-                    if (dataCloud.users) {
-                        dataCloud.users = dataCloud.users.filter(u => u.role !== 'superadmin');
-                    }
-                }
-                cloudUpdatedAt = rows[0].updated_at; 
+                        if (response.ok && (await response.json()).length > 0) {
+                // Update Local dengan versi terbaru hasil gabungan
+                await setDB('pondok_santri', payloadMerged.santri);
+                await setDB('pondok_tombstone_santri', payloadMerged.tombstone_santri);
+                
+                hapusNotifInternal('sync_needed');
+                
+                // MURNI MASUK KE LONCENG NOTIFIKASI
+                tambahNotifInternal(
+                    'sync_sukses_' + Date.now(), 
+                    'Sinkronisasi Sukses', 
+                    'Data Santri berhasil disinkronisasi ke server pusat!', 
+                    'fa-cloud-arrow-up', 
+                    'success', 
+                    ''
+                );
+                renderNotifInternal();
+                
+                renderTabelSantri();
             }
+
 
             // LANGKAH B: Gabungkan data Lokal dengan data Cloud
             
@@ -5568,8 +5548,26 @@ async function tarikDataDariSupabase() {
         });
 
         const rows = await response.json();
-       if (rows && rows.length > 0 && rows[0].data_json) {
-            const data = rows[0].data_json;
+                   if (rows && rows.length > 0 && rows[0].data_json) {
+                const data = rows[0].data_json;
+                if (data.santri) await setDB('pondok_santri', data.santri);
+                if (data.tombstone_santri) await setDB('pondok_tombstone_santri', data.tombstone_santri);
+                if (data.users) await setDB('pondok_users', data.users);
+
+                // MURNI MASUK KE LONCENG NOTIFIKASI
+                tambahNotifInternal(
+                    'pull_sukses_' + Date.now(), 
+                    'Berhasil Menarik Data', 
+                    'Data berhasil diperbarui dari pusat.', 
+                    'fa-cloud-arrow-down', 
+                    'primary', 
+                    ''
+                );
+                renderNotifInternal();
+
+                renderTabelSantri();
+            }
+
             
             // 🟢 PERBAIKAN: Kumpulkan semua proses simpan ke dalam array Promises
             let operasiSimpan = [];
