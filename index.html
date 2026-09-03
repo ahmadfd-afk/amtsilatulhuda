@@ -3216,16 +3216,35 @@ document.getElementById('setting-font-sertifikat').value = data.font_sertifikat 
 }
 
 
-    function previewFotoSantri(event) { const file = event.target.files[0]; if (!file) return; kompresiGambar(file, 150, (base64Hasil) => { tempFotoSantriBase64 = base64Hasil; const imgPreview = document.getElementById('preview-foto-santri-ui'); imgPreview.src = base64Hasil; imgPreview.style.display = 'block'; }); }
+    function previewFotoSantri(event) { 
+    const file = event.target.files[0]; 
+    if (!file) return; 
     
-    function renderDropdownKelasSantri() {
-        const dropdown = document.getElementById('input-kelas-santri');
-        if (!dropdown) return;
-        dropdown.innerHTML = '<option value="">-- Tanpa Kelas / Pilih Nanti --</option>';
-        getDB('pondok_kelas', []).forEach(k => {
-            dropdown.innerHTML += `<option value="${k.id}">${k.nama} (${(k.mapel_ids || []).length} Mapel)</option>`;
-        });
+    // KUNCI TOMBOL SIMPAN AGAR TIDAK BISA DIKLIK SEBELUM FOTO SELESAI DIPROSES
+    const btnSimpan = document.getElementById('btn-simpan-santri');
+    if (btnSimpan) {
+        btnSimpan.disabled = true;
+        btnSimpan.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES FOTO...';
+        btnSimpan.style.opacity = '0.7';
     }
+
+    kompresiGambar(file, 150, (base64Hasil) => { 
+        tempFotoSantriBase64 = base64Hasil; 
+        const imgPreview = document.getElementById('preview-foto-santri-ui'); 
+        imgPreview.src = base64Hasil; 
+        imgPreview.style.display = 'block'; 
+        
+        // BUKA KEMBALI TOMBOL SIMPAN SETELAH FOTO SIAP
+        if (btnSimpan) {
+            btnSimpan.disabled = false;
+            // Kembalikan teks tombol sesuai apakah ini edit atau registrasi baru
+            const isEdit = document.getElementById('edit-id-santri').value !== "";
+            btnSimpan.innerText = isEdit ? "UPDATE DATA" : "SIMPAN DATA & GENERATE NIS";
+            btnSimpan.style.opacity = '1';
+        }
+    }); 
+}
+
 
     // TAB SWITCHER: SANTRI AKTIF VS RUANG ALUMNI
     function switchTabSantri(mode) {
@@ -5333,23 +5352,45 @@ function gabungDataArray(arrayLokal, arrayCloud, primaryKey) {
     if (!arrayLokal || !Array.isArray(arrayLokal)) return arrayCloud || [];
     
     let mapData = new Map();
+    const defaultFoto = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
     
-    // Masukkan data dari Cloud dulu
+    // Masukkan data dari Cloud ke Map
     arrayCloud.forEach(item => {
         if (item[primaryKey]) mapData.set(item[primaryKey], item);
     });
     
-    // Timpa/Tambahkan dengan data Lokal (Lokal di HP pengirim dianggap yang paling update)
-    arrayLokal.forEach(item => {
-        if (item[primaryKey]) mapData.set(item[primaryKey], item);
+    // Timpa/Tambahkan dengan data Lokal (Lokal di HP pengirim dianggap paling update)
+    arrayLokal.forEach(itemLokal => {
+        if (itemLokal[primaryKey]) {
+            let itemCloud = mapData.get(itemLokal[primaryKey]);
+            
+            // --- LOGIKA PENYELAMAT FOTO ---
+            // Jika data ini memiliki atribut 'foto' (Data Santri/User)
+            if (itemCloud && itemLokal.foto !== undefined) {
+                let fotoLokalAda = (itemLokal.foto && itemLokal.foto !== defaultFoto && itemLokal.foto !== "");
+                let fotoCloudAda = (itemCloud.foto && itemCloud.foto !== defaultFoto && itemCloud.foto !== "");
+                
+                // Jika HP lokal punya foto asli, tapi di Cloud kosong/default -> Pertahankan foto lokal!
+                if (fotoLokalAda && !fotoCloudAda) {
+                    itemCloud.foto = itemLokal.foto;
+                }
+                // Sebaliknya, jika di Cloud ada foto asli, tapi di lokal kosong/default -> Ambil dari Cloud!
+                else if (!fotoLokalAda && fotoCloudAda) {
+                    itemLokal.foto = itemCloud.foto;
+                }
+            }
+            
+            // Gabungkan objek, di mana itemLokal menimpa itemCloud dengan rapi
+            let mergedItem = Object.assign({}, itemCloud || {}, itemLokal);
+            mapData.set(itemLokal[primaryKey], mergedItem);
+        }
     });
     
     return Array.from(mapData.values());
 }
 
-// 2. FUNGSI SINKRONISASI BARU
 // =========================================================================
-// 1. FUNGSI SINKRONISASI KE CLOUD (YANG SUDAH DIPERBAIKI)
+// 1. FUNGSI SINKRONISASI KE CLOUD (DENGAN PERSENTASE UPLOAD)
 // =========================================================================
 async function sinkronisasiKeCloud() {
     if (!supabaseConfig.url || !supabaseConfig.key) {
@@ -5357,9 +5398,8 @@ async function sinkronisasiKeCloud() {
         return;
     }
     const btn = document.getElementById('btn-sync-cloud');
-    if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SINKRONISASI & MENGGABUNGKAN...';
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> MENYIAPKAN DATA...';
 
-    // Batas maksimal percobaan ulang otomatis jika ada tabrakan (Auto-Retry)
     let maxRetries = 3; 
     let attempt = 0;
     let syncSuccess = false;
@@ -5425,29 +5465,42 @@ async function sinkronisasiKeCloud() {
 
             const waktuKirim = new Date().toISOString();
 
-            let patchUrl = `${supabaseConfig.url}/rest/v1/backup_lms?id=eq.1`;
-            if (cloudUpdatedAt) {
-                patchUrl += `&updated_at=eq.${encodeURIComponent(cloudUpdatedAt)}`;
-            }
+            // LANGKAH C: Eksekusi XMLHttpRequest untuk melacak progress % Upload
+            const response = await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                let patchUrl = `${supabaseConfig.url}/rest/v1/backup_lms?id=eq.1`;
+                if (cloudUpdatedAt) patchUrl += `&updated_at=eq.${encodeURIComponent(cloudUpdatedAt)}`;
 
-            const response = await fetch(patchUrl, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': supabaseConfig.key,
-                    'Authorization': `Bearer ${supabaseConfig.key}`,
-                    'Prefer': 'return=representation' 
-                },
-                body: JSON.stringify({ data_json: payloadMerged, updated_at: waktuKirim })
+                xhr.open('PATCH', patchUrl, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('apikey', supabaseConfig.key);
+                xhr.setRequestHeader('Authorization', `Bearer ${supabaseConfig.key}`);
+                xhr.setRequestHeader('Prefer', 'return=representation');
+
+                xhr.upload.onprogress = (event) => {
+                    if (event.lengthComputable) {
+                        let persen = Math.round((event.loaded / event.total) * 100);
+                        if (btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> MENGUNGGAH (${persen}%)`;
+                    }
+                };
+
+                xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        let patchResult = JSON.parse(xhr.responseText || "[]");
+                        resolve({ ok: true, status: xhr.status, patchResult: patchResult });
+                    } else {
+                        resolve({ ok: false, status: xhr.status, patchResult: [] });
+                    }
+                };
+                
+                xhr.onerror = () => reject("Koneksi terputus");
+                xhr.send(JSON.stringify({ data_json: payloadMerged, updated_at: waktuKirim }));
             });
 
-            const patchResult = await response.json();
-
             // LANGKAH D: Validasi Status Pengiriman
-            if (response.ok && patchResult.length > 0) {
+            if (response.ok && response.patchResult.length > 0) {
                 syncSuccess = true;
                 
-                // SIMPAN KEMBALI KE PENYIMPANAN LOKAL HP
                 setDB('pondok_santri', payloadMerged.santri);
                 setDB('pondok_tombstone_santri', payloadMerged.tombstone_santri);
                 setDB('pondok_absensi', payloadMerged.absensi);
@@ -5480,7 +5533,7 @@ async function sinkronisasiKeCloud() {
                 if (typeof renderMasterMapel === 'function') renderMasterMapel();
                 if (typeof renderJamKustom === 'function') renderJamKustom();
                 
-            } else if (response.status === 404 || patchResult.length === 0) {
+            } else if (response.status === 404 || response.patchResult.length === 0) {
                 if (!cloudUpdatedAt) {
                     await fetch(`${supabaseConfig.url}/rest/v1/backup_lms`, {
                         method: 'POST',
@@ -5511,7 +5564,7 @@ async function sinkronisasiKeCloud() {
 }
 
 // =========================================================================
-// 2. FUNGSI TARIK DATA DARI CLOUD (YANG SUDAH DIPERBAIKI)
+// 2. FUNGSI TARIK DATA DARI CLOUD (DENGAN PERSENTASE DOWNLOAD)
 // =========================================================================
 async function tarikDataDariSupabase() {
     if (!supabaseConfig.url || !supabaseConfig.key) {
@@ -5520,22 +5573,42 @@ async function tarikDataDariSupabase() {
     }
     
     const btn = document.getElementById('btn-pull-cloud');
-    if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> MENGUNDUH DATA DARI CLOUD...';
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> MEMULAI UNDUHAN...';
 
     try {
-        const response = await fetch(`${supabaseConfig.url}/rest/v1/backup_lms?id=eq.1&select=data_json`, {
-            headers: {
-                'apikey': supabaseConfig.key,
-                'Authorization': `Bearer ${supabaseConfig.key}`
-            }
-        });
+        // Eksekusi XMLHttpRequest untuk melacak progress % Download
+        const rows = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `${supabaseConfig.url}/rest/v1/backup_lms?id=eq.1&select=data_json`, true);
+            xhr.setRequestHeader('apikey', supabaseConfig.key);
+            xhr.setRequestHeader('Authorization', `Bearer ${supabaseConfig.key}`);
 
-        const rows = await response.json();
+            xhr.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    let persen = Math.round((event.loaded / event.total) * 100);
+                    if (btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> MENGUNDUH (${persen}%)`;
+                } else {
+                    if (btn) btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> MENGUNDUH... (Sedang Berjalan)`;
+                }
+            };
+
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    resolve(JSON.parse(xhr.responseText || "[]"));
+                } else {
+                    reject("Error " + xhr.status);
+                }
+            };
+            
+            xhr.onerror = () => reject("Koneksi terputus");
+            xhr.send();
+        });
         
         if (rows && rows.length > 0 && rows[0].data_json) {
             const data = rows[0].data_json;
             
-            // 1. Kumpulkan antrean data ke dalam format Array Object
+            if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES INSTALASI LOKAL...`;
+            
             let daftarTugas = [];
             
             if (data.santri) daftarTugas.push({ key: 'pondok_santri', val: data.santri });
@@ -5568,21 +5641,13 @@ async function tarikDataDariSupabase() {
                 daftarTugas.push({ key: 'pondok_users', val: finalPulledUsers });
             }
 
-            // 2. Olah Tugas menjadi Promise untuk menampilkan Persentase
-            let totalTugas = daftarTugas.length;
-            let tugasSelesai = 0;
-            
             let operasiSimpan = daftarTugas.map(tugas => {
-                return setDB(tugas.key, tugas.val).then(() => {
-                    tugasSelesai++;
-                    let persentase = Math.round((tugasSelesai / totalTugas) * 100);
-                    if (btn) btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES DATA (${persentase}%)`;
-                });
+                return setDB(tugas.key, tugas.val);
             });
 
             await Promise.all(operasiSimpan);
 
-            if (btn) btn.innerHTML = `<i class="fa-solid fa-check"></i> SELESAI (100%)`;
+            if (btn) btn.innerHTML = `<i class="fa-solid fa-check"></i> TARIK DATA SELESAI`;
 
             tambahNotifInternal(
                 'pull_sukses_' + Date.now(), 
@@ -5596,7 +5661,7 @@ async function tarikDataDariSupabase() {
             
             setTimeout(() => {
                 location.reload();
-            }, 1500);
+            }, 1000);
         } else {
             tambahNotifInternal('err_pull_kosong', 'Database Kosong', 'Belum ada data cadangan tersimpan di server Supabase.', 'fa-folder-open', 'warning', '');
             if (btn) btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> TARIK DARI CLOUD';
